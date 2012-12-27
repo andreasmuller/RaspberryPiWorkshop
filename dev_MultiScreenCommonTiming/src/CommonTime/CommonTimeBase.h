@@ -42,7 +42,7 @@ class CommonTimeBase
 	
 		int		offsetMillis;
 	
-		multiset<int> pingMillis;
+		multiset<int> pingMillis; // the std::multiset will automatically sort the entries for us, small to large.
 	
 	
 		int		lastPingSentTimeMillis;

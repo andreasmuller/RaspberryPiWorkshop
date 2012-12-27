@@ -5,27 +5,12 @@
 //
 void testApp::setup()
 {
+	isServer = false;
+	
+	fontSmall.loadFont("DIN.otf", 8 );
+	fontLarge.loadFont("DIN.otf", 36 );
+	
 
-	multiset<int> multisetValues;
-	multisetValues.insert(4);
-	multisetValues.insert(4);
-	multisetValues.insert(4);
-	multisetValues.insert(5);
-	multisetValues.insert(1);
-	multisetValues.insert(1);
-	multisetValues.insert(2);
-	multisetValues.insert(3);
-
-	
-	multiset<int>::iterator ms_it;	
-	cout << "( ";
-	for ( ms_it = multisetValues.begin(); ms_it != multisetValues.end(); ms_it++)
-	{
-		cout << *ms_it << " ";
-	}
-	cout << ") ";
-	
-	
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -37,49 +22,66 @@ void testApp::update()
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-void testApp::draw(){
+void testApp::draw()
+{
+	if( isServer )
+	{
+		
+	}
+	else
+	{
+	}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+//
+void testApp::keyPressed(int key)
+{
+	if( key == 's' )
+	{
+		isServer = !isServer;
+	}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+//
+void testApp::keyReleased(int key)
+{
 
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-void testApp::keyPressed(int key){
+void testApp::mouseMoved(int x, int y )
+{
 
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-void testApp::keyReleased(int key){
+void testApp::mouseDragged(int x, int y, int button)
+{
 
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-void testApp::mouseMoved(int x, int y ){
+void testApp::mousePressed(int x, int y, int button)
+{
 
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-void testApp::mouseDragged(int x, int y, int button){
+void testApp::mouseReleased(int x, int y, int button)
+{
 
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-void testApp::mousePressed(int x, int y, int button){
-
-}
-
-// ---------------------------------------------------------------------------------------------------------------------------------------------------
-//
-void testApp::mouseReleased(int x, int y, int button){
-
-}
-
-// ---------------------------------------------------------------------------------------------------------------------------------------------------
-//
-void testApp::windowResized(int w, int h){
+void testApp::windowResized(int w, int h)
+{
 
 }
 
