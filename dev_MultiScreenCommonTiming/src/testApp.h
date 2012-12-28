@@ -6,6 +6,12 @@
 #include "ofxOsc.h"
 
 #include "CommonTime/CommonTimeOsc.h"
+#include "OSCManager.h"
+
+//#define SEND_HOST "192.168.2.255"
+//#define SEND_PORT 12345
+
+//#define RECEIVE_PORT 23456
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
@@ -30,7 +36,8 @@ class testApp : public ofBaseApp
 			
 		bool		isServer;
 
-		CommonTimeOSC commonTimeOsc;
+		OSCManager		oscManager;
+		CommonTimeOSC*	commonTimeOsc;
 	
 		ofTrueTypeFont fontSmall;
 		ofTrueTypeFont fontLarge;

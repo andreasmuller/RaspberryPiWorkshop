@@ -8,6 +8,11 @@
 
 #pragma once
 
+#include "ofMain.h"
+#include "ofxOsc.h"
+
+#include "CommonTime/CommonTimeOsc.h"
+
 
 class OSCManager
 {
@@ -16,6 +21,31 @@ class OSCManager
 		OSCManager();
 		~OSCManager();
 		
-	private:
+		void	init( int _uniqueComputerID );
 	
+		void	_update(ofEventArgs &e);
+	
+		ofxOscSender*	getOSCSender()
+		{
+			return &sender;
+		}
+		
+		ofxOscReceiver* getOSCReceiver()
+		{
+			return &receiver;
+		}
+		
+		CommonTimeOSC* getCommonTime()
+		{
+			return &commonTimeOsc;
+		}
+	
+	private:
+
+		int					uniqueComputerID;
+	
+		ofxOscSender		sender;
+		ofxOscReceiver		receiver;
+	
+		CommonTimeOSC		commonTimeOsc;
 };

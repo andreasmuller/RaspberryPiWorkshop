@@ -21,11 +21,13 @@ class CommonTimeOSC : public CommonTimeBase
 		CommonTimeOSC();
 		~CommonTimeOSC();
 	
-		void	init( ofxOscSender* _oscSender );
+		void	init( ofxOscSender* _oscSender, int _uniqueComputerID );
 		
 	private:
 	
 		void	sendPing();
+	
+		int		uniqueComputerID;
 	
 		ofxOscSender* oscSender;
 
