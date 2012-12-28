@@ -49,12 +49,24 @@ void testApp::update()
 //
 void testApp::draw()
 {
-	// display instructions
-#ifdef HEADLESS
-
-#else
 	string buf;
 	buf = "Sending OSC messages to " + string(SEND_HOST) + ":" + ofToString(SEND_PORT) + "    Listening for OSC messages on port: " + ofToString(RECEIVE_PORT);
+
+#ifdef HEADLESS
+
+#ifdef TARGET_LINUX
+	std::system( "clear" );
+#endif
+
+	cout << "*********************************************************************************" << endl;
+	cout << buf << endl;
+	for( unsigned int i = 0; i < receivedMessageSubjects.size(); i++ )
+	{
+		 cout << "    " << receivedMessageSubjects.at(i) << endl;
+	}
+	cout << "*********************************************************************************" << endl;
+#else
+
 	ofDrawBitmapString(buf, 10, 20);
 	
 	

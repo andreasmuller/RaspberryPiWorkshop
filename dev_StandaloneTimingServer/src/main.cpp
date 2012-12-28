@@ -2,7 +2,7 @@
 #include "testApp.h"
 
 #ifdef HEADLESS
-	#include "Utils/ofAppNoWindow.h"
+	#include "ofAppNoWindow.h"
 #else
 	#include "ofAppGlutWindow.h"
 #endif
