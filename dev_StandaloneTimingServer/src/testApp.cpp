@@ -7,7 +7,7 @@ void testApp::setup()
 {
 	ofBackground(40, 100, 40);
 
-//	sender.setup(SEND_HOST, SEND_PORT);
+	sender.setup(SEND_HOST, SEND_PORT);
 	
 	receiver.setup( RECEIVE_PORT );
 }
@@ -25,12 +25,29 @@ void testApp::update()
 	
 		if( m.getAddress() == "/ping" )
 		{
-			string tmpStr = "Ping, remote time: " + ofToString(m.getArgAsInt32(0)) +
-			" computer: " + ofToString(m.getArgAsInt32(1)) +
+			string tmpStr = "Ping, remote time: " + ofToString(m.getArgAsInt32(1)) +
+			" computer: " + ofToString(m.getArgAsInt32(0)) +
 			"  IP: " + m.getRemoteIp() +
 			" Port: " + ofToString(m.getRemotePort());
 			
 			receivedMessageSubjects.push_back( tmpStr );
+
+			// we need to send a "pong" message back, either we send this over the multicasting address, 
+			// or we create a sender for each new address and port that send us a message, I'm going to 
+			// try the multicasting route first.
+
+			// their message comes in as /ping, their ID (int), their timestamp (int)
+
+			int remoteComputerID 	= m.getArgAsInt32(0);			
+			int remoteComputerTime 	= m.getArgAsInt32(1);
+
+			ofxOscMessage m;
+			m.setAddress("/pong");
+			m.addIntArg( remoteComputerID );			// their ID			
+			m.addIntArg( getServerTime() ); 	// my time
+			m.addIntArg( remoteComputerTime );			// their time				
+
+			sender.sendMessage( m );
 		}
 		else
 		{
@@ -77,6 +94,13 @@ void testApp::draw()
 	
 #endif
 
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+//
+void testApp::getServerTime()
+{
+	return ofGetElapsedTimeMillis();
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------

@@ -3,10 +3,10 @@
 #include "ofMain.h"
 #include "ofxOsc.h"
 
-#define SEND_HOST "192.168.2.255"
-#define SEND_PORT 12345
+#define SEND_HOST "192.168.2.103"
+#define SEND_PORT 7778
 
-#define RECEIVE_PORT 23456
+#define RECEIVE_PORT 7777
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
@@ -18,6 +18,8 @@ class testApp : public ofBaseApp {
 		void update();
 		void draw();
 
+		int getServerTime();
+
 		void keyPressed(int key);
 		void keyReleased(int key);
 		void mouseMoved(int x, int y);
@@ -28,7 +30,7 @@ class testApp : public ofBaseApp {
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-//		ofxOscSender sender;
+		ofxOscSender sender;
 		ofxOscReceiver receiver;
 	
 		vector< string > receivedMessageSubjects;
