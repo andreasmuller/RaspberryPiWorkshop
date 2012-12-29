@@ -107,7 +107,7 @@ void testApp::draw(){
 		ofFill();
 		ofSetColor(ofColor::red);
 
-		ofCircle(brushX, brushY, 30);
+		//ofCircle(brushX, brushY, 30);
 	ofPopStyle();
    // ofDrawBitmapString("Drag the Mouse to draw", 15,15);
     //ofDrawBitmapString("Press spacebar to clear", 15, 30);
