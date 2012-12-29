@@ -34,23 +34,36 @@ class CommonTimeBase
 	
 		void	_update(ofEventArgs &e);
 	
+		// When doing animation with the timing value, it's nicer to smothly "rewind" or "fast forward" the offset rather than set it straight away
+		bool	setEaseOffset( bool _ease )
+		{
+			easeOffset = _ease;
+		}
+	
+		int		getInternalTimeMillis();	// get the local computer time, it's a function (as opposed to just using say ofGetElapsedTimeMillis() ) so that we can easily replace the source
+		
+		// make these private once we finish debugging
+		int		offsetMillis;
+		int		offsetMillisTarget;
+	
 	private:
 	
-		virtual void sendPing() {}
+		virtual void sendPing() {}	// override with something using the protocol of your choice
 	
 		void	calculateOffset( int _serverTimeMillis );
-	
-		int		offsetMillis;
-	
+			
 		multiset<int> pingMillis; // the std::multiset will automatically sort the entries for us, small to large.
 	
+		bool	easeOffset;
 	
 		int		lastPingSentTimeMillis;
 		int		millisBetweenPings;
 	
-		int		TIMING_INITIALISATION_DURATION_MILLIS;
+		int		maxDiffAdjustmentThreshold;	// don't adjust the time unless it's off by thi much, otherwise we will be adjusting quite often and animation will be jittery
+	
 		int		INITIALISATION_PING_DELAY_MILLIS;
 		int		POST_INITIALISATION_PING_DELAY_MILLIS;
+	
 };
 
 

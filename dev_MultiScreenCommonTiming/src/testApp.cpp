@@ -7,14 +7,15 @@ void testApp::setup()
 {
 	isServer = false;
 	
-	fontSmall.loadFont("DIN.otf", 8 );
-	fontLarge.loadFont("DIN.otf", 36 );
+	fontSmall.loadFont("Fonts/DIN.otf", 8 );
+	fontLarge.loadFont("Fonts/DIN.otf", 36 );
 	
 	ofSeedRandom();
 	int uniqueID = ofRandom( 999999999 ); // yeah this is bogus I know. Todo: generate a unique computer ID.
 	
 	oscManager.init( uniqueID );
-	commonTimeOsc = oscManager.getCommonTime();
+	commonTimeOsc = oscManager.getCommonTimeOscObj();
+	commonTimeOsc->setEaseOffset( true );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -28,13 +29,25 @@ void testApp::update()
 //
 void testApp::draw()
 {
-	if( isServer )
-	{
-		
-	}
-	else
-	{
-	}
+	float currAnimationTimeSecs = commonTimeOsc->getTimeSecs();
+	
+	ofColor backgroundColor( 82, 132, 200 );
+	if( isServer ) { backgroundColor.set( 200, 82, 110 ); }
+	ofSetBackgroundColor( backgroundColor );
+	
+	ofSetColor(255);
+	fontSmall.drawString( "Offset: " + ofToString(commonTimeOsc->offsetMillis) + " OffsetTarget: " + ofToString(commonTimeOsc->offsetMillisTarget), 40, 80 );
+	
+	ofSetColor( 82, 179, 200 );
+	float tmpRadius = ofGetHeight() * 0.45f;
+	ofPushMatrix();
+		ofTranslate( ofGetWidth()/2, ofGetHeight()/2 );
+		ofRotate( currAnimationTimeSecs * 20.0f );
+		ofTranslate( tmpRadius, 0 );
+		ofCircle( 0,0, 40 );
+	ofPopMatrix();
+	
+	//cout << commonTimeOsc->offsetMillis << "	" << commonTimeOsc->offsetMillisTarget << endl;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
