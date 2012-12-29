@@ -15,38 +15,7 @@ void testApp::setup(){
     
     maskFbo.allocate(width,height);
     fbo.allocate(width,height);
-    
-    //ofSetWindowShape(width, height);
-    
-    
-    // There are 3 of ways of loading a shader:
-    //
-    //  1 - Using just the name of the shader and ledding ofShader look for .frag and .vert: 
-    //      Ex.: shader.load( "myShader");
-    //
-    //  2 - Giving the right file names for each one: 
-    //      Ex.: shader.load( "myShader.vert","myShader.frag");
-    //
-    //  3 - And the third one it«s passing the shader programa on a single string;
-    //
-    string shaderProgram = "#version 120\n \
-    #extension GL_ARB_texture_rectangle : enable\n \
-    \
-    uniform sampler2DRect tex0;\
-    uniform sampler2DRect maskTex;\
-    \
-    void main (void){\
-    vec2 pos = gl_TexCoord[0].st;\
-    \
-    vec3 src = texture2DRect(tex0, pos).rgb;\
-    float mask = texture2DRect(maskTex, pos).r;\
-    \
-    gl_FragColor = vec4( src , mask);\
-    }";
-	
-	
-    //shader.setupShaderFromSource(GL_FRAGMENT_SHADER, shaderProgram);
-   // shader.linkProgram(); 
+
     bool didLoad = shader.load("myShader.vert", "myShader.frag", "");
 	
 	ofLogVerbose() << "didLoad: " << didLoad;
@@ -60,24 +29,28 @@ void testApp::setup(){
     ofClear(0,0,0,255);
     fbo.end();
     
-    bBrushDown = false;
+
 }
 
 //--------------------------------------------------------------
 void testApp::update(){
     
     // MASK (frame buffer object)
-    //
-	bBrushDown = true;
 	brushX+=5;
 	if (brushX>srcImg.getWidth()) {
 		brushY+=20;
 		brushX=0;
 	}
+	if (brushY>srcImg.getHeight()) {
+		maskFbo.begin();
+		ofClear(0,0,0,255);
+		maskFbo.end();
+		brushY = 20;
+	}
+	
+	
     maskFbo.begin();
-    if (bBrushDown){
-        brushImg.draw(brushX-25,brushY-25,50,50);
-    }
+    brushImg.draw(brushX-25,brushY-25,50,50);
     maskFbo.end();
     
     // HERE the shader-masking happends
@@ -99,25 +72,13 @@ void testApp::update(){
 //--------------------------------------------------------------
 void testApp::draw(){
     ofSetColor(255,255);
-    
     dstImg.draw(0,0);
-    
-   fbo.draw(0,0);
-	ofPushStyle();
-		ofFill();
-		ofSetColor(ofColor::red);
-
-		//ofCircle(brushX, brushY, 30);
-	ofPopStyle();
-   // ofDrawBitmapString("Drag the Mouse to draw", 15,15);
-    //ofDrawBitmapString("Press spacebar to clear", 15, 30);
+	fbo.draw(0,0);
 }
 
 //--------------------------------------------------------------
 void testApp::keyPressed(int key){
-    /*maskFbo.begin();
-    ofClear(0,0,0,255);
-    maskFbo.end();*/
+   
 }
 
 //--------------------------------------------------------------
@@ -137,12 +98,12 @@ void testApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void testApp::mousePressed(int x, int y, int button){
-   // bBrushDown = true;
+   
 }
 
 //--------------------------------------------------------------
 void testApp::mouseReleased(int x, int y, int button){
-    //bBrushDown = false;
+    
 }
 
 //--------------------------------------------------------------
