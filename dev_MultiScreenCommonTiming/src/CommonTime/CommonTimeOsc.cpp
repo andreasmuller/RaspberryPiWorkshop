@@ -32,17 +32,16 @@ void CommonTimeOSC::init( ofxOscSender* _oscSender, int _uniqueComputerID  )
 }
 
 
-
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
 void CommonTimeOSC::sendPing()
 {
-	cout << "CommonTimeOSC::sendPing()" << endl;
+	//cout << "CommonTimeOSC::sendPing()" << endl;
 	
 	ofxOscMessage m;
 	m.setAddress("/ping");
-	m.addIntArg( ofGetElapsedTimeMillis() );
-	m.addIntArg( uniqueComputerID );	
+	m.addIntArg( uniqueComputerID );		
+	m.addIntArg( getInternalTimeMillis() );
 	
 	oscSender->sendMessage( m );
 }

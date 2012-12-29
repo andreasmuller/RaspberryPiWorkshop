@@ -12,8 +12,6 @@
 //
 CommonTimeBase::CommonTimeBase()
 {
-	// during this time, we are more aggressive about sending out pings
-	TIMING_INITIALISATION_DURATION_MILLIS	= 3 * 1000;
 	
 	INITIALISATION_PING_DELAY_MILLIS		= 60;
 	POST_INITIALISATION_PING_DELAY_MILLIS	= 5 * 1000;
@@ -21,6 +19,11 @@ CommonTimeBase::CommonTimeBase()
 	offsetMillis = 0;
 	lastPingSentTimeMillis = 0;
 	millisBetweenPings = INITIALISATION_PING_DELAY_MILLIS;
+
+	maxDiffAdjustmentThreshold = 10;		
+	
+	easeOffset = false;
+	offsetMillisTarget = 0;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -41,7 +44,7 @@ void CommonTimeBase::baseInit()
 //
 int	CommonTimeBase::getTimeMillis()
 {
-	return ofGetElapsedTimeMillis() + offsetMillis;
+	return getInternalTimeMillis() + offsetMillis;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -55,20 +58,33 @@ float CommonTimeBase::getTimeSecs()
 //
 void CommonTimeBase::_update(ofEventArgs &e)
 {
-	int currentLocalMillis = ofGetElapsedTimeMillis();
-	if( currentLocalMillis < TIMING_INITIALISATION_DURATION_MILLIS )
-	{
-		millisBetweenPings = INITIALISATION_PING_DELAY_MILLIS;
-	}
-	else
-	{
-		millisBetweenPings = POST_INITIALISATION_PING_DELAY_MILLIS;
-	}
+	int currentLocalMillis = getInternalTimeMillis();
 	
 	if( (currentLocalMillis-lastPingSentTimeMillis) > millisBetweenPings )
 	{
 		sendPing();
 		lastPingSentTimeMillis = currentLocalMillis;
+	}
+	
+	// Ease the timing offset if this is activated
+	if( easeOffset )
+	{
+		if( offsetMillis != offsetMillisTarget )
+		{
+			float tmpDiff = (offsetMillisTarget-offsetMillis)/10.0;
+			if( fabsf(tmpDiff) < 1.0f )
+			{
+				offsetMillis = offsetMillisTarget;
+			}
+			else
+			{
+				offsetMillis += tmpDiff;
+			}
+		}
+	}
+	else
+	{
+		offsetMillis = offsetMillisTarget;
 	}
 }
 
@@ -86,10 +102,32 @@ void CommonTimeBase::newReading( int _serverTimeMillis, int _pingMillis )
 	
 	if( pingMillis.size() > PING_AMOUNT_TO_KEEP )
 	{
-		pingMillis.erase( pingMillis.end() );
+		pingMillis.erase( --pingMillis.end() );
 	}
 	
+	/*
+	// debug print the multiset
+	cout << "--------------------------------------------------------" << endl;
+	multiset<int>::iterator tmpIt;
+	for ( tmpIt = pingMillis.begin(); tmpIt != pingMillis.end(); tmpIt++)
+	{
+		cout << *tmpIt << endl;
+	}
+	cout << "--------------------------------------------------------" << endl;
+	*/
+	 
 	calculateOffset( _serverTimeMillis );
+	
+	// If we are still in the initialisation phase, be more aggressive in how often we send out pings
+	if( pingMillis.size() < PING_AMOUNT_TO_KEEP )
+	{
+		millisBetweenPings = INITIALISATION_PING_DELAY_MILLIS;
+	}
+	else
+	{
+		millisBetweenPings = POST_INITIALISATION_PING_DELAY_MILLIS;
+	}
+	
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -100,7 +138,7 @@ void CommonTimeBase::calculateOffset( int _serverTimeMillis )
 	
 	// Don't do anything statistical until we have enough readings to do so,
 	// currently waiting until we have half of the amount of values we want
-	if( pingMillis.size() < (PING_AMOUNT_TO_KEEP/2) )
+	if( pingMillis.size() > (PING_AMOUNT_TO_KEEP/2) )
 	{
 		// grad the best X percent of values, get the average and use that
 		float percentile = 0.2f;
@@ -120,6 +158,8 @@ void CommonTimeBase::calculateOffset( int _serverTimeMillis )
 		}
 		
 		tmpPingTime = tmpPingAccumulator / percentileIndex;
+		
+		//cout << "We are assuming an average ping time of: " << tmpPingTime << endl;
 	}
 	else
 	{
@@ -129,5 +169,25 @@ void CommonTimeBase::calculateOffset( int _serverTimeMillis )
 	}
 	
 	int currServerTime = _serverTimeMillis + tmpPingTime;
-	offsetMillis = ofGetElapsedTimeMillis() - currServerTime;
+	
+	// if the clock seems to be off by a certain threshold
+	int tmpDiffPrevServerTime = currServerTime - getTimeMillis();
+	if( abs(tmpDiffPrevServerTime) > maxDiffAdjustmentThreshold )
+	{
+		offsetMillisTarget = currServerTime - getInternalTimeMillis();
+	}
+	else
+	{
+		cout << "We weren't off by that much, so no need to adjust, " << tmpDiffPrevServerTime << endl;
+	}
+	
+	// if we only have one entry in the pingMillis multiset, we just set the offset straight away, easing or no easing
+	if( pingMillis.size() <= 1) offsetMillis = offsetMillisTarget;
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+//
+int CommonTimeBase::getInternalTimeMillis()
+{
+	return ofGetElapsedTimeMillis();
 }

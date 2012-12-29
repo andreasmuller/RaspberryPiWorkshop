@@ -35,7 +35,7 @@ class OSCManager
 			return &receiver;
 		}
 		
-		CommonTimeOSC* getCommonTime()
+		CommonTimeOSC* getCommonTimeOscObj()
 		{
 			return &commonTimeOsc;
 		}
@@ -43,9 +43,10 @@ class OSCManager
 	private:
 
 		int					uniqueComputerID;
-	
+
+		CommonTimeOSC		commonTimeOsc;
+		
 		ofxOscSender		sender;
 		ofxOscReceiver		receiver;
-	
-		CommonTimeOSC		commonTimeOsc;
+
 };
