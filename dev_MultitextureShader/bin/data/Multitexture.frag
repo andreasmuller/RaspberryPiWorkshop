@@ -16,7 +16,6 @@ uniform float time;
 
 // http://www.iquilezles.org/apps/shadertoy/?p=Multitexture
 void main(){
-	//gl_FragColor = texture2D(tex0, texCoordVarying)*0.9;
 	
 	vec2 p = -1.0 + 2.0 * gl_FragCoord.xy / resolution.xy;
     // a rotozoom
@@ -32,6 +31,5 @@ void main(){
 
     gl_FragColor = vec4(col,1.0);
     
-    //gl_FragColor = texture2D(tex0, texCoordVarying)*1.0;
 }
 

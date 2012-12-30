@@ -42,13 +42,11 @@ void testApp::update(){
 	fbo.begin();
 		ofClear(0, 0, 0, 0);
 		shader.begin();
-		
 			shader.setUniform1f("time", ofGetElapsedTimef());
 			shader.setUniform2f("resolution", drawWidth, drawHeight);
 			shader.setUniformTexture("tex0", tex0, 1);
 			shader.setUniformTexture("tex1", tex1, 2);
 			ofRect(0, 0, drawWidth, drawHeight);
-		
 		shader.end();
 	fbo.end();
 }
