@@ -45,8 +45,10 @@ class OSCManager
 		int					uniqueComputerID;
 
 		CommonTimeOSC		commonTimeOsc;
-		
+	
+		bool				haveSetupSender;
 		ofxOscSender		sender;
+	
 		ofxOscReceiver		receiver;
 
 };

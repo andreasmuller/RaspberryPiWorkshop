@@ -35,6 +35,8 @@ class testApp : public ofBaseApp
 		void		gotMessage(ofMessage msg);
 			
 		bool		isServer;
+	
+		int			sceneIndex;
 
 		OSCManager		oscManager;
 		CommonTimeOSC*	commonTimeOsc;

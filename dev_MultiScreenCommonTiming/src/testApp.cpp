@@ -16,6 +16,8 @@ void testApp::setup()
 	oscManager.init( uniqueID );
 	commonTimeOsc = oscManager.getCommonTimeOscObj();
 	commonTimeOsc->setEaseOffset( true );
+	
+	sceneIndex = 0;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -35,18 +37,33 @@ void testApp::draw()
 	if( isServer ) { backgroundColor.set( 200, 82, 110 ); }
 	ofSetBackgroundColor( backgroundColor );
 	
+	if ( sceneIndex == 1 )
+	{
+		int col = ((sinf( commonTimeOsc->getTimeSecs() ) + 1.0f) * 0.5f) * 255;
+		
+		ofBackground( col, col, col );
+	}
+	
 	ofSetColor(255);
 	fontSmall.drawString( "Offset: " + ofToString(commonTimeOsc->offsetMillis) + " OffsetTarget: " + ofToString(commonTimeOsc->offsetMillisTarget), 40, 80 );
 	
-	ofSetColor( 82, 179, 200 );
-	float tmpRadius = ofGetHeight() * 0.45f;
-	ofPushMatrix();
-		ofTranslate( ofGetWidth()/2, ofGetHeight()/2 );
-		ofRotate( currAnimationTimeSecs * 20.0f );
-		ofTranslate( tmpRadius, 0 );
-		ofCircle( 0,0, 40 );
-	ofPopMatrix();
-	
+	if( sceneIndex == 0 )
+	{
+		ofSetColor( 82, 179, 200 );
+		float tmpRadius = ofGetHeight() * 0.45f;
+		ofPushMatrix();
+			ofTranslate( ofGetWidth()/2, ofGetHeight()/2 );
+			ofRotate( currAnimationTimeSecs * 20.0f );
+			ofTranslate( tmpRadius, 0 );
+			ofCircle( 0,0, 40 );
+		ofPopMatrix();
+	}
+	else if ( sceneIndex == 1 )
+	{
+	}
+	else
+	{
+	}
 	//cout << commonTimeOsc->offsetMillis << "	" << commonTimeOsc->offsetMillisTarget << endl;
 }
 
@@ -104,12 +121,22 @@ void testApp::windowResized(int w, int h)
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-void testApp::gotMessage(ofMessage msg){
-
+void testApp::gotMessage(ofMessage msg)
+{
+	vector <string> tokens = ofSplitString( msg.message, " " );
+	
+	if( tokens.size() > 0 )
+	{
+		if( tokens.at(0) == "change_scene" )
+		{
+			sceneIndex = ofToInt( tokens.at(1) );
+		}
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-void testApp::dragEvent(ofDragInfo dragInfo){ 
-
+void testApp::dragEvent(ofDragInfo dragInfo)
+{
+	
 }

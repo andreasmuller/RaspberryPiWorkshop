@@ -22,6 +22,8 @@ class CommonTimeOSC : public CommonTimeBase
 		~CommonTimeOSC();
 	
 		void	init( ofxOscSender* _oscSender, int _uniqueComputerID );
+	
+		void	senderIsSetup( bool _isSetup );
 		
 	private:
 	
@@ -29,6 +31,7 @@ class CommonTimeOSC : public CommonTimeBase
 	
 		int		uniqueComputerID;
 	
+		bool	isSenderSetup;
 		ofxOscSender* oscSender;
 
 };

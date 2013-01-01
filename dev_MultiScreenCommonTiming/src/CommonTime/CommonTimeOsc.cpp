@@ -12,7 +12,7 @@
 //
 CommonTimeOSC::CommonTimeOSC()
 {
-
+	isSenderSetup = false;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -31,11 +31,22 @@ void CommonTimeOSC::init( ofxOscSender* _oscSender, int _uniqueComputerID  )
 	oscSender = _oscSender;
 }
 
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+//
+void CommonTimeOSC::senderIsSetup( bool _isSetup )
+{
+	isSenderSetup = _isSetup;
+}
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
 void CommonTimeOSC::sendPing()
 {
+	if( !isSenderSetup )
+	{
+		return;
+	}
+	
 	//cout << "CommonTimeOSC::sendPing()" << endl;
 	
 	ofxOscMessage m;

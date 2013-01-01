@@ -12,6 +12,7 @@
 //
 OSCManager::OSCManager()
 {
+	haveSetupSender = false;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -27,7 +28,6 @@ void OSCManager::init( int _uniqueComputerID )
 {
 	uniqueComputerID = _uniqueComputerID;
 	
-	sender.setup( "192.168.3.2", 7777 );
 	receiver.setup( 7778 );
 	
 	commonTimeOsc.init( &sender, uniqueComputerID );
@@ -46,7 +46,19 @@ void OSCManager::_update(ofEventArgs &e)
 		ofxOscMessage m;
 		receiver.getNextMessage(&m);
 		
-		if( m.getAddress() == "/pong" )
+		
+		if( m.getAddress() == "/hello" )
+		{
+			// if we get a hello message and we haven't set up our sender, get the Ip and port from the hello message
+			if( !haveSetupSender )
+			{
+				int sendPort = m.getArgAsInt32(0);
+				sender.setup( m.getRemoteIp(), sendPort );
+				commonTimeOsc.senderIsSetup( true );
+				haveSetupSender = true;
+			}
+		}
+		else if( m.getAddress() == "/pong" )
 		{
 			//cout << "Received Pong, ID: " << m.getArgAsInt32(0) << "  serverTime: " << m.getArgAsInt32(1) << "  origTimeStamp: " << m.getArgAsInt32(2) << endl;
 			
@@ -60,6 +72,11 @@ void OSCManager::_update(ofEventArgs &e)
 				
 				commonTimeOsc.newReading( serverTime, commonTimeOsc.getInternalTimeMillis() - originalTimeStamp );
 			}
+		}
+		else if( m.getAddress() == "/change_scene" )
+		{
+			int sceneIndex = m.getArgAsInt32(0);
+			ofSendMessage("change_scene " + sceneIndex );
 		}
 	}
 	
