@@ -7,8 +7,9 @@ class AutoReloadedShader : public ofShader
 
 	public:
 
-		bool load(string shaderName );
-		bool load(string vertName, string fragName, string geomName); // override the initialisation function
+		// override the initialisation functions
+		bool load(string shaderName );	
+		bool load(string vertName, string fragName, string geomName); 
 	
 		bool reloadShaders();
 	

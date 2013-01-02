@@ -26,5 +26,10 @@ class testApp : public ofBaseApp{
 		AutoReloadedShader autoShader;
 		ofFbo fbo;
 
+		ofImage image;
+
+		ofTrueTypeFont 	font;
+
+		char tempStr[512];
 };
 
