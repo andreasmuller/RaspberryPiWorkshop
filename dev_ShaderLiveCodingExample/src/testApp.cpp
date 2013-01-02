@@ -5,7 +5,15 @@
 void testApp::setup(){
 	ofSetLogLevel(OF_LOG_VERBOSE);
 	
+
+
+#ifdef TARGET_OPENGLES
+	autoShader.load("LiveShader");
+	cout << "Loading mobile shader" << endl;
+#else
 	autoShader.load("LiveShaderDesktop");
+	cout << "Loading desktop shader" << endl;	
+#endif
 	
 	fbo.allocate(ofGetWidth(), ofGetHeight());
 	fbo.begin();

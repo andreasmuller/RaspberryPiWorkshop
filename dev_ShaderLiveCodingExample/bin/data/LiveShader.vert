@@ -9,6 +9,7 @@ uniform mat4 projectionMatrix;
 varying vec4 colorVarying;
 varying vec2 texCoordVarying;
 
+uniform float time;
 
 void main()
 {
