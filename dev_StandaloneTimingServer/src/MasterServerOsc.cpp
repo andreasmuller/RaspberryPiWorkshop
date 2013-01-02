@@ -44,7 +44,11 @@ void MasterServerOsc::_update(ofEventArgs &e)
 		ofxOscMessage m;
 		m.setAddress("/hello");
 		m.addIntArg( RECEIVE_PORT ); // add the port we would like to use to receive messages as an argument, seems more flexible than having a rule like remote port + 1
+		// add the scene that we are in as well? Otherwise screens joining will not know what scene we are supposed to be in. 
+		
 		sender.sendMessage( m );
+		
+		lastSentHelloMessageMillis = getServerTime();
 	}
 
 	// check for waiting messages
@@ -131,7 +135,7 @@ void MasterServerOsc::draw()
 void MasterServerOsc::sendChangeScene( int _index )
 {
 	ofxOscMessage m;
-	m.setAddress("/scene_index");
+	m.setAddress("/change_scene");
 	m.addIntArg( _index );		
 	
 	sender.sendMessage( m );

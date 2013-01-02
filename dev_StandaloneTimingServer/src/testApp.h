@@ -1,9 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-
-#include "Utils/AutoReloadedShader.h"
-
+#include "MasterServerOsc.h"
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
@@ -25,9 +23,7 @@ class testApp : public ofBaseApp {
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-		AutoReloadedShader autoShader;
-
-		ofFbo fbo;
+		MasterServerOsc masterServerOsc;
 
 };
 

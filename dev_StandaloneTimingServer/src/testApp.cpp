@@ -30,6 +30,8 @@ void testApp::draw()
 //
 void testApp::keyPressed(int key)
 {
+	//cout << "keyPressed" << endl;
+	
 	if(key == 'a')
 	{
 
@@ -38,7 +40,7 @@ void testApp::keyPressed(int key)
 	{
 		int sceneIndex = key - 48;
 		masterServerOsc.sendChangeScene( sceneIndex );
-
+		cout << "Change to scene " << sceneIndex << endl;
 	}
 }
 
