@@ -4,6 +4,7 @@
 
 #include "ofMain.h"
 #include "ofxOsc.h"
+#include "ofxXmlSettings.h"
 
 #include "CommonTime/CommonTimeOsc.h"
 #include "OSCManager.h"
@@ -36,7 +37,9 @@ class testApp : public ofBaseApp
 			
 		bool		isServer;
 	
-		int			sceneIndex;
+		int			screenIndex;	// which screen are we?
+	
+		int			sceneIndex;		// which scene are we displaying? 
 
 		OSCManager		oscManager;
 		CommonTimeOSC*	commonTimeOsc;

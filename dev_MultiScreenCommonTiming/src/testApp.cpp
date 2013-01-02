@@ -18,6 +18,16 @@ void testApp::setup()
 	commonTimeOsc->setEaseOffset( true );
 	
 	sceneIndex = 0;
+	
+	screenIndex = 0;
+	
+	// Read the screen index from a file
+	ofxXmlSettings XML;
+	bool loadedFile = XML.loadFile( "Settings/ClientSettings.xml" );
+	if( loadedFile )
+	{
+		screenIndex = XML.getValue("Settings:ScreenIndex", 0);
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -32,23 +42,13 @@ void testApp::update()
 void testApp::draw()
 {
 	float currAnimationTimeSecs = commonTimeOsc->getTimeSecs();
-	
-	ofColor backgroundColor( 82, 132, 200 );
-	if( isServer ) { backgroundColor.set( 200, 82, 110 ); }
-	ofSetBackgroundColor( backgroundColor );
-	
-	if ( sceneIndex == 1 )
-	{
-		int col = ((sinf( commonTimeOsc->getTimeSecs() ) + 1.0f) * 0.5f) * 255;
-		
-		ofBackground( col, col, col );
-	}
-	
-	ofSetColor(255);
-	fontSmall.drawString( "Offset: " + ofToString(commonTimeOsc->offsetMillis) + " OffsetTarget: " + ofToString(commonTimeOsc->offsetMillisTarget), 40, 80 );
-	
+			
 	if( sceneIndex == 0 )
 	{
+		ofColor backgroundColor( 82, 132, 200 );
+		if( isServer ) { backgroundColor.set( 200, 82, 110 ); }
+		ofBackground( backgroundColor );
+		
 		ofSetColor( 82, 179, 200 );
 		float tmpRadius = ofGetHeight() * 0.45f;
 		ofPushMatrix();
@@ -60,10 +60,19 @@ void testApp::draw()
 	}
 	else if ( sceneIndex == 1 )
 	{
+		int col = ((sinf( commonTimeOsc->getTimeSecs() ) + 1.0f) * 0.5f) * 255;
+		ofBackground( col, col, col );
 	}
 	else
 	{
 	}
+	
+	ofSetColor(255);
+	
+	fontLarge.drawString( ofToString(screenIndex), 7, 40 );
+	
+	fontSmall.drawString( "Offset: " + ofToString(commonTimeOsc->offsetMillis) + " OffsetTarget: " + ofToString(commonTimeOsc->offsetMillisTarget), 7, 80 );
+	
 	//cout << commonTimeOsc->offsetMillis << "	" << commonTimeOsc->offsetMillisTarget << endl;
 }
 
@@ -123,13 +132,17 @@ void testApp::windowResized(int w, int h)
 //
 void testApp::gotMessage(ofMessage msg)
 {
-	vector <string> tokens = ofSplitString( msg.message, " " );
+	//cout << "testApp::gotMessage: " << msg.message << endl;
+	
+	vector <string> tokens = ofSplitString( msg.message, " ", true, true );
 	
 	if( tokens.size() > 0 )
 	{
 		if( tokens.at(0) == "change_scene" )
 		{
 			sceneIndex = ofToInt( tokens.at(1) );
+			
+			cout << tokens.at(0) << ":" << tokens.at(1) << endl;
 		}
 	}
 }

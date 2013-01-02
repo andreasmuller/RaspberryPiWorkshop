@@ -168,6 +168,9 @@ void CommonTimeBase::calculateOffset( int _serverTimeMillis )
 		tmpPingTime = *tmpIt;
 	}
 	
+	// Todo: Seems more logical here to check against the lowest percentile,
+	// if the ping is below, we can use it to adjust the clock.
+	
 	int currServerTime = _serverTimeMillis + tmpPingTime;
 	
 	// if the clock seems to be off by a certain threshold

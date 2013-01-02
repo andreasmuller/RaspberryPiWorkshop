@@ -46,6 +46,7 @@ void OSCManager::_update(ofEventArgs &e)
 		ofxOscMessage m;
 		receiver.getNextMessage(&m);
 		
+		//cout << "Got message: " << m.getAddress() << endl;
 		
 		if( m.getAddress() == "/hello" )
 		{
@@ -75,8 +76,10 @@ void OSCManager::_update(ofEventArgs &e)
 		}
 		else if( m.getAddress() == "/change_scene" )
 		{
+			//cout << "OSCManager::_update Got a change_scene message." << endl;
+			
 			int sceneIndex = m.getArgAsInt32(0);
-			ofSendMessage("change_scene " + sceneIndex );
+			ofSendMessage("change_scene " + ofToString(sceneIndex) );
 		}
 	}
 	
