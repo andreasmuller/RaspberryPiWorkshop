@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
-		CB1FFB65169882E7007C9192 /* MasterServerOsc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB1FFB63169882E7007C9192 /* MasterServerOsc.cpp */; };
-		CB1FFB7E1699D3E5007C9192 /* ClientOSCManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB1FFB7C1699D3E5007C9192 /* ClientOSCManager.cpp */; };
-		CB1FFB821699D413007C9192 /* SceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB1FFB801699D413007C9192 /* SceneManager.cpp */; };
 		CB85B706169484CD00EE29DC /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB85B6FF169484CD00EE29DC /* tinyxml.cpp */; };
 		CB85B707169484CD00EE29DC /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB85B701169484CD00EE29DC /* tinyxmlerror.cpp */; };
 		CB85B708169484CD00EE29DC /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB85B702169484CD00EE29DC /* tinyxmlparser.cpp */; };
@@ -32,8 +29,7 @@
 		CB96B4A81688FE23002CDD4D /* ofxOscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB96B4981688FE23002CDD4D /* ofxOscMessage.cpp */; };
 		CB96B4A91688FE23002CDD4D /* ofxOscReceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB96B49A1688FE23002CDD4D /* ofxOscReceiver.cpp */; };
 		CB96B4AA1688FE23002CDD4D /* ofxOscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB96B49C1688FE23002CDD4D /* ofxOscSender.cpp */; };
-		CBF121F3168B89370051DB1C /* CommonTimeBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CBF121F1168B89370051DB1C /* CommonTimeBase.cpp */; };
-		CBF121F6168B89980051DB1C /* CommonTimeOsc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CBF121F4168B89980051DB1C /* CommonTimeOsc.cpp */; };
+		CBF989411695B2F900A08FD9 /* MSACoreGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CBF9892B1695B2F800A08FD9 /* MSACoreGL.cpp */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E45BE97B0E8CC7DD009D7055 /* AGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9710E8CC7DD009D7055 /* AGL.framework */; };
 		E45BE97C0E8CC7DD009D7055 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45BE9720E8CC7DD009D7055 /* ApplicationServices.framework */; };
@@ -87,20 +83,12 @@
 
 /* Begin PBXFileReference section */
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
-		CB1FFB61169881F2007C9192 /* ServerSettings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = ServerSettings.xml; path = bin/data/Settings/ServerSettings.xml; sourceTree = SOURCE_ROOT; };
-		CB1FFB63169882E7007C9192 /* MasterServerOsc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MasterServerOsc.cpp; sourceTree = "<group>"; };
-		CB1FFB64169882E7007C9192 /* MasterServerOsc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterServerOsc.h; sourceTree = "<group>"; };
-		CB1FFB7C1699D3E5007C9192 /* ClientOSCManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClientOSCManager.cpp; sourceTree = "<group>"; };
-		CB1FFB7D1699D3E5007C9192 /* ClientOSCManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientOSCManager.h; sourceTree = "<group>"; };
-		CB1FFB801699D413007C9192 /* SceneManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneManager.cpp; sourceTree = "<group>"; };
-		CB1FFB811699D413007C9192 /* SceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneManager.h; sourceTree = "<group>"; };
 		CB85B6FF169484CD00EE29DC /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
 		CB85B700169484CD00EE29DC /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
 		CB85B701169484CD00EE29DC /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
 		CB85B702169484CD00EE29DC /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
 		CB85B704169484CD00EE29DC /* ofxXmlSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxXmlSettings.cpp; sourceTree = "<group>"; };
 		CB85B705169484CD00EE29DC /* ofxXmlSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxXmlSettings.h; sourceTree = "<group>"; };
-		CB85B70A1694854100EE29DC /* ClientSettings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = ClientSettings.xml; path = bin/data/Settings/ClientSettings.xml; sourceTree = SOURCE_ROOT; };
 		CB96B4581688EE61002CDD4D /* ofxNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxNetwork.h; sourceTree = "<group>"; };
 		CB96B4591688EE61002CDD4D /* ofxNetworkUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxNetworkUtils.h; sourceTree = "<group>"; };
 		CB96B45A1688EE61002CDD4D /* ofxTCPClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxTCPClient.cpp; sourceTree = "<group>"; };
@@ -144,10 +132,24 @@
 		CB96B49B1688FE23002CDD4D /* ofxOscReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscReceiver.h; sourceTree = "<group>"; };
 		CB96B49C1688FE23002CDD4D /* ofxOscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ofxOscSender.cpp; sourceTree = "<group>"; };
 		CB96B49D1688FE23002CDD4D /* ofxOscSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOscSender.h; sourceTree = "<group>"; };
-		CBF121F1168B89370051DB1C /* CommonTimeBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommonTimeBase.cpp; sourceTree = "<group>"; };
-		CBF121F2168B89370051DB1C /* CommonTimeBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonTimeBase.h; sourceTree = "<group>"; };
-		CBF121F4168B89980051DB1C /* CommonTimeOsc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommonTimeOsc.cpp; sourceTree = "<group>"; };
-		CBF121F5168B89980051DB1C /* CommonTimeOsc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonTimeOsc.h; sourceTree = "<group>"; };
+		CBF989231695B2F800A08FD9 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		CBF989241695B2F800A08FD9 /* license.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.md; sourceTree = "<group>"; };
+		CBF989251695B2F800A08FD9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		CBF989271695B2F800A08FD9 /* MSACore-Cinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MSACore-Cinder.h"; sourceTree = "<group>"; };
+		CBF989281695B2F800A08FD9 /* MSACore-OF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MSACore-OF.h"; sourceTree = "<group>"; };
+		CBF989291695B2F800A08FD9 /* MSACore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSACore.h; sourceTree = "<group>"; };
+		CBF9892A1695B2F800A08FD9 /* MSACoreCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSACoreCommon.h; sourceTree = "<group>"; };
+		CBF9892B1695B2F800A08FD9 /* MSACoreGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MSACoreGL.cpp; sourceTree = "<group>"; };
+		CBF9892C1695B2F800A08FD9 /* MSACoreGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSACoreGL.h; sourceTree = "<group>"; };
+		CBF9892D1695B2F800A08FD9 /* MSACoreMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSACoreMath.h; sourceTree = "<group>"; };
+		CBF989381695B2F900A08FD9 /* license.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.md; sourceTree = "<group>"; };
+		CBF989391695B2F900A08FD9 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		CBF9893B1695B2F900A08FD9 /* MSAInterpolationTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolationTypes.h; sourceTree = "<group>"; };
+		CBF9893C1695B2F900A08FD9 /* MSAInterpolator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolator.h; sourceTree = "<group>"; };
+		CBF9893D1695B2F900A08FD9 /* MSAInterpolator1D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolator1D.h; sourceTree = "<group>"; };
+		CBF9893E1695B2F900A08FD9 /* MSAInterpolator2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolator2D.h; sourceTree = "<group>"; };
+		CBF9893F1695B2F900A08FD9 /* MSAInterpolator3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolator3D.h; sourceTree = "<group>"; };
+		CBF989401695B2F900A08FD9 /* MSAInterpolatorT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSAInterpolatorT.h; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E45BE9710E8CC7DD009D7055 /* AGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AGL.framework; path = /System/Library/Frameworks/AGL.framework; sourceTree = "<absolute>"; };
 		E45BE9720E8CC7DD009D7055 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = /System/Library/Frameworks/ApplicationServices.framework; sourceTree = "<absolute>"; };
@@ -158,7 +160,7 @@
 		E45BE9770E8CC7DD009D7055 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		E45BE9790E8CC7DD009D7055 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		E45BE97A0E8CC7DD009D7055 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = /System/Library/Frameworks/QuickTime.framework; sourceTree = "<absolute>"; };
-		E4B69B5B0A3A1756003C02F2 /* MultiScreenCommonTimingDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultiScreenCommonTimingDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4B69B5B0A3A1756003C02F2 /* MultipleViewpointTransformOffsets.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultipleViewpointTransformOffsets.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B69E1D0A3A1BDC003C02F2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = testApp.cpp; path = src/testApp.cpp; sourceTree = SOURCE_ROOT; };
 		E4B69E1F0A3A1BDC003C02F2 /* testApp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = testApp.h; path = src/testApp.h; sourceTree = SOURCE_ROOT; };
@@ -239,33 +241,6 @@
 				BBAB23BE13894E4700AA2426 /* GLUT.framework */,
 			);
 			name = "3rd party frameworks";
-			sourceTree = "<group>";
-		};
-		CB1FFB62169882E7007C9192 /* Server */ = {
-			isa = PBXGroup;
-			children = (
-				CB1FFB63169882E7007C9192 /* MasterServerOsc.cpp */,
-				CB1FFB64169882E7007C9192 /* MasterServerOsc.h */,
-			);
-			path = Server;
-			sourceTree = "<group>";
-		};
-		CB1FFB7B1699D3E5007C9192 /* Client */ = {
-			isa = PBXGroup;
-			children = (
-				CB1FFB7C1699D3E5007C9192 /* ClientOSCManager.cpp */,
-				CB1FFB7D1699D3E5007C9192 /* ClientOSCManager.h */,
-			);
-			path = Client;
-			sourceTree = "<group>";
-		};
-		CB1FFB7F1699D413007C9192 /* Scenes */ = {
-			isa = PBXGroup;
-			children = (
-				CB1FFB801699D413007C9192 /* SceneManager.cpp */,
-				CB1FFB811699D413007C9192 /* SceneManager.h */,
-			);
-			path = Scenes;
 			sourceTree = "<group>";
 		};
 		CB85B6FD169484CD00EE29DC /* ofxXmlSettings */ = {
@@ -429,15 +404,61 @@
 			path = src;
 			sourceTree = "<group>";
 		};
-		CBF121F0168B89370051DB1C /* CommonTime */ = {
+		CBF989211695B2F800A08FD9 /* addons */ = {
 			isa = PBXGroup;
 			children = (
-				CBF121F4168B89980051DB1C /* CommonTimeOsc.cpp */,
-				CBF121F5168B89980051DB1C /* CommonTimeOsc.h */,
-				CBF121F1168B89370051DB1C /* CommonTimeBase.cpp */,
-				CBF121F2168B89370051DB1C /* CommonTimeBase.h */,
+				CBF989221695B2F800A08FD9 /* ofxMSACore */,
+				CBF9892E1695B2F800A08FD9 /* ofxMSAInterpolator */,
 			);
-			path = CommonTime;
+			path = addons;
+			sourceTree = "<group>";
+		};
+		CBF989221695B2F800A08FD9 /* ofxMSACore */ = {
+			isa = PBXGroup;
+			children = (
+				CBF989231695B2F800A08FD9 /* .gitignore */,
+				CBF989241695B2F800A08FD9 /* license.md */,
+				CBF989251695B2F800A08FD9 /* README.md */,
+				CBF989261695B2F800A08FD9 /* src */,
+			);
+			path = ofxMSACore;
+			sourceTree = "<group>";
+		};
+		CBF989261695B2F800A08FD9 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				CBF989271695B2F800A08FD9 /* MSACore-Cinder.h */,
+				CBF989281695B2F800A08FD9 /* MSACore-OF.h */,
+				CBF989291695B2F800A08FD9 /* MSACore.h */,
+				CBF9892A1695B2F800A08FD9 /* MSACoreCommon.h */,
+				CBF9892B1695B2F800A08FD9 /* MSACoreGL.cpp */,
+				CBF9892C1695B2F800A08FD9 /* MSACoreGL.h */,
+				CBF9892D1695B2F800A08FD9 /* MSACoreMath.h */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		CBF9892E1695B2F800A08FD9 /* ofxMSAInterpolator */ = {
+			isa = PBXGroup;
+			children = (
+				CBF989381695B2F900A08FD9 /* license.md */,
+				CBF989391695B2F900A08FD9 /* README.md */,
+				CBF9893A1695B2F900A08FD9 /* src */,
+			);
+			path = ofxMSAInterpolator;
+			sourceTree = "<group>";
+		};
+		CBF9893A1695B2F900A08FD9 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				CBF9893B1695B2F900A08FD9 /* MSAInterpolationTypes.h */,
+				CBF9893C1695B2F900A08FD9 /* MSAInterpolator.h */,
+				CBF9893D1695B2F900A08FD9 /* MSAInterpolator1D.h */,
+				CBF9893E1695B2F900A08FD9 /* MSAInterpolator2D.h */,
+				CBF9893F1695B2F900A08FD9 /* MSAInterpolator3D.h */,
+				CBF989401695B2F900A08FD9 /* MSAInterpolatorT.h */,
+			);
+			path = src;
 			sourceTree = "<group>";
 		};
 		E4328144138ABC890047C5CB /* Products */ = {
@@ -466,22 +487,17 @@
 				E4EEC9E9138DF44700A80321 /* openFrameworks */,
 				BB4B014C10F69532006C3DED /* addons */,
 				E45BE5980E8CC70C009D7055 /* frameworks */,
-				E4B69B5B0A3A1756003C02F2 /* MultiScreenCommonTimingDebug.app */,
+				E4B69B5B0A3A1756003C02F2 /* MultipleViewpointTransformOffsets.app */,
 			);
 			sourceTree = "<group>";
 		};
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				CB1FFB7B1699D3E5007C9192 /* Client */,
-				CB1FFB62169882E7007C9192 /* Server */,
-				CBF121F0168B89370051DB1C /* CommonTime */,
-				CB1FFB7F1699D413007C9192 /* Scenes */,
+				CBF989211695B2F800A08FD9 /* addons */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
-				CB85B70A1694854100EE29DC /* ClientSettings.xml */,
-				CB1FFB61169881F2007C9192 /* ServerSettings.xml */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -498,9 +514,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E4B69B5A0A3A1756003C02F2 /* MultiScreenCommonTiming */ = {
+		E4B69B5A0A3A1756003C02F2 /* MultipleViewpointTransformOffsets */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "MultiScreenCommonTiming" */;
+			buildConfigurationList = E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "MultipleViewpointTransformOffsets" */;
 			buildPhases = (
 				E4B69B580A3A1756003C02F2 /* Sources */,
 				E4B69B590A3A1756003C02F2 /* Frameworks */,
@@ -512,9 +528,9 @@
 			dependencies = (
 				E4EEB9AC138B136A00A80321 /* PBXTargetDependency */,
 			);
-			name = MultiScreenCommonTiming;
+			name = MultipleViewpointTransformOffsets;
 			productName = myOFApp;
-			productReference = E4B69B5B0A3A1756003C02F2 /* MultiScreenCommonTimingDebug.app */;
+			productReference = E4B69B5B0A3A1756003C02F2 /* MultipleViewpointTransformOffsets.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -522,7 +538,7 @@
 /* Begin PBXProject section */
 		E4B69B4C0A3A1720003C02F2 /* Project object */ = {
 			isa = PBXProject;
-			buildConfigurationList = E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "MultiScreenCommonTiming" */;
+			buildConfigurationList = E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "MultipleViewpointTransformOffsets" */;
 			compatibilityVersion = "Xcode 2.4";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -543,7 +559,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				E4B69B5A0A3A1756003C02F2 /* MultiScreenCommonTiming */,
+				E4B69B5A0A3A1756003C02F2 /* MultipleViewpointTransformOffsets */,
 			);
 		};
 /* End PBXProject section */
@@ -598,15 +614,11 @@
 				CB96B4A81688FE23002CDD4D /* ofxOscMessage.cpp in Sources */,
 				CB96B4A91688FE23002CDD4D /* ofxOscReceiver.cpp in Sources */,
 				CB96B4AA1688FE23002CDD4D /* ofxOscSender.cpp in Sources */,
-				CBF121F3168B89370051DB1C /* CommonTimeBase.cpp in Sources */,
-				CBF121F6168B89980051DB1C /* CommonTimeOsc.cpp in Sources */,
 				CB85B706169484CD00EE29DC /* tinyxml.cpp in Sources */,
 				CB85B707169484CD00EE29DC /* tinyxmlerror.cpp in Sources */,
 				CB85B708169484CD00EE29DC /* tinyxmlparser.cpp in Sources */,
 				CB85B709169484CD00EE29DC /* ofxXmlSettings.cpp in Sources */,
-				CB1FFB65169882E7007C9192 /* MasterServerOsc.cpp in Sources */,
-				CB1FFB7E1699D3E5007C9192 /* ClientOSCManager.cpp in Sources */,
-				CB1FFB821699D413007C9192 /* SceneManager.cpp in Sources */,
+				CBF989411695B2F900A08FD9 /* MSACoreGL.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -786,7 +798,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_52)",
 				);
 				PREBINDING = NO;
-				PRODUCT_NAME = MultiScreenCommonTimingDebug;
+				PRODUCT_NAME = MultipleViewpointTransformOffsets;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -872,7 +884,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_51)",
 				);
 				PREBINDING = NO;
-				PRODUCT_NAME = MultiScreenCommonTiming;
+				PRODUCT_NAME = MultipleViewpointTransformOffsets;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -880,7 +892,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "MultiScreenCommonTiming" */ = {
+		E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "MultipleViewpointTransformOffsets" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4B69B4E0A3A1720003C02F2 /* Debug */,
@@ -889,7 +901,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "MultiScreenCommonTiming" */ = {
+		E4B69B5F0A3A1757003C02F2 /* Build configuration list for PBXNativeTarget "MultipleViewpointTransformOffsets" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E4B69B600A3A1757003C02F2 /* Debug */,

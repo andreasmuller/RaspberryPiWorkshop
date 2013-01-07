@@ -34,7 +34,7 @@ void MasterServerOsc::init( string _xmlSettingsPath )
 	}
 	else
 	{
-		init(); // init with default
+		init( _serverSendHost, _serverSendPort, _serverReceivePort ); // init with default
 	}
 }
 

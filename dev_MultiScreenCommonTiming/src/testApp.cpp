@@ -13,8 +13,12 @@ void testApp::setup()
 	ofSeedRandom();
 	int uniqueID = ofRandom( 999999999 ); // yeah this is bogus I know. Todo: generate a unique computer ID.
 	
-	oscManager.init( uniqueID );
-	commonTimeOsc = oscManager.getCommonTimeOscObj();
+	server = NULL;
+	
+	client = new ClientOSCManager();
+	client->init( uniqueID );
+	
+	commonTimeOsc = client->getCommonTimeOscObj();
 	commonTimeOsc->setEaseOffset( true );
 	
 	sceneIndex = 0;
@@ -34,7 +38,18 @@ void testApp::setup()
 //
 void testApp::update()
 {
-
+	float currAnimationTimeSecs = 0.0f;
+	
+	if( isServer )
+	{
+		currAnimationTimeSecs = ofGetElapsedTimef();
+	}
+	else
+	{
+		currAnimationTimeSecs = commonTimeOsc->getTimeSecs();
+	}
+	
+	sceneManager.update( currAnimationTimeSecs );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -43,29 +58,6 @@ void testApp::draw()
 {
 	float currAnimationTimeSecs = commonTimeOsc->getTimeSecs();
 			
-	if( sceneIndex == 0 )
-	{
-		ofColor backgroundColor( 82, 132, 200 );
-		if( isServer ) { backgroundColor.set( 200, 82, 110 ); }
-		ofBackground( backgroundColor );
-		
-		ofSetColor( 82, 179, 200 );
-		float tmpRadius = ofGetHeight() * 0.45f;
-		ofPushMatrix();
-			ofTranslate( ofGetWidth()/2, ofGetHeight()/2 );
-			ofRotate( currAnimationTimeSecs * 20.0f );
-			ofTranslate( tmpRadius, 0 );
-			ofCircle( 0,0, 40 );
-		ofPopMatrix();
-	}
-	else if ( sceneIndex == 1 )
-	{
-		int col = ((sinf( commonTimeOsc->getTimeSecs() ) + 1.0f) * 0.5f) * 255;
-		ofBackground( col, col, col );
-	}
-	else
-	{
-	}
 	
 	ofSetColor(255);
 	
@@ -82,7 +74,20 @@ void testApp::keyPressed(int key)
 {
 	if( key == 's' )
 	{
-		isServer = !isServer;
+		// If we haven't initialised the server, delete the client so that we can bind the ports we want
+		if( server == NULL )
+		{
+			delete client;
+			server = new MasterServerOsc();
+		}
+		
+		if( !server->isInitialised() )
+		{
+			server->init( "Settings/ServerSettings.xml" );
+		}
+		
+		isServer = server->isInitialised();
+		
 	}
 }
 

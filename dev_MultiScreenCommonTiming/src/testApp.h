@@ -7,12 +7,12 @@
 #include "ofxXmlSettings.h"
 
 #include "CommonTime/CommonTimeOsc.h"
-#include "OSCManager.h"
 
-//#define SEND_HOST "192.168.2.255"
-//#define SEND_PORT 12345
+#include "Client/ClientOSCManager.h"
+#include "Server/MasterServerOsc.h"
 
-//#define RECEIVE_PORT 23456
+#include "Scenes/SceneManager.h"
+
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
@@ -21,31 +21,34 @@ class testApp : public ofBaseApp
 
 	public:
 
-		void		setup();
-		void		update();
-		void		draw();
+		void				setup();
+		void				update();
+		void				draw();
 		
-		void		keyPressed(int key);
-		void		keyReleased(int key);
-		void		mouseMoved(int x, int y );
-		void		mouseDragged(int x, int y, int button);
-		void		mousePressed(int x, int y, int button);
-		void		mouseReleased(int x, int y, int button);
-		void		windowResized(int w, int h);
-		void		dragEvent(ofDragInfo dragInfo);
-		void		gotMessage(ofMessage msg);
+		void				keyPressed(int key);
+		void				keyReleased(int key);
+		void				mouseMoved(int x, int y );
+		void				mouseDragged(int x, int y, int button);
+		void				mousePressed(int x, int y, int button);
+		void				mouseReleased(int x, int y, int button);
+		void				windowResized(int w, int h);
+		void				dragEvent(ofDragInfo dragInfo);
+		void				gotMessage(ofMessage msg);
 			
-		bool		isServer;
 	
-		int			screenIndex;	// which screen are we?
-	
-		int			sceneIndex;		// which scene are we displaying? 
+		bool				isServer;
 
-		OSCManager		oscManager;
-		CommonTimeOSC*	commonTimeOsc;
+		ClientOSCManager*	client;
+		MasterServerOsc*	server;
 	
-		ofTrueTypeFont fontSmall;
-		ofTrueTypeFont fontLarge;
+		SceneManager		sceneManager;
+	
+		int					screenIndex;	// which screen are we?
+
+		CommonTimeOSC*		commonTimeOsc;
+	
+		ofTrueTypeFont		fontSmall;
+		ofTrueTypeFont		fontLarge;
 };
 
 /*

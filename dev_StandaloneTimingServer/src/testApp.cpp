@@ -7,7 +7,7 @@ void testApp::setup()
 {
 	ofBackground(40, 100, 40);
 
-	masterServerOsc.init();
+	//masterServerOsc.init();
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -35,6 +35,13 @@ void testApp::keyPressed(int key)
 	if(key == 'a')
 	{
 
+	}
+	if(key == 's')
+	{
+		if( !masterServerOsc.isInitialised() )
+		{
+			masterServerOsc.init();
+		}
 	}
 	else if( key >= 48 && key <= 57 )
 	{
