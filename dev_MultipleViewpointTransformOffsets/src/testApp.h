@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "MSAInterpolator.h"
+#include "TiledCameraView.h"
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
@@ -33,6 +33,9 @@ class testApp : public ofBaseApp
 		
 		void		draw3DScene();
 		
+		void		setPerpectiveTransformForScreen( int _index, ofFbo* _screenSurface );
+		ofMatrix4x4	getCameraTransformForScreen( int _index );
+	
 		float		fovV2H(float _fovV, float _width, float _height );
 		float		fovH2V(float _fovH, float _width, float _height );
 	
@@ -48,8 +51,16 @@ class testApp : public ofBaseApp
 			
 		ofTrueTypeFont fontSmall;
 		ofTrueTypeFont fontLarge;
+		
+		bool			doCircularCameraViews;
+	
+		float 			cameraViewCircleSlice;	// when doing the circular vew, how wide a slice of the circle does each camera get?
+	
+		TiledCameraView	tileCameraView;
+		float			tiledCameraFov;
+	
+		ofFbo 			debugFbo;
 	
 		vector< ofFbo* > screens;
-	
 		vector< SphereProperties > spheres;
 };

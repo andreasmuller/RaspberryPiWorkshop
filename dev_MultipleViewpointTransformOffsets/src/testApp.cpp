@@ -12,8 +12,7 @@ void testApp::setup()
 	ofSeedRandom();
 	int uniqueID = ofRandom( 999999999 ); // yeah this is bogus I know. Todo: generate a unique computer ID.
 	
-	//vector< ofFbo* > screens;
-	int screenAmount = 6;
+	int screenAmount = 5;
 	for( int i = 0; i < screenAmount; i++ )
 	{
 		float scale = 0.25f;
@@ -22,6 +21,15 @@ void testApp::setup()
 		screens.push_back( tmpScreenSurface );
 	}
 
+	// we set up a camera that covers all the screens, then before rendering we can set the view for each camera and render the scene
+	tileCameraView.init( screens.at(0)->getWidth(), screens.at(0)->getHeight(), screenAmount );
+	
+	tiledCameraFov = 14.0f; // we want a really narrow Fov to avoid distortion
+	tileCameraView.setFov( tiledCameraFov );
+	
+	// set up a debug Fbo that we render into with the same settings to confim everything looks right
+	debugFbo.allocate( screens.at(0)->getWidth() * screenAmount, screens.at(0)->getHeight(), GL_RGB  );
+	
 	// if we seed the random number generator with the same number, we will generate the same positions, etc on all nodes.
 	ofSeedRandom( 1234 );
 	
@@ -50,6 +58,16 @@ void testApp::setup()
 		spheres.push_back( tmpSphere );
 	}
 	
+	// Here we can either divide a circle (360) by the amount of screens to get our Fov, but then if we have a low number
+	// of screens our Fov will be quite wide, which will give us perspective distortion.
+	//cameraViewCircleSlice = 360.0f / screens.size();
+	
+	// One solution is to base it all one us having a high number, say 18 screens, the server can keep track of the highest
+	// screen number that connects and create content that takes that into account
+	cameraViewCircleSlice = 360.0f / 18.0f;
+	
+	doCircularCameraViews = false;
+	
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -63,12 +81,10 @@ void testApp::update()
 //
 void testApp::draw()
 {
+	
 	// draw the scene into each FBO with an offset
 	for( unsigned int i = 0; i < screens.size(); i++ )
-	{
-		float screenIndexFrac = (float)i / (screens.size()-1);
-		float screenIndexAngleRad = ofDegToRad( 360.0f * screenIndexFrac );
-		
+	{		
 		ofFbo* tmpScreen = screens.at(i);
 		
 		tmpScreen->begin();
@@ -76,37 +92,51 @@ void testApp::draw()
 			ofClear(0,0,0);
 			
 			ofPushView();
-		
-				float cameraFovX = 360.0f / screens.size();
-				float cameraFovY = fovH2V(cameraFovX, tmpScreen->getWidth(), tmpScreen->getHeight() );
-		
-				ofSetupScreenPerspective( tmpScreen->getWidth(), tmpScreen->getHeight(), ofGetOrientation(), false, cameraFovY );
 			
-				// set the relevant camera transform for each screen
-				float tmpX = tmpScreen->getWidth() * i;
-				ofVec3f pos( tmpX,0,-300);
-				ofVec3f center(tmpX,0,0);
-				ofVec3f up(0,1,0);
-		
-				pos.set(0,0,0);
-				center.set(cosf(screenIndexAngleRad),0,sinf(screenIndexAngleRad) );
-		
-				ofMatrix4x4 cameraMatrix;
-				cameraMatrix.makeLookAtViewMatrix( pos, center, up );
+				ofMatrix4x4 lookAtMatrix;
+				if( doCircularCameraViews )
+				{
+					setPerpectiveTransformForScreen( i, tmpScreen );
+					lookAtMatrix = getCameraTransformForScreen( i );
+				}
+				else
+				{
+					tileCameraView.setPerspectiveTransformForTile( i );
+					lookAtMatrix.makeLookAtViewMatrix( ofVec3f(0,0,0), ofVec3f(0,0,-1), ofVec3f(0,1,0) );
+				}
 					
 				ofPushMatrix();
+		
 					ofLoadIdentityMatrix();
-					ofMultMatrix( cameraMatrix );
+					ofMultMatrix( lookAtMatrix );
 					ofScale( 1, -1, 1 );
 				
-					//ofTranslate( -tmpScreen->getWidth() * i, 0, 0 );
-		
 					draw3DScene();
+		
 				ofPopMatrix();
 			
 			ofPopView();
 		
 		tmpScreen->end();
+	}
+	
+	if( !doCircularCameraViews )
+	{
+		// debug draw into a big Fbo
+		debugFbo.begin();
+			ofClear(0,0,0);
+			ofPushView();
+				ofSetupScreenPerspective( debugFbo.getWidth(), debugFbo.getHeight(), ofGetOrientation(), false, tiledCameraFov );
+				ofMatrix4x4 lookAtMatrix;
+				lookAtMatrix.makeLookAtViewMatrix( ofVec3f(0,0,0), ofVec3f(0,0,-1), ofVec3f(0,1,0) );
+				ofPushMatrix();
+					ofLoadIdentityMatrix();
+					ofMultMatrix( lookAtMatrix );
+					ofScale( 1, -1, 1 );
+					draw3DScene();
+				ofPopMatrix();
+			ofPopView();
+		debugFbo.end();
 	}
 	
 	// draw the screen surfaces one next to another
@@ -123,39 +153,41 @@ void testApp::draw()
 			tmpPos.y += screens.at(i)->getHeight();
 		}
 	}
+	
+	if( !doCircularCameraViews )
+	{
+		debugFbo.draw(0, 400);
+	}
 }
 
-/*
- 
- float viewW = ofGetViewportWidth();
- float viewH = ofGetViewportHeight();
- 
- float eyeX = viewW / 2;
- float eyeY = viewH / 2;
- float halfFov = PI * fov / 360;
- float theTan = tanf(halfFov);
- float dist = eyeY / theTan;
- float aspect = (float) viewW / viewH;
- 
- if(nearDist == 0) nearDist = dist / 10.0f;
- if(farDist == 0) farDist = dist * 10.0f;
- 
- glMatrixMode(GL_PROJECTION);
- glLoadIdentity();
- 
- ofMatrix4x4 persp;
- persp.makePerspectiveMatrix(fov, aspect, nearDist, farDist);
- loadMatrix( persp );
- //gluPerspective(fov, aspect, nearDist, farDist);
- 
- 
- glMatrixMode(GL_MODELVIEW);
- glLoadIdentity();
- 
- ofMatrix4x4 lookAt;
- lookAt.makeLookAtViewMatrix( ofVec3f(eyeX, eyeY, dist),  ofVec3f(eyeX, eyeY, 0),  ofVec3f(0, 1, 0) );
- loadMatrix( lookAt );
- */
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+//
+void testApp::setPerpectiveTransformForScreen( int _index, ofFbo* _screenSurface )
+{
+	float cameraFovX = cameraViewCircleSlice;
+	float cameraFovY = fovH2V(cameraFovX, _screenSurface->getWidth(), _screenSurface->getHeight() );
+	
+	ofSetupScreenPerspective( _screenSurface->getWidth(), _screenSurface->getHeight(), ofGetOrientation(), false, cameraFovY );
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+//
+ofMatrix4x4	testApp::getCameraTransformForScreen( int _index )
+{
+	float screenIndexAngleRad = ofDegToRad( cameraViewCircleSlice * _index );
+	
+	ofVec3f pos( 0,0,0);
+	ofVec3f center(0,0,0);
+	ofVec3f up(0,1,0);
+		
+	center.set(cosf(screenIndexAngleRad),0,sinf(screenIndexAngleRad) );
+	
+	ofMatrix4x4 lookAt;
+	lookAt.makeLookAtViewMatrix( pos, center, up );
+	
+	return lookAt;
+}
+
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
@@ -195,7 +227,10 @@ float testApp::fovH2V(float _fovH, float _width, float _height )
 //
 void testApp::keyPressed(int key)
 {
-
+	if( key == 'c' )
+	{
+		doCircularCameraViews = !doCircularCameraViews;
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
