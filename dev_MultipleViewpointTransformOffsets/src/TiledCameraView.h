@@ -5,9 +5,7 @@
 
 /*
  	Todo:
- 		- confirm it works properly for tiles in the Y direction as wel
- 		- add an option to add a gap in the tiles, to account for screen bezels
- 
+ 		- confirm it works properly for tiles in the Y direction as well 
  */
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -26,7 +24,7 @@ class TiledCameraView
 		}
 	
 		// --------------------------------------------------------------------
-		void init( int _tileWidth, int _tileHeight, int _screenAmountX, int _screenAmountY = 1 )
+		void init( int _tileWidth, int _tileHeight, int _screenAmountX, int _screenAmountY = 1, int _borderWidth = 0, int _borderheight = 0 )
 		{
 			numTilesX = _screenAmountX;
 			numTilesY = _screenAmountY;
@@ -34,8 +32,11 @@ class TiledCameraView
 			tileWidth 	= _tileWidth;
 			tileHeight 	= _tileHeight;
 			
-			fullWidth	= tileWidth  * _screenAmountX;
-			fullHeight	= tileHeight * _screenAmountY;
+			borderWidth	 = _borderWidth;	// border is added to the right and bottom of the screen
+			borderHeight = _borderheight;
+			
+			fullWidth	= (tileWidth  + borderWidth)  * _screenAmountX;
+			fullHeight	= (tileHeight + borderHeight) * _screenAmountY;
 		}
 	
 		// --------------------------------------------------------------------
@@ -52,10 +53,10 @@ class TiledCameraView
 			float fullRight		= fullTop * aspectRatio;
 			
 			
-			float tileLeft		= fullLeft + (((fullRight - fullLeft) * (_tileIndexX * tileWidth)) / (float)fullWidth);
+			float tileLeft		= fullLeft + (((fullRight - fullLeft) * (_tileIndexX * (tileWidth + borderWidth))) / (float)fullWidth);
 			float tileRight		= tileLeft + (((fullRight - fullLeft) * tileWidth) / (float)fullWidth);
 			
-			float tileBottom	= fullBottom + (fullTop - fullBottom) * (_tileIndexY* tileHeight) / (float)fullHeight;
+			float tileBottom	= fullBottom + (fullTop - fullBottom) * (_tileIndexY * (tileHeight + borderHeight)) / (float)fullHeight;
 			float tileTop		= tileBottom + (((fullTop - fullBottom) * tileHeight) / (float)fullHeight);
 			
 			//if( _tileIndexX == 0 ) cout << endl << "fullTop: " << fullTop << " fullBottom: " << fullBottom << " fullLeft: " << fullLeft << " fullRight: " << fullRight << endl;
@@ -88,16 +89,29 @@ class TiledCameraView
 		}
 	
 		// --------------------------------------------------------------------
-		int getNumTilesX()
-		{
-			return numTilesX;
-		}
+		int getNumTilesX() { return numTilesX; }
 
 		// --------------------------------------------------------------------
-		int getNumTilesY()
-		{
-			return numTilesY;
-		}
+		int getNumTilesY() { return numTilesY; }
+
+		// --------------------------------------------------------------------
+		int getFullWidth() 	{ return fullWidth; }
+		
+		// --------------------------------------------------------------------
+		int getFullHeight() { return fullHeight; }
+
+		// --------------------------------------------------------------------
+		int getTileWidthNoBorder() { return tileWidth; }
+		
+		// --------------------------------------------------------------------
+		int getTileHeightNoBorder(){ return tileHeight;	}
+		
+		// --------------------------------------------------------------------
+		int getBorderWidth()	{ return borderWidth; }
+		
+		// --------------------------------------------------------------------
+		int getBorderHeight() 	{ return borderHeight; }
+	
 	
 	private:
 	
@@ -106,6 +120,9 @@ class TiledCameraView
 	
 		int tileWidth;
 		int tileHeight;
+	
+		int borderWidth;
+		int borderHeight;
 	
 		int fullWidth;
 		int fullHeight;

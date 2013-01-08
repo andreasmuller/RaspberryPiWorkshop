@@ -9,7 +9,7 @@
 #include "CommonTime/CommonTimeOsc.h"
 
 #include "Client/ClientOSCManager.h"
-#include "Server/MasterServerOsc.h"
+#include "Server/ServerOscManager.h"
 
 #include "Scenes/SceneManager.h"
 
@@ -35,11 +35,10 @@ class testApp : public ofBaseApp
 		void				dragEvent(ofDragInfo dragInfo);
 		void				gotMessage(ofMessage msg);
 			
-	
 		bool				isServer;
 
 		ClientOSCManager*	client;
-		MasterServerOsc*	server;
+		ServerOscManager*	server;
 	
 		SceneManager		sceneManager;
 	

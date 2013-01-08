@@ -61,12 +61,9 @@ void ClientOSCManager::_update(ofEventArgs &e)
 		}
 		else if( m.getAddress() == "/pong" )
 		{
-			//cout << "Received Pong, ID: " << m.getArgAsInt32(0) << "  serverTime: " << m.getArgAsInt32(1) << "  origTimeStamp: " << m.getArgAsInt32(2) << endl;
-			
 			// pong messages come in as: /pong, receiving computer ID (int), server timestamp (int), timestamp when remote computer sent (int)
 			
-			// if the message is for us
-			if( m.getArgAsInt32(0) == uniqueComputerID )
+			if( m.getArgAsInt32(0) == uniqueComputerID )  	// if the message is for us
 			{
 				int serverTime = m.getArgAsInt32(1);
 				int originalTimeStamp = m.getArgAsInt32(2);
@@ -76,8 +73,6 @@ void ClientOSCManager::_update(ofEventArgs &e)
 		}
 		else if( m.getAddress() == "/change_scene" )
 		{
-			//cout << "ClientOSCManager::_update Got a change_scene message." << endl;
-			
 			int sceneIndex = m.getArgAsInt32(0);
 			ofSendMessage("change_scene " + ofToString(sceneIndex) );
 		}

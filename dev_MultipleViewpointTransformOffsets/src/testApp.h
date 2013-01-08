@@ -52,12 +52,17 @@ class testApp : public ofBaseApp
 		ofTrueTypeFont fontSmall;
 		ofTrueTypeFont fontLarge;
 		
+		float 			prevTime;
+	
 		bool			doCircularCameraViews;
 	
 		float 			cameraViewCircleSlice;	// when doing the circular vew, how wide a slice of the circle does each camera get?
 	
 		TiledCameraView	tileCameraView;
 		float			tiledCameraFov;
+	
+		bool			doAnimate;
+		float			angle;
 	
 		ofFbo 			debugFbo;
 	

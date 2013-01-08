@@ -22,13 +22,13 @@ void testApp::setup()
 	}
 
 	// we set up a camera that covers all the screens, then before rendering we can set the view for each camera and render the scene
-	tileCameraView.init( screens.at(0)->getWidth(), screens.at(0)->getHeight(), screenAmount );
+	tileCameraView.init( screens.at(0)->getWidth(), screens.at(0)->getHeight(), screenAmount, 1, 30 );
 	
-	tiledCameraFov = 14.0f; // we want a really narrow Fov to avoid distortion
+	tiledCameraFov = 11.0f; // we want a really narrow Fov to avoid distortion
 	tileCameraView.setFov( tiledCameraFov );
 	
 	// set up a debug Fbo that we render into with the same settings to confim everything looks right
-	debugFbo.allocate( screens.at(0)->getWidth() * screenAmount, screens.at(0)->getHeight(), GL_RGB  );
+	debugFbo.allocate( tileCameraView.getFullWidth(), tileCameraView.getFullHeight(), GL_RGB  );
 	
 	// if we seed the random number generator with the same number, we will generate the same positions, etc on all nodes.
 	ofSeedRandom( 1234 );
@@ -68,13 +68,23 @@ void testApp::setup()
 	
 	doCircularCameraViews = false;
 	
+	doAnimate = true;
+	
+	prevTime = ofGetElapsedTimef();
+	angle = 0.0f;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
 void testApp::update()
 {
-
+	float currTime = ofGetElapsedTimef();
+	float timeDelta = prevTime - currTime;
+	prevTime = currTime;
+	if( doAnimate )
+	{
+		angle += timeDelta * 40.0f;
+	}
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -126,7 +136,7 @@ void testApp::draw()
 		debugFbo.begin();
 			ofClear(0,0,0);
 			ofPushView();
-				ofSetupScreenPerspective( debugFbo.getWidth(), debugFbo.getHeight(), ofGetOrientation(), false, tiledCameraFov );
+				ofSetupScreenPerspective( tileCameraView.getFullWidth(), tileCameraView.getFullHeight(), ofGetOrientation(), false, tiledCameraFov );
 				ofMatrix4x4 lookAtMatrix;
 				lookAtMatrix.makeLookAtViewMatrix( ofVec3f(0,0,0), ofVec3f(0,0,-1), ofVec3f(0,1,0) );
 				ofPushMatrix();
@@ -146,17 +156,25 @@ void testApp::draw()
 	{
 		screens.at(i)->draw( tmpPos.x, tmpPos.y );
 		ofLine( tmpPos.x, tmpPos.y, tmpPos.x, tmpPos.y + screens.at(i)->getHeight() );
-		tmpPos.x += screens.at(i)->getWidth();
+		tmpPos.x += tileCameraView.getTileWidthNoBorder();
+		if( !doCircularCameraViews )
+		{
+			tmpPos.x += tileCameraView.getBorderWidth();
+		}
 		if( (tmpPos.x + screens.at(i)->getWidth()) > ofGetWidth() )
 		{
 			tmpPos.x = 0.0f;
-			tmpPos.y += screens.at(i)->getHeight();
+			tmpPos.y += tileCameraView.getTileHeightNoBorder();
+			if( !doCircularCameraViews )
+			{
+				tmpPos.y += tileCameraView.getBorderHeight();
+			}
 		}
 	}
 	
 	if( !doCircularCameraViews )
 	{
-		debugFbo.draw(0, 400);
+		debugFbo.draw(0, screens.at(0)->getHeight() );
 	}
 }
 
@@ -194,9 +212,9 @@ ofMatrix4x4	testApp::getCameraTransformForScreen( int _index )
 void testApp::draw3DScene()
 {
 	ofPushMatrix();
-
-		ofRotateY( ofGetElapsedTimef() * 40.0f );
 	
+		ofRotateY( angle );
+			
 		ofDrawAxis( 30.0 );
 		
 		for( unsigned int i = 0; i < spheres.size(); i++ )
@@ -230,6 +248,10 @@ void testApp::keyPressed(int key)
 	if( key == 'c' )
 	{
 		doCircularCameraViews = !doCircularCameraViews;
+	}
+	if( key == 'a' )
+	{
+		doAnimate = !doAnimate;
 	}
 }
 

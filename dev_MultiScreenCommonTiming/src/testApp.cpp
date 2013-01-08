@@ -1,6 +1,21 @@
 #include "testApp.h"
 
 
+
+/*
+ 
+ 	New strategy to simplify things:
+ 
+ 		- Only one "scene" per project, this way we can start with 2D and a small amount of code and work our way upwards,
+ 			this also keeps most of the important code in testApp
+ 
+ 		- The server will rely on sending just one number, then the clients seed the random number generator with that and 
+ 			generate their own identical sets of data, just to keep code to a minimum
+ 
+ 		- As a first example we can use a standalone server that does nothing, just provides timing and the animation is preset
+ 
+ */
+
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
 void testApp::setup()
@@ -20,8 +35,6 @@ void testApp::setup()
 	
 	commonTimeOsc = client->getCommonTimeOscObj();
 	commonTimeOsc->setEaseOffset( true );
-	
-	sceneIndex = 0;
 	
 	screenIndex = 0;
 	
@@ -78,7 +91,7 @@ void testApp::keyPressed(int key)
 		if( server == NULL )
 		{
 			delete client;
-			server = new MasterServerOsc();
+			server = new ServerOscManager();
 		}
 		
 		if( !server->isInitialised() )
@@ -145,7 +158,7 @@ void testApp::gotMessage(ofMessage msg)
 	{
 		if( tokens.at(0) == "change_scene" )
 		{
-			sceneIndex = ofToInt( tokens.at(1) );
+			//sceneIndex = ofToInt( tokens.at(1) );
 			
 			cout << tokens.at(0) << ":" << tokens.at(1) << endl;
 		}

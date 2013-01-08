@@ -6,32 +6,33 @@
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-class MasterServerOsc
+class ServerOscManager
 {
 	public:
 
-		MasterServerOsc();
-		~MasterServerOsc();		
+		ServerOscManager();
+		~ServerOscManager();		
 
-		void 		init( string _xmlSettingsPath );
+		void 			init( string _xmlSettingsPath );
 	
-		void 		init( string _serverSendHost	/*= "192.168.1.255"*/,
-						  int _serverSendPort		/*= 7778*/,
-						  int _serverReceivePort	/*= 7777*/ );
+		void 			init( string _serverSendHost	/*= "192.168.1.255"*/,
+							  int _serverSendPort		/*= 7778*/,
+							  int _serverReceivePort	/*= 7777*/ );
 
-		void		_update(ofEventArgs &e);
-		void 		draw();
+		void			_update(ofEventArgs &e);
+		void 			draw();
 
-		int 		getServerTime();
-
-		void 		sendChangeScene( int _index );
+		void 			sendChangeScene( int _index );
 	
-		bool		isInitialised() { return initialised; }
+		bool			isInitialised() { return initialised; }
 	
 	private:
 
+		int 			getServerTime();
+	
+	
 		ofxOscSender 	sender;
-		ofxOscReceiver receiver;
+		ofxOscReceiver 	receiver;
 	
 		vector< string > receivedMessageSubjects;
 	

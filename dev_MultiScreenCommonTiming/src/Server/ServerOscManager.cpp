@@ -1,24 +1,24 @@
 
 
-#include "MasterServerOsc.h"
+#include "ServerOscManager.h"
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-MasterServerOsc::MasterServerOsc()
+ServerOscManager::ServerOscManager()
 {
 	initialised = false;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-MasterServerOsc::~MasterServerOsc()
+ServerOscManager::~ServerOscManager()
 {
 
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-void MasterServerOsc::init( string _xmlSettingsPath )
+void ServerOscManager::init( string _xmlSettingsPath )
 {
 	string _serverSendHost	= "192.168.1.255";
 	int _serverSendPort		= 7778;
@@ -40,7 +40,7 @@ void MasterServerOsc::init( string _xmlSettingsPath )
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-void MasterServerOsc::init(string _serverSendHost, int _serverSendPort, int _serverReceivePort )
+void ServerOscManager::init(string _serverSendHost, int _serverSendPort, int _serverReceivePort )
 {
 	serverSendHost	= _serverSendHost;
 	serverSendPort	= _serverSendPort;
@@ -53,14 +53,14 @@ void MasterServerOsc::init(string _serverSendHost, int _serverSendPort, int _ser
 	lastSentHelloMessageMillis = 0;
 	milliseBetweenHelloMessages = 3 * 1000;
 
-	ofAddListener(ofEvents().update, this, &MasterServerOsc::_update );
+	ofAddListener(ofEvents().update, this, &ServerOscManager::_update );
 	
 	initialised = true;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-void MasterServerOsc::_update(ofEventArgs &e)
+void ServerOscManager::_update(ofEventArgs &e)
 {
 
 	// periodically send out a hello message on the multicast address, this way anyone joining us 
@@ -125,7 +125,7 @@ void MasterServerOsc::_update(ofEventArgs &e)
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-void MasterServerOsc::draw()
+void ServerOscManager::draw()
 {
 	if( !initialised ) return;
 	
@@ -159,7 +159,7 @@ void MasterServerOsc::draw()
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-void MasterServerOsc::sendChangeScene( int _index )
+void ServerOscManager::sendChangeScene( int _index )
 {
 	if( !initialised ) return;
 	
@@ -172,7 +172,7 @@ void MasterServerOsc::sendChangeScene( int _index )
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-int MasterServerOsc::getServerTime()
+int ServerOscManager::getServerTime()
 {
 	return ofGetElapsedTimeMillis();
 }

@@ -8,9 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		BBAB23CB13894F3D00AA2426 /* GLUT.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBAB23BE13894E4700AA2426 /* GLUT.framework */; };
-		CB1FFB65169882E7007C9192 /* MasterServerOsc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB1FFB63169882E7007C9192 /* MasterServerOsc.cpp */; };
+		CB1FFB65169882E7007C9192 /* ServerOscManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB1FFB63169882E7007C9192 /* ServerOscManager.cpp */; };
 		CB1FFB7E1699D3E5007C9192 /* ClientOSCManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB1FFB7C1699D3E5007C9192 /* ClientOSCManager.cpp */; };
-		CB1FFB821699D413007C9192 /* SceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB1FFB801699D413007C9192 /* SceneManager.cpp */; };
 		CB85B706169484CD00EE29DC /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB85B6FF169484CD00EE29DC /* tinyxml.cpp */; };
 		CB85B707169484CD00EE29DC /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB85B701169484CD00EE29DC /* tinyxmlerror.cpp */; };
 		CB85B708169484CD00EE29DC /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB85B702169484CD00EE29DC /* tinyxmlparser.cpp */; };
@@ -88,12 +87,10 @@
 /* Begin PBXFileReference section */
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		CB1FFB61169881F2007C9192 /* ServerSettings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = ServerSettings.xml; path = bin/data/Settings/ServerSettings.xml; sourceTree = SOURCE_ROOT; };
-		CB1FFB63169882E7007C9192 /* MasterServerOsc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MasterServerOsc.cpp; sourceTree = "<group>"; };
-		CB1FFB64169882E7007C9192 /* MasterServerOsc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterServerOsc.h; sourceTree = "<group>"; };
+		CB1FFB63169882E7007C9192 /* ServerOscManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ServerOscManager.cpp; sourceTree = "<group>"; };
+		CB1FFB64169882E7007C9192 /* ServerOscManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerOscManager.h; sourceTree = "<group>"; };
 		CB1FFB7C1699D3E5007C9192 /* ClientOSCManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClientOSCManager.cpp; sourceTree = "<group>"; };
 		CB1FFB7D1699D3E5007C9192 /* ClientOSCManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientOSCManager.h; sourceTree = "<group>"; };
-		CB1FFB801699D413007C9192 /* SceneManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneManager.cpp; sourceTree = "<group>"; };
-		CB1FFB811699D413007C9192 /* SceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneManager.h; sourceTree = "<group>"; };
 		CB85B6FF169484CD00EE29DC /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
 		CB85B700169484CD00EE29DC /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
 		CB85B701169484CD00EE29DC /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
@@ -244,8 +241,8 @@
 		CB1FFB62169882E7007C9192 /* Server */ = {
 			isa = PBXGroup;
 			children = (
-				CB1FFB63169882E7007C9192 /* MasterServerOsc.cpp */,
-				CB1FFB64169882E7007C9192 /* MasterServerOsc.h */,
+				CB1FFB63169882E7007C9192 /* ServerOscManager.cpp */,
+				CB1FFB64169882E7007C9192 /* ServerOscManager.h */,
 			);
 			path = Server;
 			sourceTree = "<group>";
@@ -257,15 +254,6 @@
 				CB1FFB7D1699D3E5007C9192 /* ClientOSCManager.h */,
 			);
 			path = Client;
-			sourceTree = "<group>";
-		};
-		CB1FFB7F1699D413007C9192 /* Scenes */ = {
-			isa = PBXGroup;
-			children = (
-				CB1FFB801699D413007C9192 /* SceneManager.cpp */,
-				CB1FFB811699D413007C9192 /* SceneManager.h */,
-			);
-			path = Scenes;
 			sourceTree = "<group>";
 		};
 		CB85B6FD169484CD00EE29DC /* ofxXmlSettings */ = {
@@ -476,7 +464,6 @@
 				CB1FFB7B1699D3E5007C9192 /* Client */,
 				CB1FFB62169882E7007C9192 /* Server */,
 				CBF121F0168B89370051DB1C /* CommonTime */,
-				CB1FFB7F1699D413007C9192 /* Scenes */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
@@ -604,9 +591,8 @@
 				CB85B707169484CD00EE29DC /* tinyxmlerror.cpp in Sources */,
 				CB85B708169484CD00EE29DC /* tinyxmlparser.cpp in Sources */,
 				CB85B709169484CD00EE29DC /* ofxXmlSettings.cpp in Sources */,
-				CB1FFB65169882E7007C9192 /* MasterServerOsc.cpp in Sources */,
+				CB1FFB65169882E7007C9192 /* ServerOscManager.cpp in Sources */,
 				CB1FFB7E1699D3E5007C9192 /* ClientOSCManager.cpp in Sources */,
-				CB1FFB821699D413007C9192 /* SceneManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
