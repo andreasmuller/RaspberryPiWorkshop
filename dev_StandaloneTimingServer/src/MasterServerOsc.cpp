@@ -20,21 +20,24 @@ MasterServerOsc::~MasterServerOsc()
 //
 void MasterServerOsc::init( string _xmlSettingsPath )
 {
-	string _serverSendHost	= "192.168.1.255";
-	int _serverSendPort		= 7778;
-	int _serverReceivePort	= 7777;
+	string _defaultServerSendHost	= "192.168.1.255";
+	int _defaultServerSendPort		= 7778;
+	int _defaultServerReceivePort	= 7777;
 	
 	ofxXmlSettings XML;
-	bool loadedFile = XML.loadFile( _xmlSettingsPath );
+	
+	bool loadedFile = false;
+	if( _xmlSettingsPath != "") loadedFile = XML.loadFile( _xmlSettingsPath );
+	
 	if( loadedFile )
 	{
-		init( XML.getValue("Settings:ServerSendHost",		"192.168.1.255"),
-			  XML.getValue("Settings:ServerSendPost",		7778),
-			  XML.getValue("Settings:ServerReceivePort",	7777) );
+		init( XML.getValue("Settings:ServerSendHost",		_defaultServerSendHost ),
+			  XML.getValue("Settings:ServerSendPort",		_defaultServerSendPort ),
+			  XML.getValue("Settings:ServerReceivePort",	_defaultServerReceivePort) );
 	}
 	else
 	{
-		init(); // init with default
+		init( _defaultServerSendHost, _defaultServerSendPort, _defaultServerReceivePort ); // init with default
 	}
 }
 
@@ -155,19 +158,6 @@ void MasterServerOsc::draw()
 	}
 	
 #endif
-}
-
-// ---------------------------------------------------------------------------------------------------------------------------------------------------
-//
-void MasterServerOsc::sendChangeScene( int _index )
-{
-	if( !initialised ) return;
-	
-	ofxOscMessage m;
-	m.setAddress("/change_scene");
-	m.addIntArg( _index );		
-	
-	sender.sendMessage( m );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------

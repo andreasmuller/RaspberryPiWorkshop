@@ -13,18 +13,14 @@ class MasterServerOsc
 		MasterServerOsc();
 		~MasterServerOsc();		
 
-		void 		init( string _xmlSettingsPath );
+		void 		init( string _xmlSettingsPath = "" );
 	
-		void 		init( string _serverSendHost	= "192.168.1.255",
-						  int _serverSendPort		= 7778,
-						  int _serverReceivePort	= 7777 );
+		void 		init( string _serverSendHost, int _serverSendPort, int _serverReceivePort );
 
 		void		_update(ofEventArgs &e);
 		void 		draw();
 
 		int 		getServerTime();
-
-		void 		sendChangeScene( int _index );
 	
 		bool		isInitialised() { return initialised; }
 	

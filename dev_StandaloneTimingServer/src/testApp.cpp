@@ -7,7 +7,7 @@ void testApp::setup()
 {
 	ofBackground(40, 100, 40);
 
-	//masterServerOsc.init();
+	masterServerOsc.init( "Settings/ServerSettings.xml" );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -30,24 +30,9 @@ void testApp::draw()
 //
 void testApp::keyPressed(int key)
 {
-	//cout << "keyPressed" << endl;
-	
 	if(key == 'a')
 	{
 
-	}
-	if(key == 's')
-	{
-		if( !masterServerOsc.isInitialised() )
-		{
-			masterServerOsc.init();
-		}
-	}
-	else if( key >= 48 && key <= 57 )
-	{
-		int sceneIndex = key - 48;
-		masterServerOsc.sendChangeScene( sceneIndex );
-		cout << "Change to scene " << sceneIndex << endl;
 	}
 }
 
