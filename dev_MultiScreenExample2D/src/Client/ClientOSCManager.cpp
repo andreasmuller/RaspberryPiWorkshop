@@ -71,10 +71,24 @@ void ClientOSCManager::_update(ofEventArgs &e)
 				commonTimeOsc.newReading( serverTime, commonTimeOsc.getInternalTimeMillis() - originalTimeStamp );
 			}
 		}
-		else if( m.getAddress() == "/change_scene" )
+		else if ( m.getAddress() == "/data" )
 		{
-			int sceneIndex = m.getArgAsInt32(0);
-			ofSendMessage("change_scene " + ofToString(sceneIndex) );
+			DataPacket packet;
+			
+			for( int i = 0; i < m.getNumArgs(); i++ )
+			{
+				ofxOscArgType argType = m.getArgType(i);
+				if( argType == OFXOSC_TYPE_INT32 || argType ==  OFXOSC_TYPE_INT64 )
+				{
+					packet.numbersInt.push_back( m.getArgAsInt32(i) );
+				}
+				else if ( argType == OFXOSC_TYPE_FLOAT )
+				{
+					packet.numbersFloat.push_back( m.getArgAsFloat(i) );
+				}
+			}
+			
+			ofNotifyEvent( newDataEvent, packet, this );
 		}
 	}
 	

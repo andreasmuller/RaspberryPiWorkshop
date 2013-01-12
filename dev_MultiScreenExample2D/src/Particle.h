@@ -8,11 +8,15 @@
 
 #pragma once
 
+
 class Particle
 {
 	public:
 	
-		Particle( ofVec2f _startPoint, ofVec2f _endPoint, float _startTime, float _animationLength, ofColor _color )
+		// ---------------------------------------------------------------
+		Particle( ofVec2f _startPoint, ofVec2f _endPoint,
+				  float _startTime, float _animationLength,
+				  ofFloatColor _color )
 		{
 			startPoint		= _startPoint;
 			endPoint		= _endPoint;
@@ -22,39 +26,54 @@ class Particle
 			
 			color			= _color;
 			
+			animationFraction = 0.0f;
+			
+			cout << "New Particle " << startPoint << " " << endPoint << " " << startTime << " " << animationLength << endl;
+			
 			deleteMe 		= false;
 		}
 	
+		// ---------------------------------------------------------------
 		void update( float _currTime )
 		{
-			float timeFrac = (_currTime - startTime) / animationLength;
+			animationFraction = (_currTime - startTime) / animationLength;
 
-			if( timeFrac > 1.0f )
+			if( animationFraction > 1.0f )
 			{
 				// mark for deletion
 				deleteMe = true;
 			}
 			
-			timeFrac = ofClamp( timeFrac, 0.0f, 1.0f );
+			//timeFrac = ofClamp( timeFrac, 0.0f, 1.0f );
 			
-			currPos = startPoint.interpolated( endPoint, timeFrac );
+			currPos = startPoint.interpolated( endPoint, animationFraction );
 		}
 	
+		// ---------------------------------------------------------------
 		void draw()
 		{
-			ofSetColor( color );
-			ofCircle( currPos, 30 );
+			if( animationFraction >= 0.0f && animationFraction <= 1.0f )
+			{
+				ofSetColor( color );
+				ofCircle( currPos, 30 );
+				
+				ofCircle( startPoint, 3 );
+				ofCircle( endPoint, 3 );				
+				ofLine( startPoint, endPoint );
+			}
 		}
 	
 		ofVec2f currPos;
 	
 		ofVec2f startPoint;
 		ofVec2f endPoint;
+		
+		float animationFraction;
 	
 		float startTime;
 		float animationLength;
 		
-		ofColor color;
+		ofFloatColor color;
 	
 		bool	deleteMe;
 };

@@ -1,0 +1,2 @@
+
+This file only needs to exist, we check for it in the proigram and make this node the server if it is present.

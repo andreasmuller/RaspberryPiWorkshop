@@ -23,9 +23,9 @@ class testApp : public ofBaseApp
 		void				setup();
 		void				update();
 		void				draw();
-	
-		void 				addNewParticle( int _seed );
 		
+		void				newData( DataPacket& _packet );
+	
 		void				keyPressed(int key);
 		void				keyReleased(int key);
 		void				mouseMoved(int x, int y );
@@ -48,6 +48,8 @@ class testApp : public ofBaseApp
 		int					screenIndex;	// which screen are we?
 	
 		vector<Particle>	particles;
+		
+		float				lastTimeAddedParticle;
 	
 		ofTrueTypeFont		fontSmall;
 		ofTrueTypeFont		fontLarge;

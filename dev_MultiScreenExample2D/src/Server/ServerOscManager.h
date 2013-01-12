@@ -4,6 +4,8 @@
 #include "ofxOsc.h"
 #include "ofxXmlSettings.h"
 
+
+
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
 class ServerOscManager
@@ -22,10 +24,10 @@ class ServerOscManager
 		void			_update(ofEventArgs &e);
 		void 			draw();
 
-		void 			sendNumbers( vector<int> _numbers );
+		void 			sendData( vector<int> _numbersInt, vector<float> _numbersFloat );
 	
 		bool			isInitialised() { return initialised; }
-	
+		
 	private:
 
 		int 			getServerTime();

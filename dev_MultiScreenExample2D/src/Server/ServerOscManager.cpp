@@ -123,6 +123,25 @@ void ServerOscManager::_update(ofEventArgs &e)
 	}
 }
 
+/*
+ /// return number of argumentsļ
+ int getNumArgs() const;
+ /// return argument type code for argument # index
+ ofxOscArgType getArgType( int index ) const;
+ /// return argument type name as string
+ /// - either "int", "float", or "string"
+ string getArgTypeName( int index ) const;
+ 
+ /// get the argument with the given index as an int, float, or string
+ /// ensure that the type matches what you're requesting
+ /// (eg for an int argument, getArgType(index)==OF_TYPE_INT32
+ /// or getArgTypeName(index)=="int32")
+ int32_t getArgAsInt32( int index ) const;
+ uint64_t getArgAsInt64( int index ) const;
+ float getArgAsFloat( int index ) const;
+ string getArgAsString( int index ) const;
+ */
+
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
 void ServerOscManager::draw()
@@ -159,16 +178,21 @@ void ServerOscManager::draw()
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-void ServerOscManager::sendNumbers( vector<int> _numbers )
+void ServerOscManager::sendData( vector<int> _numbersInt, vector<float> _numbersFloat )
 {
 	if( !initialised ) return;
 	
 	ofxOscMessage m;
-	m.setAddress("/numbers");
+	m.setAddress("/data");
 
-	for( unsigned int i = 0; i < _numbers.size(); i++ )
+	for( unsigned int i = 0; i < _numbersInt.size(); i++ )
 	{
-		m.addIntArg( _numbers.at(i) );
+		m.addIntArg( _numbersInt.at(i) );
+	}
+	
+	for( unsigned int i = 0; i < _numbersFloat.size(); i++ )
+	{
+		m.addFloatArg( _numbersFloat.at(i) );
 	}
 	
 	sender.sendMessage( m );

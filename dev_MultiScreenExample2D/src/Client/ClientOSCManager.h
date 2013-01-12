@@ -13,7 +13,18 @@
 
 #include "CommonTime/CommonTimeOsc.h"
 
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+//
+class DataPacket
+{
+	public:
+		
+		vector<int> numbersInt;
+		vector<float> numbersFloat;
+};
 
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+//
 class ClientOSCManager
 {
 	public:
@@ -39,6 +50,8 @@ class ClientOSCManager
 		{
 			return &commonTimeOsc;
 		}
+	
+		ofEvent<DataPacket>  newDataEvent;
 	
 	private:
 
