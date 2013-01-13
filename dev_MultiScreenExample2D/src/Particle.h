@@ -1,13 +1,4 @@
-//
-//  Particle.h
-//  MultiScreenExample2D
-//
-//  Created by Andreas Müller on 09/01/2013.
-//
-//
-
 #pragma once
-
 
 class Particle
 {

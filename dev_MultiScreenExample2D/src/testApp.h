@@ -1,15 +1,13 @@
 #pragma once
 
-#include <set>
-
 #include "ofMain.h"
 #include "ofxOsc.h"
 #include "ofxXmlSettings.h"
 
-#include "CommonTime/CommonTimeOsc.h"
+#include "CommonTimeOsc.h"
 
-#include "Client/ClientOSCManager.h"
-#include "Server/ServerOscManager.h"
+#include "ClientOSCManager.h"
+#include "ServerOscManager.h"
 
 #include "Particle.h"
 
