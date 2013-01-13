@@ -77,7 +77,7 @@ void testApp::update()
 		float secsBetweenAddingParticles = 5.0f;
 		if( (ofGetElapsedTimef() - lastTimeAddedParticle) > secsBetweenAddingParticles )
 		{
-			int screenAmount = 1; // how many screens we assume
+			int screenAmount = 6; // how many screens we assume
 		
 			int startScreen = (int)ofRandom(screenAmount);
 			int endScreen	= (int)ofRandom(screenAmount);
@@ -152,6 +152,7 @@ void testApp::draw()
 	ofPushMatrix();
 		
 		// offset depending on which screen we are
+		ofTranslate( -ofGetWidth() * screenIndex, 0 );
 		
 		for( unsigned int i = 0; i < particles.size(); i++ )
 		{
