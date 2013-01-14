@@ -74,10 +74,10 @@ void testApp::update()
 	// If we are the server, we add some particles from time to time
 	if( isServer )
 	{
-		float secsBetweenAddingParticles = 5.0f;
+		float secsBetweenAddingParticles = 1.0f;
 		if( (ofGetElapsedTimef() - lastTimeAddedParticle) > secsBetweenAddingParticles )
 		{
-			int screenAmount = 6; // how many screens we assume
+			int screenAmount = 2; // how many screens we assume
 		
 			int startScreen = (int)ofRandom(screenAmount);
 			int endScreen	= (int)ofRandom(screenAmount);
