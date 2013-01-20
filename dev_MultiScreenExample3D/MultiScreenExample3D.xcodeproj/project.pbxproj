@@ -463,13 +463,13 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				CB68B89C16A445BD00D14926 /* TiledCameraView.h */,
 				CB68B89B16A445A100D14926 /* CommonTime */,
 				CB68B89A16A4459C00D14926 /* Server */,
 				CB68B89916A4459300D14926 /* Client */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* testApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* testApp.h */,
+				CB68B89C16A445BD00D14926 /* TiledCameraView.h */,
 				CB4CCA8E169DBDCB00F3EADE /* Particle.h */,
 				CB85B70A1694854100EE29DC /* ClientSettings.xml */,
 				CB1FFB61169881F2007C9192 /* ServerSettings.xml */,

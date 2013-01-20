@@ -52,6 +52,18 @@ void testApp::setup()
 		screenIndex = XML.getValue("Settings:ScreenIndex", 0);
 	}
 	
+	cameraFov = 21.0f; // we want a really narrow Fov to avoid distortion
+	tiledCameraView.setFov( cameraFov );
+	
+	int maxScreenAmount = 6;
+	int singleScreenWidth  = 1280;
+	int singleScreenHeight = 720;
+	int bezelBorderInPixels = 30;
+	
+	// Set up a camera that covers all the screens, then before rendering we can set the view for each camera and render the scene
+	tiledCameraView.init( singleScreenWidth, singleScreenHeight, maxScreenAmount, 1, bezelBorderInPixels );
+	
+	gridMesh = createGridMesh( 1000, 1000, 10, 10 );
 
 }
 
@@ -74,55 +86,11 @@ void testApp::update()
 	// If we are the server, we add some particles from time to time
 	if( isServer )
 	{
-		float secsBetweenAddingParticles = 1.0f;
-		if( (ofGetElapsedTimef() - lastTimeAddedParticle) > secsBetweenAddingParticles )
-		{
-			int screenAmount = 2; // how many screens we assume
 		
-			int startScreen = (int)ofRandom(screenAmount);
-			int endScreen	= (int)ofRandom(screenAmount);
-			
-			ofVec2f startPos(	ofRandom(ofGetWidth()) + (startScreen * ofGetWidth()), ofRandom(ofGetHeight()) );
-			ofVec2f endPos(		ofRandom(ofGetWidth()) + (endScreen * ofGetWidth())	 , ofRandom(ofGetHeight()) );
-			
-			float particleStartTime = currTime + 3.0f; // start the particle 3 seconds from now
-			float particleLifeDuration = startPos.distance( endPos ) * 0.005f;
-			
-			ofFloatColor tmpColor;
-			tmpColor.setHsb( ofRandom(1.0f), 0.7f, 0.5f );
-			
-			DataPacket tmpPacket;
-			
-			tmpPacket.numbersFloat.push_back( particleStartTime );
-			tmpPacket.numbersFloat.push_back( particleLifeDuration );
-			
-			tmpPacket.numbersFloat.push_back( startPos.x );
-			tmpPacket.numbersFloat.push_back( startPos.y );
-
-			tmpPacket.numbersFloat.push_back( endPos.x );
-			tmpPacket.numbersFloat.push_back( endPos.y );
-
-			tmpPacket.numbersFloat.push_back( tmpColor.r );
-			tmpPacket.numbersFloat.push_back( tmpColor.g );
-			tmpPacket.numbersFloat.push_back( tmpColor.b );
-			
-			server->sendData(tmpPacket.numbersInt, tmpPacket.numbersFloat);
-			
-			newData( tmpPacket );
-			
-			lastTimeAddedParticle = currTime;
-		}
 	}
 	
 	// Update
-	for( unsigned int i = 0; i < particles.size(); i++ )
-	{
-		particles.at(i).update( currTime );
-	}
-	
-	// Remove any dead particles
-	ofRemove(particles, shouldRemoveParticle );
-	
+
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -134,7 +102,6 @@ void testApp::draw()
 	// grab the current time, depending on who we are
 	if( isServer ) { currTime = ofGetElapsedTimef(); } else { currTime = commonTimeOsc->getTimeSecs(); }
 
-	
 	ofSetColor(255);
 	
 	fontLarge.drawString( "Screen: " + ofToString(screenIndex) + "  Time: " + ofToString( currTime, 2), 7, 45 );
@@ -148,43 +115,69 @@ void testApp::draw()
 		fontSmall.drawString( "Offset: " + ofToString(commonTimeOsc->offsetMillis) + " OffsetTarget: " + ofToString(commonTimeOsc->offsetMillisTarget), 7, 80 );
 	}
 	
-	// draw things 
-	ofPushMatrix();
-		
-		// offset depending on which screen we are
-		ofTranslate( -ofGetWidth() * screenIndex, 0 );
-		
-		for( unsigned int i = 0; i < particles.size(); i++ )
-		{
-			particles.at(i).draw();
-		}
+	// draw things
+	ofPushView();
 	
-	ofPopMatrix();
+		setCamera( currTime );
+	
+		ofPushMatrix();
+			ofTranslate( 0.0f, 0.0f, -fmod( currTime*250.0f, 100.0f) );
+			//ofRotate(90, 0, 0, -1);
+			//ofDrawGridPlane( 1000.0f, 10.0f );
+			gridMesh->draw();
+		ofPopMatrix();
+
+		//ofDrawGrid(500, 10.0f, false, false, true, false );
+	
+	ofPopView();
 }
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+//
+void testApp::setCamera( float _time )
+{
+	ofSetupScreenPerspective( ofGetWidth(), ofGetHeight(), ofGetOrientation(), false, cameraFov, 0.01f, 2048.0f );
+	
+	// Create a wandering motion for the camera
+	float timeScale = 3.0f;
+	
+	ofVec3f time( _time, _time + 12.0f, _time + 25.23f );
+	float lookAheadTime = 0.15f;
+	
+	ofVec3f origPos(0,30,-600);
+	
+	ofVec3f pos = origPos;
+	pos.x += ofSignedNoise( time.x / timeScale ) * 200.0f;
+	pos.y += ofSignedNoise( time.y / timeScale ) * 30.0f;
+	pos.z += ofSignedNoise( time.z / timeScale ) * 40.0f;
+	
+	//ofVec3f center(0,pos.y,0);
+	//center.x += ofSignedNoise( (_time + 123.45f ) / timeScale ) * 40.0f;
+	//center.y += ofSignedNoise( (_time + 25.17f ) / timeScale ) * 40.0f;
+	
+	ofVec3f center = origPos + ofVec3f(0,0,100);
+	center.x += ofSignedNoise( (time.x + lookAheadTime) / timeScale ) * 200.0f;
+	center.y += ofSignedNoise( (time.y + lookAheadTime) / timeScale ) * 30.0f;
+	center.z += ofSignedNoise( (time.z + lookAheadTime) / timeScale ) * 40.0f;
+	
+	ofVec3f up(0,1,0);
+	
+	ofMatrix4x4 lookAt;
+	lookAt.makeLookAtViewMatrix( pos, center, up );
+	ofLoadMatrix( lookAt );
+}
+
+/*
+ perlinVector.x = perlinNoise.GetHeight(tmpTime * timeScaling, tmpTime * timeScaling );
+ perlinVector.y = perlinNoise.GetHeight((tmpTime - (timeScaling/10.0f)) * timeScaling, (tmpTime + (timeScaling/ 6.0f)) * timeScaling );
+ perlinVector.z = perlinNoise.GetHeight((tmpTime - (timeScaling/ 2.0f)) * timeScaling, (tmpTime + (timeScaling/10.0f)) * timeScaling );
+ */
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
 void testApp::newData( DataPacket& _packet  )
 {
-	ofVec2f startPos;
-	ofVec2f endPos;
 
-	ofFloatColor color;
-	
-	float particleStartTime = _packet.numbersFloat.at(0);
-	float animationLength = _packet.numbersFloat.at(1);
-	
-	startPos.x = _packet.numbersFloat.at(2);
-	startPos.y = _packet.numbersFloat.at(3);
-	
-	endPos.x = _packet.numbersFloat.at(4);
-	endPos.y = _packet.numbersFloat.at(5);
-	
-	color.r = _packet.numbersFloat.at(6);
-	color.g = _packet.numbersFloat.at(7);
-	color.b = _packet.numbersFloat.at(8);
-	
-	particles.push_back( Particle(startPos, endPos, particleStartTime, animationLength, color) );
 }
 
 
@@ -214,6 +207,32 @@ void testApp::keyPressed(int key)
 		screenIndex = key - 48;
 	}
 }
+
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+//
+ofMesh* testApp::createGridMesh( float _sizeX, float _sizeZ, int _resX, int _resZ )
+{
+	ofMesh* tmpMesh = new ofMesh();
+	tmpMesh->setMode( OF_PRIMITIVE_LINES );
+	
+	for( int i = 0; i <= _resX; i++ )
+	{
+		float tmp = (float)i * (_sizeX / (float)_resX);
+		tmpMesh->addVertex( ofVec3f(tmp, 0.0f , 0.0f)  + -ofVec3f((_sizeX/2.0f),0,(_sizeZ/2.0f)) );
+		tmpMesh->addVertex( ofVec3f(tmp, 0.0f, _sizeZ) + -ofVec3f((_sizeX/2.0f),0,(_sizeZ/2.0f)) );
+	}
+	
+	for( int i = 0; i <= _resZ; i++ )
+	{
+		float tmp = (float)i * (_sizeZ / (float)_resZ);
+		tmpMesh->addVertex( ofVec3f(   0.0f, 0.0f, tmp) + -ofVec3f((_sizeX/2.0f),0,(_sizeZ/2.0f)) );
+		tmpMesh->addVertex( ofVec3f( _sizeX, 0.0f, tmp) + -ofVec3f((_sizeX/2.0f),0,(_sizeZ/2.0f)) );
+	}
+	
+	return tmpMesh;
+}
+
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //

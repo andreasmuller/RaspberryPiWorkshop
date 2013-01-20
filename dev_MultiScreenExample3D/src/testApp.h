@@ -9,6 +9,8 @@
 #include "ClientOSCManager.h"
 #include "ServerOscManager.h"
 
+#include "TiledCameraView.h"
+
 #include "Particle.h"
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -22,7 +24,11 @@ class testApp : public ofBaseApp
 		void				update();
 		void				draw();
 		
+		void				setCamera( float _time );
+	
 		void				newData( DataPacket& _packet );
+
+		ofMesh*				createGridMesh( float _sizeX, float _sizeZ, int _resX, int _resZ );
 	
 		void				keyPressed(int key);
 		void				keyReleased(int key);
@@ -45,7 +51,10 @@ class testApp : public ofBaseApp
 		
 		int					screenIndex;	// which screen are we?
 	
-		vector<Particle>	particles;
+		float				cameraFov;
+		TiledCameraView		tiledCameraView;
+	
+		ofMesh*				gridMesh;
 		
 		float				lastTimeAddedParticle;
 	
