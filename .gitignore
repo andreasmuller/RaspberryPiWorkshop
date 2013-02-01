@@ -1,3 +1,4 @@
 obj
 *.app
-*/bin/libs
+*/bin/*
+!*/bin/data
