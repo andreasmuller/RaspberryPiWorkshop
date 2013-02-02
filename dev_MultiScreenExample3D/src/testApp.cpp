@@ -2,9 +2,9 @@
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-bool testApp::shouldRemoveParticle(Particle& _p)
+bool testApp::shouldRemoveObject(SyncedAnimationObject* _p)
 {
-	return _p.deleteMe;
+	return _p->deleteMe;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -18,6 +18,7 @@ void testApp::setup()
 	
 	ofSeedRandom();
 	int uniqueID = ofRandom( 999999999 ); // yeah this is bogus I know. Todo: generate a unique computer ID.
+	ofSeedRandom( 1234 );
 	
 	server = NULL;
 	client = NULL;
@@ -40,7 +41,7 @@ void testApp::setup()
 		ofAddListener( client->newDataEvent, this, &testApp::newData );
 	}
 	
-	lastTimeAddedParticle = 0.0f;
+	lastTimeAddedObject = 0.0f;
 	
 	screenIndex = 0;
 	
@@ -86,11 +87,24 @@ void testApp::update()
 	// If we are the server, we add some particles from time to time
 	if( isServer )
 	{
-		
+		float secsBetweenAddingParticles = 0.5f;
+		if( (ofGetElapsedTimef() - lastTimeAddedObject) > secsBetweenAddingParticles )
+		{
+			createNewObject( currTime );
+			
+			lastTimeAddedObject = currTime;
+		}
 	}
 	
 	// Update
-
+	for( unsigned int i = 0; i < sceneObjects.size(); i++ )
+	{
+		sceneObjects[i]->update( currTime );
+	}
+	
+	
+	// Remove any dead objects
+	ofRemove( sceneObjects, shouldRemoveObject );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -101,7 +115,24 @@ void testApp::draw()
 	
 	// grab the current time, depending on who we are
 	if( isServer ) { currTime = ofGetElapsedTimef(); } else { currTime = commonTimeOsc->getTimeSecs(); }
+	
+	ofPushView();
+	
+		setCamera( currTime );
+	
+		ofSetColor(255);
+		ofPushMatrix();
+			ofTranslate( 0.0f, 0.0f, -fmod( currTime*250.0f, 100.0f) );
+			gridMesh->draw();
+		ofPopMatrix();
 
+		for( unsigned int i = 0; i < sceneObjects.size(); i++ )
+		{
+			sceneObjects[i]->draw();
+		}
+	
+	ofPopView();
+	
 	ofSetColor(255);
 	
 	fontLarge.drawString( "Screen: " + ofToString(screenIndex) + "  Time: " + ofToString( currTime, 2), 7, 45 );
@@ -115,21 +146,8 @@ void testApp::draw()
 		fontSmall.drawString( "Offset: " + ofToString(commonTimeOsc->offsetMillis) + " OffsetTarget: " + ofToString(commonTimeOsc->offsetMillisTarget), 7, 80 );
 	}
 	
-	// draw things
-	ofPushView();
-	
-		setCamera( currTime );
-	
-		ofPushMatrix();
-			ofTranslate( 0.0f, 0.0f, -fmod( currTime*250.0f, 100.0f) );
-			//ofRotate(90, 0, 0, -1);
-			//ofDrawGridPlane( 1000.0f, 10.0f );
-			gridMesh->draw();
-		ofPopMatrix();
-
-		//ofDrawGrid(500, 10.0f, false, false, true, false );
-	
-	ofPopView();
+	ofSetColor( 128, 128, 128 );
+	fontSmall.drawString( "fps: " + ofToString( ofGetFrameRate(), 1), 5, ofGetHeight() - 8 );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -151,10 +169,6 @@ void testApp::setCamera( float _time )
 	pos.y += ofSignedNoise( time.y / timeScale ) * 30.0f;
 	pos.z += ofSignedNoise( time.z / timeScale ) * 40.0f;
 	
-	//ofVec3f center(0,pos.y,0);
-	//center.x += ofSignedNoise( (_time + 123.45f ) / timeScale ) * 40.0f;
-	//center.y += ofSignedNoise( (_time + 25.17f ) / timeScale ) * 40.0f;
-	
 	ofVec3f center = origPos + ofVec3f(0,0,100);
 	center.x += ofSignedNoise( (time.x + lookAheadTime) / timeScale ) * 200.0f;
 	center.y += ofSignedNoise( (time.y + lookAheadTime) / timeScale ) * 30.0f;
@@ -167,17 +181,80 @@ void testApp::setCamera( float _time )
 	ofLoadMatrix( lookAt );
 }
 
-/*
- perlinVector.x = perlinNoise.GetHeight(tmpTime * timeScaling, tmpTime * timeScaling );
- perlinVector.y = perlinNoise.GetHeight((tmpTime - (timeScaling/10.0f)) * timeScaling, (tmpTime + (timeScaling/ 6.0f)) * timeScaling );
- perlinVector.z = perlinNoise.GetHeight((tmpTime - (timeScaling/ 2.0f)) * timeScaling, (tmpTime + (timeScaling/10.0f)) * timeScaling );
- */
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+//
+void testApp::createNewObject( float _currTime )
+{
+	int screenAmount = 2; // how many screens we assume
+	
+	int startScreen = (int)ofRandom(screenAmount);
+	int endScreen	= (int)ofRandom(screenAmount);
+	
+	ofVec3f startPos(	ofRandom(-400.0f, 400.0f), ofRandom(10.0f, 200.0f), ofRandom(600.0, 800.0f) );
+	ofVec3f endPos(		startPos.x, startPos.y, ofRandom( -400.0f, -400.0f) );
+	
+	//ofVec3f startPos(	ofRandom(-40.0f, 40.0f), ofRandom(100.0f, 100.0f), ofRandom(600.0, 800.0f) );
+	//ofVec3f endPos(		startPos.x, startPos.y, ofRandom( -400.0f, -400.0f) );
+	
+	float particleStartTime = _currTime + 3.0f; // start the particle 3 seconds from now to give it plenty of time to get there if we are using a slow TCP connection
+	float particleLifeDuration = 4.0f; //startPos.distance( endPos ) * 0.05f;
+	
+	ofFloatColor tmpColor;
+	tmpColor.setHsb( ofRandom(1.0f), 0.7f, 0.5f );
+	
+	DataPacket tmpPacket;
+	
+	int type = 0;
+	
+	tmpPacket.numbersInt.push_back( type );
+	
+	tmpPacket.numbersFloat.push_back( particleStartTime );
+	tmpPacket.numbersFloat.push_back( particleLifeDuration );
+	
+	tmpPacket.numbersFloat.push_back( startPos.x );
+	tmpPacket.numbersFloat.push_back( startPos.y );
+	tmpPacket.numbersFloat.push_back( startPos.z );
+	
+	tmpPacket.numbersFloat.push_back( endPos.x );
+	tmpPacket.numbersFloat.push_back( endPos.y );
+	tmpPacket.numbersFloat.push_back( endPos.z );
+	
+	tmpPacket.numbersFloat.push_back( tmpColor.r );
+	tmpPacket.numbersFloat.push_back( tmpColor.g );
+	tmpPacket.numbersFloat.push_back( tmpColor.b );
+	
+	server->sendData(tmpPacket.numbersInt, tmpPacket.numbersFloat);
+	
+	newData( tmpPacket );
+}
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
 void testApp::newData( DataPacket& _packet  )
 {
-
+	ofVec3f startPos;
+	ofVec3f endPos;
+	
+	ofFloatColor color;
+	
+	int type = _packet.numbersInt.at(0);
+	
+	float startTime = _packet.numbersFloat.at(0);
+	float animationLength = _packet.numbersFloat.at(1);
+	
+	startPos.x = _packet.numbersFloat.at(2);
+	startPos.y = _packet.numbersFloat.at(3);
+	startPos.z = _packet.numbersFloat.at(4);
+	
+	endPos.x = _packet.numbersFloat.at(5);
+	endPos.y = _packet.numbersFloat.at(6);
+	endPos.z = _packet.numbersFloat.at(7);
+	
+	color.r = _packet.numbersFloat.at(8);
+	color.g = _packet.numbersFloat.at(9);
+	color.b = _packet.numbersFloat.at(10);
+	
+	sceneObjects.push_back( new WanderingStreamer(startPos, endPos, startTime, animationLength, color) );
 }
 
 

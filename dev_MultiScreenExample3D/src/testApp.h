@@ -11,7 +11,8 @@
 
 #include "TiledCameraView.h"
 
-#include "Particle.h"
+#include "SyncedAnimationObject.h"
+#include "WanderingStreamer.h"
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
@@ -25,6 +26,8 @@ class testApp : public ofBaseApp
 		void				draw();
 		
 		void				setCamera( float _time );
+	
+		void				createNewObject( float _currTime );
 	
 		void				newData( DataPacket& _packet );
 
@@ -40,7 +43,7 @@ class testApp : public ofBaseApp
 		void				dragEvent(ofDragInfo dragInfo);
 		void				gotMessage(ofMessage msg);
 			
-		static bool 		shouldRemoveParticle(Particle &b);
+		static bool 		shouldRemoveObject(SyncedAnimationObject *b);
 	
 		bool				isServer;
 
@@ -49,6 +52,9 @@ class testApp : public ofBaseApp
 		ClientOSCManager*	client;
 		ServerOscManager*	server;
 		
+		//vector<SyncedAnimationObject>	sceneObjects;
+		vector<SyncedAnimationObject*>	sceneObjects;
+	
 		int					screenIndex;	// which screen are we?
 	
 		float				cameraFov;
@@ -56,8 +62,10 @@ class testApp : public ofBaseApp
 	
 		ofMesh*				gridMesh;
 		
-		float				lastTimeAddedParticle;
+		float				lastTimeAddedObject;
 	
 		ofTrueTypeFont		fontSmall;
 		ofTrueTypeFont		fontLarge;
+	
+		char				tmpStr[256];
 };

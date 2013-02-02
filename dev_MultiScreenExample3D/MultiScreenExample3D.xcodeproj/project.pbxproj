@@ -88,6 +88,8 @@
 		BBAB23BE13894E4700AA2426 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../libs/glut/lib/osx/GLUT.framework; sourceTree = "<group>"; };
 		CB1FFB61169881F2007C9192 /* ServerSettings.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = ServerSettings.xml; path = bin/data/Settings/ServerSettings.xml; sourceTree = SOURCE_ROOT; };
 		CB4CCA8E169DBDCB00F3EADE /* Particle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Particle.h; sourceTree = "<group>"; };
+		CB65797516BD221A0043A80F /* WanderingStreamer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WanderingStreamer.h; sourceTree = "<group>"; };
+		CB65797616BD242C0043A80F /* SyncedAnimationObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyncedAnimationObject.h; sourceTree = "<group>"; };
 		CB68B88116A42E2400D14926 /* ClientOSCManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClientOSCManager.cpp; sourceTree = "<group>"; };
 		CB68B88216A42E2400D14926 /* ClientOSCManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientOSCManager.h; sourceTree = "<group>"; };
 		CB68B88316A42E2400D14926 /* CommonTimeBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommonTimeBase.cpp; sourceTree = "<group>"; };
@@ -473,6 +475,8 @@
 				CB4CCA8E169DBDCB00F3EADE /* Particle.h */,
 				CB85B70A1694854100EE29DC /* ClientSettings.xml */,
 				CB1FFB61169881F2007C9192 /* ServerSettings.xml */,
+				CB65797516BD221A0043A80F /* WanderingStreamer.h */,
+				CB65797616BD242C0043A80F /* SyncedAnimationObject.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
