@@ -56,13 +56,27 @@ void testApp::setup()
 	cameraFov = 21.0f; // we want a really narrow Fov to avoid distortion
 	tiledCameraView.setFov( cameraFov );
 	
-	int maxScreenAmount = 6;
+	int maxScreenAmount = 5;
 	int singleScreenWidth  = 1280;
 	int singleScreenHeight = 720;
 	int bezelBorderInPixels = 30;
 	
+	// debugging only
+	/*float scale = 0.19f;
+	singleScreenWidth  *= scale;
+	singleScreenHeight *= scale;
+	bezelBorderInPixels *= scale;
+	for( int i = 0; i < maxScreenAmount; i++ )
+	{
+		ofFbo* tmpScreenSurface = new ofFbo();
+		tmpScreenSurface->allocate( singleScreenWidth, singleScreenHeight, GL_RGB );
+		screens.push_back( tmpScreenSurface );
+	}
+	 */
+	
 	// Set up a camera that covers all the screens, then before rendering we can set the view for each camera and render the scene
 	tiledCameraView.init( singleScreenWidth, singleScreenHeight, maxScreenAmount, 1, bezelBorderInPixels );
+	viewTile = true;
 	
 	gridMesh = createGridMesh( 1000, 1000, 10, 10 );
 
@@ -87,7 +101,7 @@ void testApp::update()
 	// If we are the server, we add some particles from time to time
 	if( isServer )
 	{
-		float secsBetweenAddingParticles = 0.5f;
+		float secsBetweenAddingParticles = 0.25f;
 		if( (ofGetElapsedTimef() - lastTimeAddedObject) > secsBetweenAddingParticles )
 		{
 			createNewObject( currTime );
@@ -118,23 +132,46 @@ void testApp::draw()
 	
 	ofPushView();
 	
-		setCamera( currTime );
-	
-		ofSetColor(255);
-		ofPushMatrix();
-			ofTranslate( 0.0f, 0.0f, -fmod( currTime*250.0f, 100.0f) );
-			gridMesh->draw();
-		ofPopMatrix();
-
-		for( unsigned int i = 0; i < sceneObjects.size(); i++ )
+		setCamera( currTime, screenIndex );
+		drawScene( currTime );
+		
+		// debugging
+		/*for( unsigned int i = 0; i < screens.size(); i++ )
 		{
-			sceneObjects[i]->draw();
-		}
-	
+			ofFbo* tmpScreen = screens.at(i);
+			
+			tmpScreen->begin();
+				ofClear( 0.2f, 0.2f, 0.2f );
+				ofPushView();
+					setCamera( currTime, i );
+					drawScene( currTime );
+				ofPopView();
+			tmpScreen->end();
+		}*/
+		 
 	ofPopView();
 	
 	ofSetColor(255);
 	
+	//debug
+	// draw the screen surfaces one next to another
+	/*ofSetColor( 255 );
+	ofVec2f tmpPos(0, 200);
+	for( unsigned int i = 0; i < screens.size(); i++ )
+	{
+		screens.at(i)->draw( tmpPos.x, tmpPos.y + screens.at(i)->getHeight(), screens.at(i)->getWidth(), -screens.at(i)->getHeight() );
+		ofLine( tmpPos.x, tmpPos.y, tmpPos.x, tmpPos.y + screens.at(i)->getHeight() );
+		tmpPos.x += tiledCameraView.getTileWidthNoBorder();
+		tmpPos.x += tiledCameraView.getBorderWidth();
+		if( (tmpPos.x + screens.at(i)->getWidth()) > ofGetWidth() )
+		{
+			tmpPos.x = 0.0f;
+			tmpPos.y += tiledCameraView.getTileHeightNoBorder();
+			tmpPos.y += tiledCameraView.getBorderHeight();
+		}
+	}*/
+	
+	// Draw some information to the screen as well
 	fontLarge.drawString( "Screen: " + ofToString(screenIndex) + "  Time: " + ofToString( currTime, 2), 7, 45 );
 	
 	if( isServer )
@@ -152,9 +189,32 @@ void testApp::draw()
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-void testApp::setCamera( float _time )
+void testApp::drawScene( float _time )
 {
-	ofSetupScreenPerspective( ofGetWidth(), ofGetHeight(), ofGetOrientation(), false, cameraFov, 0.01f, 2048.0f );
+	ofSetColor(255);
+	ofPushMatrix();
+		ofTranslate( 0.0f, 0.0f, -fmod( _time*250.0f, 100.0f) );
+		gridMesh->draw();
+	ofPopMatrix();
+	
+	for( unsigned int i = 0; i < sceneObjects.size(); i++ )
+	{
+		sceneObjects[i]->draw();
+	}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+//
+void testApp::setCamera( float _time, int _screenIndex  )
+{
+	if( viewTile )
+	{
+		tiledCameraView.setPerspectiveTransformForTile( _screenIndex );
+	}
+	else
+	{
+		ofSetupScreenPerspective( ofGetWidth(), ofGetHeight(), ofGetOrientation(), false, cameraFov, 0.01f, 2048.0f );
+	}
 	
 	// Create a wandering motion for the camera
 	float timeScale = 3.0f;
@@ -184,20 +244,15 @@ void testApp::setCamera( float _time )
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
 void testApp::createNewObject( float _currTime )
-{
-	int screenAmount = 2; // how many screens we assume
-	
-	int startScreen = (int)ofRandom(screenAmount);
-	int endScreen	= (int)ofRandom(screenAmount);
-	
-	ofVec3f startPos(	ofRandom(-400.0f, 400.0f), ofRandom(10.0f, 200.0f), ofRandom(600.0, 800.0f) );
-	ofVec3f endPos(		startPos.x, startPos.y, ofRandom( -400.0f, -400.0f) );
+{	
+	ofVec3f startPos(	ofRandom(-700.0f, 700.0f), ofRandom(10.0f, 150.0f), ofRandom(600.0, 800.0f) );
+	ofVec3f endPos(		startPos.x, startPos.y, ofRandom( -600.0f, -600.0f) );
 	
 	//ofVec3f startPos(	ofRandom(-40.0f, 40.0f), ofRandom(100.0f, 100.0f), ofRandom(600.0, 800.0f) );
 	//ofVec3f endPos(		startPos.x, startPos.y, ofRandom( -400.0f, -400.0f) );
 	
 	float particleStartTime = _currTime + 3.0f; // start the particle 3 seconds from now to give it plenty of time to get there if we are using a slow TCP connection
-	float particleLifeDuration = 4.0f; //startPos.distance( endPos ) * 0.05f;
+	float particleLifeDuration = 3.0f; //startPos.distance( endPos ) * 0.05f;
 	
 	ofFloatColor tmpColor;
 	tmpColor.setHsb( ofRandom(1.0f), 0.7f, 0.5f );
@@ -282,6 +337,10 @@ void testApp::keyPressed(int key)
 	else if( key >= 48 && key <= 57 ) // change screen index with keys 0..9
 	{
 		screenIndex = key - 48;
+	}
+	else if ( key == 't' )
+	{
+		viewTile = !viewTile;
 	}
 }
 

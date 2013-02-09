@@ -24,8 +24,10 @@ class testApp : public ofBaseApp
 		void				setup();
 		void				update();
 		void				draw();
+	
+		void				drawScene( float _time );
 		
-		void				setCamera( float _time );
+		void				setCamera( float _time, int _screenIndex );
 	
 		void				createNewObject( float _currTime );
 	
@@ -59,6 +61,9 @@ class testApp : public ofBaseApp
 	
 		float				cameraFov;
 		TiledCameraView		tiledCameraView;
+		bool				viewTile;
+	
+		vector< ofFbo* >	screens; // debugging only
 	
 		ofMesh*				gridMesh;
 		
