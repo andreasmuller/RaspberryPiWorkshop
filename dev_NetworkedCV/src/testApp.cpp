@@ -276,15 +276,16 @@ void testApp::draw()
 	if( isServer )
 	{
 		fontLarge.drawString( "Server", 7, 20 );
+	
+		ofSetColor( 128, 128, 128 );
+		fontSmall.drawString( "fps: " + ofToString( ofGetFrameRate(), 1), 5, ofGetHeight() - 8 );
 	}
 	else
 	{
 		// Draw some information to the screen as well
 		fontLarge.drawString( "Screen: " + ofToString(clientScreenIndex), 7, 20 );
 	}
-	
-	ofSetColor( 128, 128, 128 );
-	fontSmall.drawString( "fps: " + ofToString( ofGetFrameRate(), 1), 5, ofGetHeight() - 8 );
+
 }
 
 
@@ -322,66 +323,80 @@ void testApp::serverDraw()
 //
 void testApp::clientDraw()
 {
+	float widthToHeightRatio = colorImg.getWidth()  / (float)colorImg.getHeight();
+	float heightToWidthRatio = colorImg.getHeight() / (float)colorImg.getWidth();
+	
+	int smallVideoWidth  = 320;
+	int smallVideoHeight = smallVideoWidth * heightToWidthRatio;
+	
+	int largeVideoHeight = ofGetHeight();	
+	int largeVideoWidth  = largeVideoHeight * widthToHeightRatio;
+	
 	// draw the incoming, the grayscale, the bg and the thresholded difference
 	ofSetColor(ofColor::white);
 	
+	/*ofPushMatrix();
+		ofTranslate(smallVideoX, smallVideoY);
+		colorImg.draw(0, 0, smallVideoWidth, smallVideoHeight );
+		fontSmall.drawString("colorImg", 10, 10 );
+	ofPopMatrix();*/
+	
 	ofPushMatrix();
-	ofTranslate(0, 0);
-	colorImg.draw(0, 0);
-	//drawVideoLabel("colorImg");
+		ofSetColor(ofColor::white);
+		colorImg.draw(0, 0, largeVideoWidth, largeVideoHeight );
+		//fontSmall.drawString("colorImg", 10, 10 );
+		ofScale( (float)ofGetHeight() / colorImg.getHeight(), (float)ofGetHeight() / colorImg.getHeight() );
+		ofSetColor(ofColor::white);
+		contourFinder.draw(0, 0);
+	ofPopMatrix();
+	
+	
+	ofPushMatrix();
+		ofTranslate(largeVideoWidth, 0);
+		grayImage.draw(0, 0, smallVideoWidth, smallVideoHeight );
+		fontSmall.drawString("grayImage", 10, 10 );
 	ofPopMatrix();
 	
 	ofPushMatrix();
-	ofTranslate(videoWidth, 0);
-	grayImage.draw(0, 0);
-	//drawVideoLabel("grayImage");
+		ofTranslate(largeVideoWidth, smallVideoHeight);
+		grayBg.draw(0, 0, smallVideoWidth, smallVideoHeight );
+		fontSmall.drawString("grayBg", 10, 10);
 	ofPopMatrix();
 	
 	ofPushMatrix();
-	ofTranslate(0, videoHeight);
-	grayBg.draw(0, 0);
-	//drawVideoLabel("grayBg");
+		ofTranslate(largeVideoWidth, smallVideoHeight*2);
+		grayDiff.draw(0, 0, smallVideoWidth, smallVideoHeight );
+		fontSmall.drawString("grayDiff", 10, 10);
 	ofPopMatrix();
 	
-	ofPushMatrix();
-	ofTranslate(videoWidth, videoHeight);
-	grayDiff.draw(0, 0);
-	//drawVideoLabel("grayDiff");
-	ofPopMatrix();
-	
-	// then draw the contours:
-	ofPushMatrix();
-	ofTranslate(videoWidth*2, 0, 0);
-	ofFill();
-	ofSetColor(ofColor::gray);
-	ofRect(0, 0, videoWidth, videoHeight);
-	ofSetColor(ofColor::white);
-	
-	// we could draw the whole contour finder
-	//contourFinder.draw(0, 0);
-	
-	// or, instead we can draw each blob individually from the blobs vector,
-	// this is how to get access to them:
-	for (int i = 0; i < contourFinder.nBlobs; i++){
-		contourFinder.blobs[i].draw(0, 0);
-		
-		// draw over the centroid if the blob is a hole
-		ofSetColor(255);
-		if(contourFinder.blobs[i].hole){
-			ofDrawBitmapString("hole",
-							   contourFinder.blobs[i].boundingRect.getCenter().x,
-							   contourFinder.blobs[i].boundingRect.getCenter().y);
-		}
-	}
-	// finally, a report:
 	ofSetColor(ofColor::white);
 	stringstream reportStr;
 	reportStr	<< "bg subtraction and blob detection"			<< endl
 	<< "press ' ' to capture bg"					<< endl
 	<< "threshold " << threshold << " (press: +/-)" << endl
 	<< "num blobs found " << contourFinder.nBlobs << ", fps: " << ofGetFrameRate();
-	ofDrawBitmapString(reportStr.str(), 20, videoHeight+20);
-	ofPopMatrix();
+	ofDrawBitmapString(reportStr.str(), 10, ofGetHeight()-50);
+	
+	
+	// then draw the contours:
+/*	ofPushMatrix();
+		ofTranslate(videoWidth*2, 0, 0);
+		ofFill();
+		ofSetColor(ofColor::gray);
+		ofRect(0, 0, videoWidth, videoHeight);
+		ofSetColor(ofColor::white);
+	
+		contourFinder.draw(0, 0);
+		
+		// finally, a report:
+		ofSetColor(ofColor::white);
+		stringstream reportStr;
+		reportStr	<< "bg subtraction and blob detection"			<< endl
+		<< "press ' ' to capture bg"					<< endl
+		<< "threshold " << threshold << " (press: +/-)" << endl
+		<< "num blobs found " << contourFinder.nBlobs << ", fps: " << ofGetFrameRate();
+		ofDrawBitmapString(reportStr.str(), 20, videoHeight+20);
+	ofPopMatrix();*/
 }
 
 
@@ -397,8 +412,19 @@ void testApp::keyPressed(int key)
 	{
 		clientScreenIndex = key - 48;
 	}
-	else if ( key == 't' )
+	else if( key == ' ' )
 	{
+		bLearnBakground = true;
+	}
+	else if( key == '+' )
+	{
+		threshold ++;
+		if (threshold > 255) threshold = 255;
+	}
+	else if( key ==  '-' )
+	{
+		threshold --;
+		if (threshold < 0) threshold = 0;
 	}
 }
 
