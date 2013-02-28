@@ -7,7 +7,7 @@ void testApp::setup()
 	isServer = false;
 	
 	fontSmall.loadFont("Fonts/DIN.otf", 8 );
-	fontLarge.loadFont("Fonts/DIN.otf", 36 );
+	fontLarge.loadFont("Fonts/DIN.otf", 18 );
 	
 	ofSeedRandom();
 	int uniqueID = ofRandom( 999999999 ); // yeah this is bogus I know. Todo: generate a unique computer ID.
@@ -50,14 +50,14 @@ void testApp::setup()
 		initClientCV();
 	}
 		
-	screenIndex = 0;
+	clientScreenIndex = 0;
 	
 	// Read the screen index from a file
 	ofxXmlSettings XML;
 	bool loadedFile = XML.loadFile( "Settings/ClientSettings.xml" );
 	if( loadedFile )
 	{
-		screenIndex = XML.getValue("Settings:ScreenIndex", 0);
+		clientScreenIndex = XML.getValue("Settings:ScreenIndex", 0);
 	}
 	
 }
@@ -235,7 +235,7 @@ void testApp::clientUpdate()
 			{
 				ofxOscMessage m;
 				m.setAddress("/newBlob");
-				m.addIntArg( screenIndex );
+				m.addIntArg( clientScreenIndex );
 				m.addIntArg( ofGetFrameNum() ); 
 		
 				// Normally we would need to limit the amount of points we send over, if not
@@ -275,12 +275,12 @@ void testApp::draw()
 		
 	if( isServer )
 	{
-		fontLarge.drawString( "Server", 7, 45 );
+		fontLarge.drawString( "Server", 7, 20 );
 	}
 	else
 	{
 		// Draw some information to the screen as well
-		fontLarge.drawString( "Screen: " + ofToString(screenIndex), 7, 45 );
+		fontLarge.drawString( "Screen: " + ofToString(clientScreenIndex), 7, 20 );
 	}
 	
 	ofSetColor( 128, 128, 128 );
@@ -307,6 +307,7 @@ void testApp::serverDraw()
 
 		ofPushMatrix();
 			ofTranslate( tmpX, tmpY );
+			fontSmall.drawString( "Screen: " + ofToString(screenIndex), 7, 45 );
 			for(unsigned int i = 0; i < tmpNodeData->frameData.size(); i++ )
 			{
 				tmpNodeData->frameData.at(i).draw();
@@ -394,7 +395,7 @@ void testApp::keyPressed(int key)
 	}
 	else if( key >= 48 && key <= 57 ) // change screen index with keys 0..9
 	{
-		screenIndex = key - 48;
+		clientScreenIndex = key - 48;
 	}
 	else if ( key == 't' )
 	{

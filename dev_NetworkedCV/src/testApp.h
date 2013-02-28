@@ -87,7 +87,7 @@ class testApp : public ofBaseApp
 		
 		// Common stuff
 		bool				isServer;
-		int					screenIndex;	// which screen are we?
+		int					clientScreenIndex;	// which screen are we?
 	
 		ofxOscSender		sender;
 		ofxOscReceiver		receiver;
