@@ -40,6 +40,8 @@ void testApp::setup()
 		// get this, they also get the IP address of the server, this is more flexible than having that in a text file on each client
 		serverLastSentHelloMessageMillis = ofGetElapsedTimeMillis();
 		serverMilliseBetweenHelloMessages = 3 * 1000;
+		
+		isServer = true;
 	}
 	else
 	{
@@ -113,6 +115,8 @@ void testApp::serverUpdate()
 		sender.sendMessage( m );
 		
 		serverLastSentHelloMessageMillis = ofGetElapsedTimeMillis();
+		
+		cout << "Sent Hello" << endl;
 	}
 	
 	// check for waiting messages
@@ -268,16 +272,15 @@ void testApp::draw()
 	{
 		clientDraw();
 	}
-	
-	// Draw some information to the screen as well
-	fontLarge.drawString( "Screen: " + ofToString(screenIndex), 7, 45 );
-	
+		
 	if( isServer )
 	{
-		fontLarge.drawString( "Server", 7, 85 );
+		fontLarge.drawString( "Server", 7, 45 );
 	}
 	else
 	{
+		// Draw some information to the screen as well
+		fontLarge.drawString( "Screen: " + ofToString(screenIndex), 7, 45 );
 	}
 	
 	ofSetColor( 128, 128, 128 );

@@ -28,7 +28,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-               BuildableName = "MultiScreenExample3D.app"
+               BuildableName = "NetworkedCV.app"
                BlueprintName = "NetworkedCV"
                ReferencedContainer = "container:NetworkedCV.xcodeproj">
             </BuildableReference>

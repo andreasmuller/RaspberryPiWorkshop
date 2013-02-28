@@ -1,5 +1,5 @@
 <Settings>
-	<ServerSendHost>10.255.255.255</ServerSendHost> <!-- This should be the muticast address for the network -->
+	<ServerSendHost>192.168.1.255</ServerSendHost> <!-- This should be the muticast address for the network -->
 	<ServerSendPort>7778</ServerSendPort>
 	<ServerReceivePort>7777</ServerReceivePort>
 </Settings>
