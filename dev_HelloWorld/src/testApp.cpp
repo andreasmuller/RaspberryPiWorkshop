@@ -4,25 +4,33 @@
 void testApp::setup()
 {
 	ofSetFrameRate( 60 );
+	ofBackground(0);
 	
 	font.loadFont( "DIN.otf", 64 );
 	
-	frontBuffer = new ofFbo();
-	backBuffer = new ofFbo();
-	
-	frontBuffer->allocate(ofGetWidth(), ofGetHeight(), GL_RGB );
-	backBuffer->allocate(ofGetWidth(), ofGetHeight(), GL_RGB );
+	ofDisableTextureEdgeHack();
+
+	ofDisableArbTex(); // this is not supported on the Pi anyways
+		frontBuffer = new ofFbo();
+		backBuffer = new ofFbo();
+		frontBuffer->allocate(ofGetWidth(), ofGetHeight(), GL_RGB );
+		backBuffer->allocate( ofGetWidth(), ofGetHeight(), GL_RGB );
+	ofEnableArbTex(); // now do whatever you want OF!
 	
 	frontBuffer->begin();
-		ofClear(0);
+		ofClear(0, 255);
+		//frontBuffer->getTextureReference().setTextureWrap( GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT );
 	frontBuffer->end();
 	
 	backBuffer->bind();
-		ofClear(0);
+		ofClear(0, 255);
+		//backBuffer->getTextureReference().setTextureWrap( GL_MIRRORED_REPEAT, GL_MIRRORED_REPEAT );
 	backBuffer->unbind();
 	
 	message = "Hello World!";
 }
+														  
+//GL_REPEAT, GL_MIRRORED_REPEAT, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_BORDER 
 
 //--------------------------------------------------------------
 void testApp::update()
@@ -31,8 +39,12 @@ void testApp::update()
 	
 	int resX = 30;
 	int resY = 30;
-	float stepX = ofGetWidth() /  (resX-1);
-	float stepY = ofGetHeight() / (resY-1);
+	float stepX = ofGetWidth()  / (float)(resX-1);
+	float stepY = ofGetHeight() / (float)(resY-1);
+	//float texOffsetU = 1.0f / frontBuffer->getTextureReference().getTextureData().tex_w;
+	//float texOffsetV = 1.0f / frontBuffer->getTextureReference().getTextureData().tex_h;
+	float texCoordStepU = (frontBuffer->getTextureReference().getTextureData().tex_t/*-texOffsetU*/) / (float)(resX-1);
+	float texCoordStepV = (frontBuffer->getTextureReference().getTextureData().tex_u/*-texOffsetV*/) / (float)(resY-1);
 	
 	float noiseLiquidness = 175;					// larger values make the movement more uniform, smaller more varied, changes how it all flows
 	float noiseMagnitude = 5;						// how far do we displace the noise?
@@ -50,7 +62,7 @@ void testApp::update()
 			float noiseY = ofSignedNoise(tmpY/noiseLiquidness, tmpX/noiseLiquidness, noiseTime ) * noiseMagnitude;
 			
 			screenMesh.addVertex( ofVec2f(tmpX + noiseX, tmpY + noiseY ) );
-			screenMesh.addTexCoord( ofVec2f(tmpX, tmpY) );
+			screenMesh.addTexCoord( ofVec2f( /*texOffsetU + */(x * texCoordStepU), /*texOffsetV +*/ (y * texCoordStepV) ) );
 		}
 	}
 	
@@ -60,7 +72,7 @@ void testApp::update()
 		for( int x = 0; x < resX-1; x++ )
 		{
 			int tmpIndex = (y*resX) + x;
-			screenMesh.addTriangle( tmpIndex, tmpIndex+1, tmpIndex+resY );
+			screenMesh.addTriangle( tmpIndex,	tmpIndex+1,		 tmpIndex+resY );
 			screenMesh.addTriangle( tmpIndex+1, tmpIndex+resY+1, tmpIndex+resY );
 		}
 	}
@@ -79,10 +91,17 @@ void testApp::draw()
 			ofRect(0,0,frontBuffer->getWidth(),frontBuffer->getHeight() );
 			ofSetColor( ofColor::fromHsb( ((sinf(ofGetElapsedTimef()/6.0f)+1.0f)/2.0f) * 255, 255, 200 ) ); // get ourselves a colour based on rotating the hue
 			font.drawString(message, messageDrawPos.x, messageDrawPos.y );
+	
+/*	ofSetColor(0);
+	ofLine( ofGetWidth()+1, 0, ofGetWidth()+1, ofGetHeight() );
+	ofLine( ofGetWidth()-0, 0, ofGetWidth()-0, ofGetHeight() );
+	ofLine( ofGetWidth()-1, 0, ofGetWidth()-1, ofGetHeight() );
+	ofLine( ofGetWidth()-2, 0, ofGetWidth()-2, ofGetHeight() ); */
+	
 		frontBuffer->end();
 	ofDisableAlphaBlending();
 	
-	// draw the front bugger into the backbuffer using the distorted mesh we prepared earlier
+	// draw the front buffer into the backbuffer using the distorted mesh we prepared earlier
 	ofSetColor(255);
 	backBuffer->begin();
 		frontBuffer->getTextureReference().bind();
@@ -99,4 +118,6 @@ void testApp::draw()
 	frontBuffer->draw(0,0);
 	ofSetColor(255);
 	font.drawString(message, messageDrawPos.x, messageDrawPos.y );
+ 
+
 }
