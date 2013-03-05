@@ -4,6 +4,8 @@
 //
 void testApp::setup()
 {
+	ofBackground( 73, 92, 121 );
+	
 	isServer = false;
 	
 	fontSmall.loadFont("Fonts/DIN.otf", 8 );
@@ -273,8 +275,10 @@ void testApp::draw()
 		clientDraw();
 	}
 		
+	
 	if( isServer )
 	{
+		ofSetColor(255);
 		fontLarge.drawString( "Server", 7, 20 );
 	
 		ofSetColor( 128, 128, 128 );
@@ -282,7 +286,7 @@ void testApp::draw()
 	}
 	else
 	{
-		// Draw some information to the screen as well
+		ofSetColor(255);
 		fontLarge.drawString( "Screen: " + ofToString(clientScreenIndex), 7, 20 );
 	}
 
@@ -303,12 +307,20 @@ void testApp::serverDraw()
 		int tmpVideoWidth = 320;
 		int tmpVideoHeight = 240;
 		
-		float tmpX = screenIndex * tmpVideoWidth;
-		float tmpY = 0.0f;
-
+		int maxColumns = 4;
+		int tmpIndexX = screenIndex % maxColumns;
+		int tmpIndexY = screenIndex / maxColumns;
+		
+		float tmpX = tmpIndexX * tmpVideoWidth;
+		float tmpY = tmpIndexY * tmpVideoHeight;
+		
 		ofPushMatrix();
 			ofTranslate( tmpX, tmpY );
-			fontSmall.drawString( "Screen: " + ofToString(screenIndex), 7, 45 );
+			string screenString = "Screen: " + ofToString(screenIndex);
+			ofSetColor( 0 );
+			ofRect(7,33, fontSmall.stringWidth(screenString)+2, fontSmall.stringHeight(screenString)+6 );
+			ofSetColor( ofColor::fromHsb( fmodf( screenIndex / 20.0f, 1.0f ) * 255, 200, 255) );
+			fontSmall.drawString( screenString, 7, 45 );
 			for(unsigned int i = 0; i < tmpNodeData->frameData.size(); i++ )
 			{
 				tmpNodeData->frameData.at(i).draw();
@@ -376,27 +388,7 @@ void testApp::clientDraw()
 	<< "threshold " << threshold << " (press: +/-)" << endl
 	<< "num blobs found " << contourFinder.nBlobs << ", fps: " << ofGetFrameRate();
 	ofDrawBitmapString(reportStr.str(), 10, ofGetHeight()-50);
-	
-	
-	// then draw the contours:
-/*	ofPushMatrix();
-		ofTranslate(videoWidth*2, 0, 0);
-		ofFill();
-		ofSetColor(ofColor::gray);
-		ofRect(0, 0, videoWidth, videoHeight);
-		ofSetColor(ofColor::white);
-	
-		contourFinder.draw(0, 0);
-		
-		// finally, a report:
-		ofSetColor(ofColor::white);
-		stringstream reportStr;
-		reportStr	<< "bg subtraction and blob detection"			<< endl
-		<< "press ' ' to capture bg"					<< endl
-		<< "threshold " << threshold << " (press: +/-)" << endl
-		<< "num blobs found " << contourFinder.nBlobs << ", fps: " << ofGetFrameRate();
-		ofDrawBitmapString(reportStr.str(), 20, videoHeight+20);
-	ofPopMatrix();*/
+
 }
 
 
