@@ -1,73 +1,119 @@
 
-#include "AutoReloadedShader.h"
+#include "ofxAutoReloadedShader.h"
 
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-bool AutoReloadedShader::load(string shaderName )
+bool ofxAutoReloadedShader::load(string shaderName )
 {
-	load( shaderName + ".vert", shaderName+ ".frag", "" );
+	return load( shaderName + ".vert", shaderName + ".frag", shaderName + ".geom" );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-bool AutoReloadedShader::load(string vertName, string fragName, string geomName)
+bool ofxAutoReloadedShader::load(string vertName, string fragName, string geomName)
 {
-	lastTimeCheckMillis = 0;
+	unload();
+	
+	// hackety hack, clear errors or shader will fail to compile
+	GLuint err = glGetError();
+	
+	lastTimeCheckMillis = ofGetElapsedTimeMillis();
 	setMillisBetweenFileCheck( 2 * 1000 );
 	enableWatchFiles();
+	
+	loadShaderNextFrame = false;
 	
 	vertexShaderFilename = vertName;
 	fragmentShaderFilename = fragName;
 	geometryShaderFilename = geomName;
-
+	
+	vertexShaderFile.clear();
+	fragmentShaderFile.clear();
+	geometryShaderFile.clear();
+	
 	vertexShaderFile   = ofFile( ofToDataPath( vertexShaderFilename ) );
 	fragmentShaderFile = ofFile( ofToDataPath( fragmentShaderFilename ) );
 	geometryShaderFile = ofFile( ofToDataPath( geometryShaderFilename ) );
 	
-	//cout << vertexShaderFile.exists() << endl;
+	ofBuffer vertexShaderBuffer = ofBufferFromFile( ofToDataPath( vertexShaderFilename ) );
+	ofBuffer fragmentShaderBuffer = ofBufferFromFile( ofToDataPath( fragmentShaderFilename ) );
+	ofBuffer geometryShaderBuffer = ofBufferFromFile( ofToDataPath( geometryShaderFilename ) );
 	
+	fileChangedTimes.clear();
 	fileChangedTimes.push_back( getLastModified( vertexShaderFile ) );
 	fileChangedTimes.push_back( getLastModified( fragmentShaderFile ) );
 	fileChangedTimes.push_back( getLastModified( geometryShaderFile ) );
 	
-	ofShader::load( vertexShaderFilename, fragmentShaderFilename, geometryShaderFilename );
+	if( vertexShaderBuffer.size() > 0 )
+	{
+		setupShaderFromSource(GL_VERTEX_SHADER, vertexShaderBuffer.getText() );
+	}
+
+	if( fragmentShaderBuffer.size() > 0 )
+	{
+		setupShaderFromSource(GL_FRAGMENT_SHADER, fragmentShaderBuffer.getText());
+	}
+
+	#ifndef TARGET_OPENGLES
+	if( geometryShaderBuffer.size() > 0 )
+	{
+		setupShaderFromSource(GL_GEOMETRY_SHADER_EXT, geometryShaderBuffer.getText());
+	}
+	#endif
+	
+	return linkProgram();
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-void AutoReloadedShader::_update(ofEventArgs &e)
+void ofxAutoReloadedShader::_update(ofEventArgs &e)
 {
+	if( loadShaderNextFrame )
+	{
+		reloadShaders();
+		loadShaderNextFrame = false;
+	}
+	
 	int currTime = ofGetElapsedTimeMillis();
 	
-	if( (currTime - lastTimeCheckMillis) > millisBetweenFileCheck )
+	if( ((currTime - lastTimeCheckMillis) > millisBetweenFileCheck) &&
+	   !loadShaderNextFrame )
 	{
 		if( filesChanged() )
 		{
-			ofShader::load( vertexShaderFilename, fragmentShaderFilename, geometryShaderFilename );
+			loadShaderNextFrame = true;
 		}
 		
 		lastTimeCheckMillis = currTime;
 	}
 }
 
+
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-void AutoReloadedShader::enableWatchFiles()
+bool ofxAutoReloadedShader::reloadShaders()
 {
-	ofAddListener(ofEvents().update, this, &AutoReloadedShader::_update );
+	return load( vertexShaderFilename,  fragmentShaderFilename, geometryShaderFilename );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-void AutoReloadedShader::disableWatchFiles()
+void ofxAutoReloadedShader::enableWatchFiles()
 {
-	ofRemoveListener(ofEvents().update, this, &AutoReloadedShader::_update );
+	ofAddListener(ofEvents().update, this, &ofxAutoReloadedShader::_update );
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-bool AutoReloadedShader::filesChanged()
+void ofxAutoReloadedShader::disableWatchFiles()
+{
+	ofRemoveListener(ofEvents().update, this, &ofxAutoReloadedShader::_update );
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
+//
+bool ofxAutoReloadedShader::filesChanged()
 {
 	bool fileChanged = false;
 	
@@ -107,14 +153,14 @@ bool AutoReloadedShader::filesChanged()
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-std::time_t AutoReloadedShader::getLastModified( ofFile& _file )
+std::time_t ofxAutoReloadedShader::getLastModified( ofFile& _file )
 {
 	if( _file.exists() )
 	{
 		Poco::File& pocoFile		= _file.getPocoFile();
 		Poco::Timestamp timestamp	= pocoFile.getLastModified();
 		std::time_t fileChangedTime = timestamp.epochTime();
-	
+		
 		return fileChangedTime;
 	}
 	else
@@ -125,15 +171,7 @@ std::time_t AutoReloadedShader::getLastModified( ofFile& _file )
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 //
-bool AutoReloadedShader::reloadShaders()
-{
-	cout << "Reload Shader" << endl;
-	return load( vertexShaderFilename,  fragmentShaderFilename, geometryShaderFilename );
-}
-
-// ---------------------------------------------------------------------------------------------------------------------------------------------------
-//
-void AutoReloadedShader::setMillisBetweenFileCheck( int _millis )
+void ofxAutoReloadedShader::setMillisBetweenFileCheck( int _millis )
 {
 	millisBetweenFileCheck = _millis;
 }
