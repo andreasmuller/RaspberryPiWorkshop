@@ -154,10 +154,12 @@ void testApp::draw()
 		// offset depending on which screen we are
 		ofTranslate( -ofGetWidth() * screenIndex, 0 );
 		
-		for( unsigned int i = 0; i < particles.size(); i++ )
-		{
-			particles.at(i).draw();
-		}
+		ofEnableAlphaBlending();
+			for( unsigned int i = 0; i < particles.size(); i++ )
+			{
+				particles.at(i).draw();
+			}
+		ofDisableAlphaBlending();
 	
 	ofPopMatrix();
 }

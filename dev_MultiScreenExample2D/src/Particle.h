@@ -1,5 +1,8 @@
 #pragma once
 
+#include "ofMain.h"
+#include "MathHelpers.h"
+
 class Particle
 {
 	public:
@@ -45,7 +48,9 @@ class Particle
 		{
 			if( animationFraction >= 0.0f && animationFraction <= 1.0f )
 			{
+				color.a = MathHelpers::smoothStepInOut( animationFraction, 0.0f, 0.1f, 0.9f, 1.0f); // fade the particle in and out depending on the time fraction
 				ofSetColor( color );
+				
 				ofCircle( currPos, 30 );
 				
 				ofCircle( startPoint, 3 );
