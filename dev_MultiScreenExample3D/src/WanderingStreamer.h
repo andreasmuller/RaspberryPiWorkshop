@@ -71,8 +71,7 @@ class WanderingStreamer : public SyncedAnimationObject
 			if( animationFraction >= 0.0f && animationFraction <= 1.0f )
 			{
 				ofSetColor( color );
-					
-
+				
 				ofSphere( positionHistory[0], 2 );
 				
 				// bail if we don't have enough points
@@ -83,33 +82,10 @@ class WanderingStreamer : public SyncedAnimationObject
 				mesh.clear();
 				for( unsigned int i = 0; i < positionHistory.size()-1; i++ )
 				{
-					/*
-					float tmpFrac = i / (float)(positionHistory.size()-2);
-					
-					scratchLookAtMatrix.makeLookAtMatrix( positionHistory[i], positionHistory[i+1], up );
-					
-					ofPushMatrix();
-						ofMultMatrix( scratchLookAtMatrix );
-							ofBox( 2 );
-					ofPopMatrix();
-					
-					//scratchLookAtMatrix.makeIdentityMatrix();
-					//scratchLookAtMatrix.glTranslate( positionHistory[i] );
-					//ofVec3f tmpVec(1,1,1);
-					//cout << positionHistory[i] << "  " << scratchLookAtMatrix.getTranslation() << "  " << ( tmpVec * scratchLookAtMatrix ) << endl;
-					
-					//mesh.addVertex( ofVec3f( 1.0f,0.0f,0.0f) * scratchLookAtMatrix );
-					//mesh.addVertex( ofVec3f(-1.0f,0.0f,0.0f) * scratchLookAtMatrix );
-					
-					//mesh.addColor(color);
-					//mesh.addColor(color);
-					 */
-					
 					mesh.addVertex( positionHistory[i] );
 					mesh.addColor(color);
 				}
 				
-				mesh.setMode( OF_PRIMITIVE_POINTS );
 				mesh.setMode( OF_PRIMITIVE_LINE_STRIP );
 				mesh.draw();
 			}

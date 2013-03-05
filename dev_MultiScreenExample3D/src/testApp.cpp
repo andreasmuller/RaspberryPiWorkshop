@@ -102,7 +102,7 @@ void testApp::update()
 	// If we are the server, we add some particles from time to time
 	if( isServer )
 	{
-		float secsBetweenAddingParticles = 0.1f;
+		float secsBetweenAddingParticles = 0.2f;
 		if( (ofGetElapsedTimef() - lastTimeAddedObject) > secsBetweenAddingParticles )
 		{
 			createNewObject( currTime );
