@@ -2,8 +2,8 @@
 
 
 //--------------------------------------------------------------
-void testApp::setup(){
-
+void testApp::setup()
+{
 	ofSetLogLevel(OF_LOG_VERBOSE);
 	
 #ifdef TARGET_OPENGLES
@@ -25,13 +25,13 @@ void testApp::setup(){
 }
 
 //--------------------------------------------------------------
-void testApp::update(){
-
+void testApp::update()
+{
 }
 
 //--------------------------------------------------------------
-void testApp::draw(){
-
+void testApp::draw()
+{
 	// draw to the FBO
 	ofEnableAlphaBlending();	
 	fbo.begin();
@@ -49,61 +49,18 @@ void testApp::draw(){
 
 	// draw the FPS
 	sprintf(tempStr, "%4.1f", ofGetFrameRate() );
-	ofVec2f pos( ofGetWidth()-20, ofGetHeight()-20 );
-
+	ofVec2f pos( ofGetWidth()-30, ofGetHeight()-10 );
 	ofSetColor(0);
 	font.drawString( tempStr, pos.x + 1, pos.y + 1 );
-
 	ofSetColor( 255 );
 	font.drawString( tempStr, pos.x, pos.y );
-	//cout << tempStr << endl;
-}
-
-//--------------------------------------------------------------
-void testApp::keyPressed  (int key){
-
-	
-}
-
-//--------------------------------------------------------------
-void testApp::keyReleased(int key){
 
 }
 
 //--------------------------------------------------------------
-void testApp::mouseMoved(int x, int y ){
-
-}
-
-//--------------------------------------------------------------
-void testApp::mouseDragged(int x, int y, int button){
-
-
-}
-
-//--------------------------------------------------------------
-void testApp::mousePressed(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void testApp::mouseReleased(int x, int y, int button){
-
+void testApp::keyPressed (int key)
+{	
 }
 
 
-//--------------------------------------------------------------
-void testApp::windowResized(int w, int h){
-
-}
-
-//--------------------------------------------------------------
-void testApp::gotMessage(ofMessage msg){
-
-}
-
-//--------------------------------------------------------------
-void testApp::dragEvent(ofDragInfo dragInfo){ 
-
-}
 
