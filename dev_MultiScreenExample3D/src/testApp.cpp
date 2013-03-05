@@ -53,8 +53,9 @@ void testApp::setup()
 		screenIndex = XML.getValue("Settings:ScreenIndex", 0);
 	}
 	
-	cameraFov = 21.0f; // we want a really narrow Fov to avoid distortion
+	cameraFov = 11.0f; // we want a really narrow Fov to avoid distortion
 	tiledCameraView.setFov( cameraFov );
+	tiledCameraView.setNearAndFarZ( 0.01f, 2048.0f );
 	
 	int maxScreenAmount = 5;
 	int singleScreenWidth  = 1280;
@@ -78,7 +79,7 @@ void testApp::setup()
 	tiledCameraView.init( singleScreenWidth, singleScreenHeight, maxScreenAmount, 1, bezelBorderInPixels );
 	viewTile = true;
 	
-	gridMesh = createGridMesh( 1000, 1000, 10, 10 );
+	gridMesh = createGridMesh( 1000, 8000, 10, 80 );
 
 }
 
@@ -101,7 +102,7 @@ void testApp::update()
 	// If we are the server, we add some particles from time to time
 	if( isServer )
 	{
-		float secsBetweenAddingParticles = 0.25f;
+		float secsBetweenAddingParticles = 0.1f;
 		if( (ofGetElapsedTimef() - lastTimeAddedObject) > secsBetweenAddingParticles )
 		{
 			createNewObject( currTime );
@@ -193,7 +194,7 @@ void testApp::drawScene( float _time )
 {
 	ofSetColor(255);
 	ofPushMatrix();
-		ofTranslate( 0.0f, 0.0f, -fmod( _time*250.0f, 100.0f) );
+		ofTranslate( 0.0f, 0.0f, -fmod( _time*250.0f, 200.0f) );
 		gridMesh->draw();
 	ofPopMatrix();
 	
@@ -247,9 +248,6 @@ void testApp::createNewObject( float _currTime )
 {	
 	ofVec3f startPos(	ofRandom(-700.0f, 700.0f), ofRandom(10.0f, 150.0f), ofRandom(600.0, 800.0f) );
 	ofVec3f endPos(		startPos.x, startPos.y, ofRandom( -600.0f, -600.0f) );
-	
-	//ofVec3f startPos(	ofRandom(-40.0f, 40.0f), ofRandom(100.0f, 100.0f), ofRandom(600.0, 800.0f) );
-	//ofVec3f endPos(		startPos.x, startPos.y, ofRandom( -400.0f, -400.0f) );
 	
 	float particleStartTime = _currTime + 3.0f; // start the particle 3 seconds from now to give it plenty of time to get there if we are using a slow TCP connection
 	float particleLifeDuration = 3.0f; //startPos.distance( endPos ) * 0.05f;

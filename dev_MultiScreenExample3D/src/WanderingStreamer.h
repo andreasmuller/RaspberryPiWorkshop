@@ -27,9 +27,9 @@ class WanderingStreamer : public SyncedAnimationObject
 			
 			color			= _color;
 			
-			animationFraction = 0.0f;
+			animationFraction = -1.0f;
 			
-			cout << "New WanderingStreamer " << startPoint << " " << endPoint << " " << startTime << " " << animationLength << endl;
+			//cout << "New WanderingStreamer " << startPoint << " " << endPoint << " " << startTime << " " << animationLength << endl;
 			
 			deleteMe 		= false;
 		}
@@ -47,8 +47,6 @@ class WanderingStreamer : public SyncedAnimationObject
 			
 			currPos = startPoint.interpolated( endPoint, animationFraction );
 			
-			//cout << "start: " << startPoint << "  end: " << endPoint << "  curr: " << currPos << "	animationFraction: " << animationFraction << endl;
-
 			float noiseTime = ofGetElapsedTimef() * 0.5f;
 			float noiseMagnitude = 50.0f;
 			float noiseLiquidness = 1000.0f;
