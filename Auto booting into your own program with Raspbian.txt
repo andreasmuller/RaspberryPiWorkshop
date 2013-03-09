@@ -20,3 +20,6 @@ sudo nano /etc/profile
 
 Add the path of your program to the bottom, for instance:
 /home/root/openFrameworks/apps/RaspberryPiWorkshop/GenerativeExample/bin/GenerativeExample 
+
+Todo: The Pi can still go to sleep, merge the tip here about preventing sleep mode:
+http://forum.openframeworks.cc/index.php?topic=11764.75
