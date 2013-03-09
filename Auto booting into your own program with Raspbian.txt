@@ -1,0 +1,22 @@
+
+This is a quick and dirty way to get your Pi to run a particular piece of software on boot. A better way will involve cron or something similar to make sure the software is always running and the hardware watchdog. ( http://pi.gadgetoid.co.uk/post/001-who-watches-the-watcher )
+
+But let's start with this for now, this has only been tested with Raspbian.
+
+First we need the system to boot into a command prompt without requiring a password, so from the command line run:
+
+sudo nano /etc/inittab
+
+Then change the line:
+
+1:2345:respawn:/sbin/getty --noclear 38400 tty1
+
+Into:
+
+1:2345:respawn:/bin/login -f root tty1 </dev/tty1 >/dev/tty1 2>&1
+
+Now we are going to launch the program every time the system has finished booting, so do:
+sudo nano /etc/profile
+
+Add the path of your program to the bottom, for instance:
+/home/root/openFrameworks/apps/RaspberryPiWorkshop/GenerativeExample/bin/GenerativeExample 
