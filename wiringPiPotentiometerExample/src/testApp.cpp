@@ -1,17 +1,18 @@
 #include "testApp.h"
 
-//sudo apt-get install i2c-tools
-//sudo i2cdetect -y 1
-//sudo i2cdetect -y 0 //256 boards
+//Often I have to run 
+// $sudo amixer cset numid=3 1
+//
 
 
 //--------------------------------------------------------------
 void testApp::setup(){
 	
 	isReady = potController.setup();
-	soundPlayer.loadSound("sounds/1085.mp3");
+	bool didLoadSound = soundPlayer.loadSound("sounds/1085.mp3");
 	soundPlayer.setLoop(true);
-	soundPlayer.play();
+	soundPlayer.play(); 
+	ofLogVerbose() << "didLoadSound: " << didLoadSound;
 }
 
 
