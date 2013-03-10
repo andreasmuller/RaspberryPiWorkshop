@@ -9,13 +9,16 @@
 void testApp::setup(){
 	
 	isReady = potController.setup();
+	soundPlayer.loadSound("sounds/1085.mp3");
+	soundPlayer.setLoop(true);
+	soundPlayer.play();
 }
 
 
 //--------------------------------------------------------------
 void testApp::update(){
 
-	
+	ofSoundUpdate();
 }
 
 //--------------------------------------------------------------
@@ -33,7 +36,8 @@ void testApp::draw(){
 	ofBackgroundGradient(ofColor::darkOliveGreen, ofColor(colorValue, colorValue, colorValue),  OF_GRADIENT_CIRCULAR);
 	ofDrawBitmapStringHighlight(info.str(), 100, 100, ofColor::black, ofColor::yellow);
 	
-	
+	float speed = ofMap((float)potController.potValue, 0.0, 255.0, 0.1, 2.0, false);
+	soundPlayer.setSpeed(speed);
 }
 
 void testApp::exit()

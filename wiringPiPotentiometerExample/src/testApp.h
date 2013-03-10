@@ -22,7 +22,7 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);		
 	
 	PotentiometerController potController;
-	
+	ofSoundPlayer  soundPlayer;
 	bool isReady;
 };
 
