@@ -4,7 +4,9 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 	ofSetLogLevel(OF_LOG_VERBOSE);
-
+	
+	ofHideCursor();
+	
 	tex0Source.loadImage("brick.jpg");
 
 	tex0 = tex0Source.getTextureReference();
