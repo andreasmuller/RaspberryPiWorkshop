@@ -1,22 +1,17 @@
 #include "testApp.h"
 
-ofShader shader;
-ofTexture tex0;
-ofImage tex0Source;
-float drawWidth;
-float drawHeight;
-ofFbo fbo;
+
 //--------------------------------------------------------------
 void testApp::setup(){
 	ofSetLogLevel(OF_LOG_VERBOSE);
-	//ofDisableArbTex();
+
 	tex0Source.loadImage("brick.jpg");
-	drawWidth = tex0Source.getWidth();
-	drawHeight = tex0Source.getHeight();
-	
+
 	tex0 = tex0Source.getTextureReference();
 	tex0.setTextureWrap(GL_REPEAT, GL_REPEAT);
-	shader.load("PostProcessing.vert", "PostProcessing.frag", "");
+	
+	shader.load("PostProcessing_GLES.vert", "PostProcessing_GLES.frag", "");
+	
 	fbo.allocate(ofGetWidth(), ofGetHeight());
 	fbo.begin();
 		ofClear(0, 0, 0, 0);
@@ -27,7 +22,7 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update(){
 	fbo.begin();
-	ofClear(0, 0, 0, 0);
+		ofClear(0, 0, 0, 0);
 		shader.begin();
 			shader.setUniformTexture("tex0", tex0, 1);
 			shader.setUniform1f("time", ofGetElapsedTimef());

@@ -21,6 +21,12 @@ class testApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);		
 		
+	ofShader shader;
+	
+	ofImage tex0Source;
+	ofTexture tex0;	
+	
+	ofFbo fbo;
 		
 };
 
