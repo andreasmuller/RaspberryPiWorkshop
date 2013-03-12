@@ -4,11 +4,15 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 	ofSetLogLevel(OF_LOG_VERBOSE);
-	shader.load("LEDs.vert", "LEDs.frag", "");
+	ofHideCursor();
+	
+	shader.load("LED_GLES.vert", "LED_GLES.frag", "");
+	
 	fbo.allocate(ofGetWidth(), ofGetHeight());
 	fbo.begin();
 		ofClear(0, 0, 0, 0);
 	fbo.end();
+	
 	ofEnableAlphaBlending();
 }
 
