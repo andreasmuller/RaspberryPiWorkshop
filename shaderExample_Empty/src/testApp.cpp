@@ -3,8 +3,15 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
-	ofSetLogLevel(OF_LOG_VERBOSE);
-	shader.load("Empty.vert", "Empty.frag", "");
+	//ofSetLogLevel(OF_LOG_VERBOSE); set in main.cpp for core troubleshooting
+	
+	bool didLoadShader = shader.load("Empty_GLES.vert", "Empty_GLES.frag", "");
+	
+	if (!didLoadShader) 
+	{
+		ofLogError() << "Load Shader FAIL";
+	}
+	
 	fbo.allocate(ofGetWidth(), ofGetHeight());
 	fbo.begin();
 		ofClear(0, 0, 0, 0);
