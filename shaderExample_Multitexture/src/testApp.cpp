@@ -5,8 +5,6 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 	//ofSetLogLevel(OF_LOG_VERBOSE); set in main.cpp for core debugging
-
-	//ofEnableTextureEdgeHack();
 	tex0Source.loadImage("brick.jpg");
 	tex1Source.loadImage("tex1.jpg");
 	
