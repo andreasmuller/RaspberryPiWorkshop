@@ -7,12 +7,16 @@ void testApp::setup(){
 	cameraWidth		= 320;	
 	cameraHeight	= 240;
 	cameraFPS		= 60;
+	
+	videoTexture.allocate(cameraWidth, cameraHeight, GL_RGB);
+	
+	//optimized pipeline for the PS3Eye
 	stringstream pipeline;
 	pipeline << "v4l2src name=video_source device=/dev/video0 ! video/x-raw-rgb,";
 	pipeline << "width="		<< cameraWidth	<<	",";
 	pipeline << "height="		<< cameraHeight	<<	",";
 	pipeline << "framerate="	<< cameraFPS	<<	"/1";
-	videoTexture.allocate(cameraWidth, cameraHeight, GL_RGB);
+	
 	bool didStart = videoUtils.setPipeline(pipeline.str(), 24, false, cameraWidth, cameraHeight);
 	if(didStart)
 	{
