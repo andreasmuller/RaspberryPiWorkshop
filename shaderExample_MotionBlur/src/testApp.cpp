@@ -1,24 +1,19 @@
 #include "testApp.h"
 
-ofImage tex0Source;
-ofTexture tex0;
-ofShader shader;
-ofFbo fbo;
-float contentWidth;
-float contentHeight;
+
 //--------------------------------------------------------------
 void testApp::setup(){
 	ofSetLogLevel(OF_LOG_VERBOSE);
-
+	
 	tex0Source.loadImage("brick.jpg");	
 	
-	//has to be pow2 texture?
 	contentWidth = tex0Source.getWidth();
 	contentHeight = tex0Source.getHeight();
 	
 	tex0 = tex0Source.getTextureReference();
 	tex0.setTextureWrap(GL_REPEAT, GL_REPEAT);
-	shader.load("Motionblur.vert", "Motionblur.frag", "");
+	
+	shader.load("MotionBlur_GLES.vert", "MotionBlur_GLES.frag", "");
 	fbo.allocate(contentWidth, contentHeight);
 	fbo.begin();
 		ofClear(0, 0, 0, 0);
