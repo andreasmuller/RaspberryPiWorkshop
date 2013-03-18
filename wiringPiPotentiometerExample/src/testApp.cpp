@@ -37,7 +37,7 @@ void testApp::draw(){
 	ofBackgroundGradient(ofColor::darkOliveGreen, ofColor(colorValue, colorValue, colorValue),  OF_GRADIENT_CIRCULAR);
 	ofDrawBitmapStringHighlight(info.str(), 100, 100, ofColor::black, ofColor::yellow);
 	
-	float speed = ofMap((float)potController.potValue, 0.0, 255.0, 0.1, 2.0, false);
+	float speed = ofMap((float)potController.potValue, 0.0, 255.0, 0.0, 2.0, true);
 	soundPlayer.setSpeed(speed);
 }
 

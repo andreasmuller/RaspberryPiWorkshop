@@ -11,10 +11,11 @@ extern "C"
 
 #include "RBP.h"
 #include "OMXClock.h"
-#include "OMXPlayerVideo.h"
+#include "OMXEGLImagePlayer.h"
+#include "OMXPlayerAudio.h"
 
 
-class ofxOMXPlayer 
+class ofxOMXPlayer : public ofThread
 {
 public:
 	ofxOMXPlayer();
@@ -24,85 +25,75 @@ public:
 	void 				play();
 	void 				stop();
 	
-	//bool 				isFrameNew();
-	unsigned char * 	getPixels();
-	ofPixelsRef			getPixelsRef();
-//	float 				getPosition();
-//	float 				getSpeed();
 	float				duration;
 	float 				getDuration();
-//	bool				getIsMovieDone();
 	
-//	void 				setPosition(float pct);
+	void 				setPosition(float pct);
 //	void 				setVolume(float volume); // 0..1
-//	void 				setLoopState(ofLoopType state);
-//	ofLoopType			getLoopState();
-//	void   				setSpeed(float speed);
-//	void				setFrame(int frame);  // frame 0 = first frame...
 	
 	ofTexture &			getTextureReference();
 	void 				draw(float x, float y, float w, float h);
 	void 				draw(float x, float y);
-
 	
-	void				setAnchorPercent(float xPct, float yPct);	//set the anchor as a percentage of the image width/height ( 0.0-1.0 range )
-	void				setAnchorPoint(float x, float y);				//set the anchor point in pixels
-	void				resetAnchor();								//resets the anchor to (0, 0)
-	
-	void 				setPaused(bool bPause);
+	void 				setPaused(bool doPause);
 	
 	int					getCurrentFrame();
 	int					getTotalNumFrames();
 	
-//	void				firstFrame();
-//	void				nextFrame();
-//	void				previousFrame();
 	
 	float 				getHeight();
 	float 				getWidth();
 	
-//	bool				isPaused();
-//	bool				isLoaded();
-//	bool				isPlaying();
+	bool				isPaused();
+	bool				isPlaying();
+		
+	GLuint textureID;
+
+	int videoWidth;
+	int videoHeight;
+	
+
+	EGLImageKHR eglImage;
+	
+	string getVideoDebugInfo();
+	void generateEGLImage();
+	void openPlayer();
+	double getMediaTime();
+	void close();
+	bool doVideoDebugging;
+	bool doLooping;
+	void threadedFunction();
+	bool isThreaded;
+private:
 	
 	CRBP                  rbp;
 	COMXCore              omxCore;
 	OMXClock * clock;
 	
-	OMXPlayerVideo    omxPlayerVideo;
+	OMXEGLImagePlayer    videoPlayer;
+	OMXPlayerAudio m_player_audio;
 	OMXReader         omxReader;
 	
-	COMXStreamInfo    streamInfo;
+	COMXStreamInfo streamInfo;
+	COMXStreamInfo audioStreamInfo;
 	
 	bool isMPEG;
 	bool hasVideo;
-	
+	bool hasAudio;
+	bool m_buffer_empty;
+
 	DllBcmHost        bcmHost;
 	
-	bool isReady;
 	
 	OMXPacket* packet;
-	
-	GLuint textureID;
-	bool m_Pause;
-	
-	
-	int videoWidth;
-	int videoHeight;
-	
-	EGLDisplay display;
-	EGLContext context;
-	EGLImageKHR eglImage;
-	
-	void generateEGLImage();
-	ofPixels* pixels;
-	void close();
-private:
 	
 	ofTexture tex;
 	ofTexture * playerTex; // a seperate texture that may be optionally implemented by the player to avoid excessive pixel copying.
 	ofPixelFormat internalPixelFormat;
 	string moviePath;
-	
+	int nFrames;
+	bool bPlaying;
+	EGLDisplay display;
+	EGLContext context;
 };
 

@@ -75,7 +75,7 @@ void PotentiometerController::threadedFunction()
 		didPotChange = false;
 		
 		potValue = readAnalogDigitalConvertor();
-		changeAmount = potValue - lastPotValue;
+		changeAmount = abs(potValue - lastPotValue);
 		
 		if (doToleranceCheck) 
 		{
@@ -87,10 +87,12 @@ void PotentiometerController::threadedFunction()
 		{
 			if(changeAmount!=0)
 			{
-				didPotChange = true;
+				//didPotChange = true;
 			}
 		}
 		lastPotValue = potValue;
+		
+		ofLogVerbose() << potValue;
 		sleep(500);
 	}
 }
@@ -129,7 +131,7 @@ int  PotentiometerController::readAnalogDigitalConvertor()
 	int analogDigitalConvertorValue = 0;
 	
 	//read in one empty bit, one null bit and 10 ADC bits
-	for (int i=0; i<10; i++) 
+	for (int i=0; i<12; i++) 
 	{
 		digitalWrite(CLOCK_PIN, true);
 		digitalWrite(CLOCK_PIN, false);
