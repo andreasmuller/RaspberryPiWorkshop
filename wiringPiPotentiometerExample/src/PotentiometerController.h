@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "wiringPi.h"
+#include "wiringPiSPI.h"
 
 
 class PotentiometerController: public ofThread

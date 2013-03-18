@@ -20,7 +20,7 @@ PotentiometerController::PotentiometerController()
 
 bool PotentiometerController::setup()
 {
-	int status = wiringPiSetup();
+	int status = wiringPiSPISetup(0, 1000000);
 	if (status != -1)
 	{
 		ofLogVerbose() << "wiringPiSetup PASS";
@@ -38,10 +38,10 @@ bool PotentiometerController::setup()
 		MOSI_PIN = 5;
 		CS_PIN = 6;
 		
-		pinMode(MOSI_PIN, OUTPUT);
+		/*pinMode(MOSI_PIN, OUTPUT);
 		pinMode(MISO_PIN, INPUT);
 		pinMode(CLOCK_PIN, OUTPUT);
-		pinMode(CS_PIN, OUTPUT);
+		pinMode(CS_PIN, OUTPUT);*/
 		
 		//10k trim pot connected to adc #0
 		potentiometerInput = 0;
@@ -87,65 +87,25 @@ void PotentiometerController::threadedFunction()
 		{
 			if(changeAmount!=0)
 			{
-				//didPotChange = true;
+				didPotChange = true;
 			}
 		}
 		lastPotValue = potValue;
 		
 		ofLogVerbose() << potValue;
-		sleep(500);
+		sleep(10);
 	}
 }
 
 int  PotentiometerController::readAnalogDigitalConvertor()
 {
-	
-	digitalWrite(CS_PIN, true);
-	digitalWrite(CLOCK_PIN, false);  // start clock low
-	digitalWrite(CS_PIN, false);     // bring CS low
-	
-	int commandout = potentiometerInput;
-	// start bit + single-ended bit
-	
-	commandout |= 0x18;  
-	commandout <<= 3;
-	
-	// we only need to send 5 bits here
-	for (int i=0; i<5; i++) 
-	{
-		if (commandout & 0x80)
-		{
-			digitalWrite(MOSI_PIN, true);
-		} 
-		else
-		{
-			digitalWrite(MOSI_PIN, false);
-		}
-		commandout <<= 1;
-		
-		digitalWrite(CLOCK_PIN, true);
-		digitalWrite(CLOCK_PIN, false);
-	}
-	
-	
-	int analogDigitalConvertorValue = 0;
-	
-	//read in one empty bit, one null bit and 10 ADC bits
-	for (int i=0; i<12; i++) 
-	{
-		digitalWrite(CLOCK_PIN, true);
-		digitalWrite(CLOCK_PIN, false);
-		analogDigitalConvertorValue <<= 1;
-		if (digitalRead(MISO_PIN))
-		{
-			analogDigitalConvertorValue |= 0x1;
-		}
-	}
-	
-	digitalWrite(CS_PIN, true);
-	
-	// first bit is 'null' so drop it
-	analogDigitalConvertorValue >>= 1;   
-	
-	return analogDigitalConvertorValue;
+	uint8_t buff[3];
+	int adc;
+	potentiometerInput = 0;
+	buff[0] = 1;
+	buff[1] = (8+potentiometerInput)<<4;
+	buff[2] = 0;
+	wiringPiSPIDataRW(0, buff, 3);
+	adc = ((buff[1]&3) << 8) + buff[2];
+	return adc;
 }

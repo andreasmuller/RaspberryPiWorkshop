@@ -33,11 +33,11 @@ void testApp::draw(){
 	info << "changeAmount: " << potController.changeAmount<< "\n";
 	info << "fps: " << ofToString(ofGetFrameRate())<< "\n";
 	
-	int colorValue = potController.potValue;
+	int colorValue = ofMap(potController.potValue, 0, 1024, 0, 255, true);
 	ofBackgroundGradient(ofColor::darkOliveGreen, ofColor(colorValue, colorValue, colorValue),  OF_GRADIENT_CIRCULAR);
 	ofDrawBitmapStringHighlight(info.str(), 100, 100, ofColor::black, ofColor::yellow);
 	
-	float speed = ofMap((float)potController.potValue, 0.0, 255.0, 0.0, 2.0, true);
+	float speed = ofMap((float)potController.potValue, 0.0, 1024.0, 0.1, 2.0, true);
 	soundPlayer.setSpeed(speed);
 }
 
