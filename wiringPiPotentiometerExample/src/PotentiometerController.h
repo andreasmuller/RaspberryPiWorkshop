@@ -11,10 +11,7 @@ public:
 	bool setup();
 	void threadedFunction();
 	
-	int CLOCK_PIN;
-	int MISO_PIN;
-	int MOSI_PIN;
-	int CS_PIN;
+
 	
 	int readAnalogDigitalConvertor();
 	int potentiometerInput;

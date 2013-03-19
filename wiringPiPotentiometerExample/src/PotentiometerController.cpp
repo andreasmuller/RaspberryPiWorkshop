@@ -25,24 +25,6 @@ bool PotentiometerController::setup()
 	{
 		ofLogVerbose() << "wiringPiSetup PASS";
 		
-		//		GPIO values
-		//		CLOCK_PIN = 18;
-		//		MISO_PIN = 23;
-		//		MOSI_PIN = 24;
-		//		CS_PIN = 25;
-		
-		//wiringPI translations
-		// https://projects.drogon.net/raspberry-pi/wiringpi/pins/
-		CLOCK_PIN = 1;
-		MISO_PIN = 4;
-		MOSI_PIN = 5;
-		CS_PIN = 6;
-		
-		/*pinMode(MOSI_PIN, OUTPUT);
-		pinMode(MISO_PIN, INPUT);
-		pinMode(CLOCK_PIN, OUTPUT);
-		pinMode(CS_PIN, OUTPUT);*/
-		
 		//10k trim pot connected to adc #0
 		potentiometerInput = 0;
 		
