@@ -2,7 +2,9 @@
  *  PotentiometerController.cpp
  *
  *  Created by jason van cleave on 3/9/13.
- *  translation of http://learn.adafruit.com/reading-a-analog-in-and-controlling-audio-volume-with-the-raspberry-pi/connecting-the-cobbler-to-a-mcp3008
+ *  translation of http://learn.adafruit.com/reading-a-analog-in-and-controlling-audio-volume-with-the-raspberry-pi/connecting-the-cobbler-to-a-mcp3008 
+ and
+ http://raspberrypihobbyist.blogspot.com/2012/12/analog-interface.html
  *
  */
 
@@ -11,10 +13,12 @@
 PotentiometerController::PotentiometerController()
 {
 	isReady = false;
+    didPotChange = false;
 	changeAmount = 0;
 	lastPotValue = 0;
 	potValue = 0;
-	doToleranceCheck = false;
+    //10k trim pot connected to adc #0
+    potentiometerInput = 0;
 }
 
 
@@ -24,24 +28,12 @@ bool PotentiometerController::setup()
 	if (status != -1)
 	{
 		ofLogVerbose() << "wiringPiSetup PASS";
-		
-		//10k trim pot connected to adc #0
-		potentiometerInput = 0;
-		
-		lastPotValue = 0;    
-		/*
-		 this keeps track of the last potentiometer value
-		 to keep from being jittery we'll only change
-		 volume when the pot has moved more than 5 'counts'
-		 */
-		tolerance = 5;	
-		
-		didPotChange = false;
 		isReady = true;
 	}else 
 	{
 		ofLogError() << "wiringPiSetup FAIL status: " << status;
 	}
+    
 	if (isReady) 
 	{
 		startThread(false, true);
@@ -58,36 +50,26 @@ void PotentiometerController::threadedFunction()
 		
 		potValue = readAnalogDigitalConvertor();
 		changeAmount = abs(potValue - lastPotValue);
-		
-		if (doToleranceCheck) 
-		{
-			if ( changeAmount > tolerance )
-			{
-				didPotChange = true;
-			}
-		}else 
-		{
-			if(changeAmount!=0)
-			{
-				didPotChange = true;
-			}
-		}
+        
+		if(changeAmount!=0)
+        {
+            didPotChange = true;
+        }
+        
 		lastPotValue = potValue;
-		
-		ofLogVerbose() << potValue;
-		sleep(10);
+        sleep(10);
 	}
 }
 
 int  PotentiometerController::readAnalogDigitalConvertor()
 {
-	uint8_t buff[3];
-	int adc;
-	potentiometerInput = 0;
-	buff[0] = 1;
-	buff[1] = (8+potentiometerInput)<<4;
-	buff[2] = 0;
-	wiringPiSPIDataRW(0, buff, 3);
-	adc = ((buff[1]&3) << 8) + buff[2];
-	return adc;
+	uint8_t buffer[3];
+    
+	buffer[0] = 1;
+	buffer[1] = (8+potentiometerInput)<<4;
+	buffer[2] = 0;
+    
+	wiringPiSPIDataRW(0, buffer, 3);
+    
+	return ((buffer[1]&3) << 8) + buffer[2];
 }

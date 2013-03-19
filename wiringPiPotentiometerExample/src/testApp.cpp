@@ -8,6 +8,7 @@
 //--------------------------------------------------------------
 void testApp::setup(){
 	
+    currentSoundSpeed = 1.0;
 	isReady = potController.setup();
 	bool didLoadSound = soundPlayer.loadSound("sounds/1085.mp3");
 	soundPlayer.setLoop(true);
@@ -20,6 +21,11 @@ void testApp::setup(){
 void testApp::update(){
 
 	ofSoundUpdate();
+	if (!isReady) {
+		return;
+	}
+	currentSoundSpeed = ofMap((float)potController.potValue, 0.0, 1024.0, 0.1, 2.0, true);
+	soundPlayer.setSpeed(currentSoundSpeed);
 }
 
 //--------------------------------------------------------------
@@ -28,17 +34,18 @@ void testApp::draw(){
 		return;
 	}
 	stringstream info;
-	info << "lastPotValue: " << potController.lastPotValue << "\n";
-	info << "potValue: " << potController.potValue<< "\n";
-	info << "changeAmount: " << potController.changeAmount<< "\n";
-	info << "fps: " << ofToString(ofGetFrameRate())<< "\n";
+	info << "lastPotValue: "		<< potController.lastPotValue		<< "\n";
+	info << "potValue: "			<< potController.potValue			<< "\n";
+	info << "changeAmount: "		<< potController.changeAmount		<< "\n";
+	info << "fps: "					<< ofToString(ofGetFrameRate())		<< "\n";
+	info << "currentSoundSpeed: "	<< ofToString(currentSoundSpeed)	<< "\n";
+	
 	
 	int colorValue = ofMap(potController.potValue, 0, 1024, 0, 255, true);
 	ofBackgroundGradient(ofColor::darkOliveGreen, ofColor(colorValue, colorValue, colorValue),  OF_GRADIENT_CIRCULAR);
 	ofDrawBitmapStringHighlight(info.str(), 100, 100, ofColor::black, ofColor::yellow);
 	
-	float speed = ofMap((float)potController.potValue, 0.0, 1024.0, 0.1, 2.0, true);
-	soundPlayer.setSpeed(speed);
+	
 }
 
 void testApp::exit()

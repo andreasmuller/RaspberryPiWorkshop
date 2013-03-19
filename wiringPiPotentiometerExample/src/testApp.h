@@ -24,5 +24,6 @@ class testApp : public ofBaseApp{
 	PotentiometerController potController;
 	ofSoundPlayer  soundPlayer;
 	bool isReady;
+	float currentSoundSpeed;
 };
 
