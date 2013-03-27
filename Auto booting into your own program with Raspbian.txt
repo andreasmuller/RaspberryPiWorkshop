@@ -1,5 +1,9 @@
 
-This is a quick and dirty way to get your Pi to run a particular piece of software on boot. A better way will involve cron or something similar to make sure the software is always running and the hardware watchdog. ( http://pi.gadgetoid.co.uk/post/001-who-watches-the-watcher )
+This is a quick and dirty way to get your Pi to run a particular piece of software on boot. A better way will involve cron or something similar to make sure the software is always running and the hardware watchdog. 
+
+http://pi.gadgetoid.co.uk/post/001-who-watches-the-watcher
+http://raspberrypi.stackexchange.com/questions/1517/can-i-send-a-heart-beat-to-hardware-watch-dog-from-my-own-program
+http://dovgalecs.com/blog/keeping-your-raspberry-pi-alive-enabling-hardware-watchdog-under-arch-linux/
 
 But let's start with this for now, this has only been tested with Raspbian.
 
@@ -23,3 +27,4 @@ Add the path of your program to the bottom, for instance:
 
 Todo: The Pi can still go to sleep, merge the tip here about preventing sleep mode:
 http://forum.openframeworks.cc/index.php?topic=11764.75
+
