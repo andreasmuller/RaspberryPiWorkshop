@@ -73,7 +73,10 @@ Here we are simply displaying the results on the central server, but this techni
 ###<u>Shaders</u> 
 
 <b>ShaderLiveCodingExample</b>  
-The relatively fast GPU in the Pi makes shaders really important on the Pi. This demo shows off some of this capability.
+The relatively fast GPU in the Pi makes shaders really important on the Pi. This demo shows off some of this capability.   
+![alt text](https://raw.github.com/andreasmuller/RaspberryPiWorkshop/master/Screenshots/Small/ShaderLiveCoding.jpg "ShaderLiveCoding")
+
+
 
 <b>VideoShaderLiveCoding</b>   
 Indeed, decoding 1080p video and running shaders on the result!
