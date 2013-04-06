@@ -29,7 +29,7 @@ If this file exists, that computer is going to acts as the server. It will still
 This contains the information about which screen you are.   
 ```
 <Settings>  
-<ScreenIndex>0</ScreenIndex>  
+	<ScreenIndex>0</ScreenIndex>  
 </Settings>
 ```
 
@@ -58,12 +58,12 @@ Takes the synced time from _StandaloneTimingServer_ and displays a rotating circ
 A basic demo of an application that draws things over multiple screens.  
 Here we use the same program to act as both the server and the client, as dictated by the existence of _IsServer.txt_ in _data/Settings_. Only one computer on the network should act as the server.   
 This program will spawn particles that will travel across the screens. How many screens the server assumes it is creating content for can be set by the variable _screenAmount_ in the _update()_ function.   
-The screen a client node is rendering is read from _ClientSettings.xml_, but you can  press the number keys on your keyboard to change this at runtime.
+The screen a client node is rendering is read from _ClientSettings.xml_, but you can  press the number keys on your keyboard to change this at runtime.   
 ![alt text](https://raw.github.com/andreasmuller/RaspberryPiWorkshop/master/Screenshots/Small/MultiScreenExample2D.jpg "MultiScreenExample2D")
 
 
 <b>MultiScreenExample3D</b>   
-Similar to the program above, but in this case we create a 3D camera and split this up depending on how many screens we will be drawing for.
+Similar to the program above, but in this case we create a 3D camera and split this up depending on how many screens we will be drawing for.   
 ![alt text](https://raw.github.com/andreasmuller/RaspberryPiWorkshop/master/Screenshots/Small/MultiScreenExample3D.jpg "MultiScreenExample3D")  
 
 <b>NetworkedCV</b>  
