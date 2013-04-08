@@ -81,12 +81,14 @@ The relatively fast GPU in the Pi makes shaders really important on the Pi. This
 <b>VideoShaderLiveCoding</b>   
 Indeed, decoding 1080p video and running shaders on the result!
 
-<b>Shader Examples</b> 
+<b>Shader Examples</b>   
 The projects whose names begin with ShaderExample are various examples of shaders that work with the new GLES2 Renderer in OF
 
-<b>ShaderExample_AlphaMasking</b> is an OpenGL ES 2 compatible version of the alphaMaskingShaderExample found in openFrameworks/examples/gl/alphaMaskingShaderExample. It is a good project to compare the differences in GLSL syntax as <b>shaders written for the RPi will not work on the desktop (or vice-versa)</b>
+<b>ShaderExample_AlphaMasking</b>   
+This example is an OpenGL ES 2 compatible version of the alphaMaskingShaderExample found in openFrameworks/examples/gl/alphaMaskingShaderExample. It is a good project to compare the differences in GLSL syntax as <b>shaders written for the RPi will not work on the desktop (or vice-versa)</b>
 
-<b>ShaderExample_Billboard</b> is a port from openFrameworks/examples/gl/billboardExample and contains both desktop and RPi compatible shaders.
+<b>ShaderExample_Billboard</b>   
+A port from openFrameworks/examples/gl/billboardExample and contains both desktop and RPi compatible shaders.
 
 A nice feature of the new OpenGL ES 2 renderer is that the shaders use the same version of GLSL that works with WebGL.
 The following projects use shaders that were ported from ShaderToy. https://www.shadertoy.com/
@@ -95,16 +97,16 @@ The following projects use shaders that were ported from ShaderToy. https://www.
 - ShaderExample_Multitexture  
 - ShaderExample_PostProcessing  
 
-<b>ShaderExample_Empty</b>
+<b>ShaderExample_Empty</b>   
 This example is a good starting point to write your own shader. The project is set up to load an empty vertex and fragment shader from the bin/data folder
 
 ###<u>Cameras</u> 
 
-<b>PS3EyeGrabber</b>
+<b>PS3EyeGrabber</b>   
 The Sony PS3 Eye is a popular USB camera in both the OpenCv and openFrameworks community. It is fairly inexpensive and works well on the RPi at 320x240@60fps.
 openFrameworks video capture works with the Pi out out of the box, but with some simple extra commands you can offload some of the colorspace conversion to the hardware.   
   
-<b>OpenNI2AppExample</b>
+<b>OpenNI2AppExample</b>   
 This example allows you to access the depth and RGB streams of a Asus Xtion Pro Live depth camera using OpenNI. It uses the newer OpenNI2 which has a much simpler syntax than the previous version. The project also works on the Mac Desktop which is useful to record .oni files that the project can also playback.
 http://www.asus.com/Multimedia/Xtion_PRO/
 
