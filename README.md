@@ -81,12 +81,22 @@ The relatively fast GPU in the Pi makes shaders really important on the Pi. This
 <b>VideoShaderLiveCoding</b>   
 Indeed, decoding 1080p video and running shaders on the result!
 
-ShaderExample_Empty  
-ShaderExample_AlphaMasking  
-ShaderExample_Billboard  
-ShaderExample_MotionBlur  
-ShaderExample_Multitexture  
-ShaderExample_PostProcessing  
+<b>Shader Examples</b> 
+The projects whose names begin with ShaderExample are various examples of shaders that work with the new GLES2 Renderer in OF
+
+<b>ShaderExample_AlphaMasking</b> is an OpenGL ES 2 compatible version of the alphaMaskingShaderExample found in openFrameworks/examples/gl/alphaMaskingShaderExample. It is a good project to compare the differences in GLSL syntax as <b>shaders written for the RPi will not work on the desktop (or vice-versa)</b>
+
+<b>ShaderExample_Billboard</b> is a port from openFrameworks/examples/gl/billboardExample and contains both desktop and RPi compatible shaders.
+
+A nice feature of the new OpenGL ES 2 renderer is that the shaders use the same version of GLSL that works with WebGL.
+The following projects use shaders that were ported from ShaderToy. https://www.shadertoy.com/
+
+- ShaderExample_MotionBlur  
+- ShaderExample_Multitexture  
+- ShaderExample_PostProcessing  
+
+<b>ShaderExample_Empty</b>
+This example is a good starting point to write your own shader. The project is set up to load an empty vertex and fragment shader from the bin/data folder
 
 ###<u>Cameras</u> 
 
