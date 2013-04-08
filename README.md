@@ -105,7 +105,7 @@ The Sony PS3 Eye is a popular USB camera in both the OpenCv and openFrameworks c
 openFrameworks video capture works with the Pi out out of the box, but with some simple extra commands you can offload some of the colorspace conversion to the hardware.   
   
 <b>OpenNI2AppExample</b>
-This example allows you to access the depth and RGB streams of a Asus Xtion Pro Live depth camera using OpenNI. It uses the OpenNI2 which has a much simpler syntax than the previous version. The project also works on the Mac Desktop which is useful to record .oni files that the project can also playback.
+This example allows you to access the depth and RGB streams of a Asus Xtion Pro Live depth camera using OpenNI. It uses the newer OpenNI2 which has a much simpler syntax than the previous version. The project also works on the Mac Desktop which is useful to record .oni files that the project can also playback.
 http://www.asus.com/Multimedia/Xtion_PRO/
 
 ###<u>GPIO</u> 
