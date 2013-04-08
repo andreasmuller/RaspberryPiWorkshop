@@ -100,15 +100,16 @@ This example is a good starting point to write your own shader. The project is s
 
 ###<u>Cameras</u> 
 
-<b>PS3EyeGrabber</b>   
+<b>PS3EyeGrabber</b>
+The Sony PS3 Eye is a popular USB camera in both the OpenCv and openFrameworks community. It is fairly inexpensive and works well on the RPi at 320x240@60fps.
 openFrameworks video capture works with the Pi out out of the box, but with some simple extra commands you can offload some of the colorspace conversion to the hardware.   
   
-<b>OpenNI2AppExample</b>   
-A simple demo of the Pi using the Asus Xtion depth camera.   
+<b>OpenNI2AppExample</b>
+This example allows you to access the depth and RGB streams of a Asus Xtion Pro Live depth camera using OpenNI. It uses the OpenNI2 which has a much simpler syntax than the previous version. The project also works on the Mac Desktop which is useful to record .oni files that the project can also playback.
 http://www.asus.com/Multimedia/Xtion_PRO/
 
 ###<u>GPIO</u> 
 
-<b>wiringPiPotentiometerExample</b>  
-A simple demo of reading a potentiometer from the Pi, great for making hardware sliders or knobs to control parameters in your programs. 
-(schematics coming soon)
+<b>wiringPiPotentiometerExample</b>
+wiringPi (https://projects.drogon.net/raspberry-pi/wiringpi/)  is a great library that makes working with the RPi's GPIO very Arduino-like. This example shows you how to use it with OF and a analog to digital convertor (ADC) to change the playback speed of a sound.
+![alt text](https://raw.github.com/andreasmuller/RaspberryPiWorkshop/master/Screenshots/wiringPiPotentiometerExampleSPI_bb.jpg "Schematics")
