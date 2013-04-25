@@ -112,6 +112,11 @@ http://www.asus.com/Multimedia/Xtion_PRO/
 
 ###<u>GPIO</u> 
 
-<b>wiringPiPotentiometerExample</b>
+<b>wiringPiPotentiometerExample</b>   
+NOTICE:   
+This project uses SPI which Rasbian has disabled by default. You must edut the file `/etc/modprobe.d/raspi-blacklist.conf` and comment out or remove the 2 lines (tutorial here: http://www.skpang.co.uk/blog/archives/575)   
+
+This example needs to be run as root to access the GPIO features. Once you compile the project use the command `sudo make run` to run the program
+
 wiringPi (https://projects.drogon.net/raspberry-pi/wiringpi/)  is a great library that makes working with the RPi's GPIO very Arduino-like. This example shows you how to use it with OF and a analog to digital convertor (ADC) to change the playback speed of a sound.
 ![alt text](https://raw.github.com/andreasmuller/RaspberryPiWorkshop/master/Screenshots/wiringPiPotentiometerExampleSPI_bb.jpg "Schematics")
