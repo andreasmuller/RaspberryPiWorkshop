@@ -114,7 +114,7 @@ http://www.asus.com/Multimedia/Xtion_PRO/
 
 <b>wiringPiPotentiometerExample</b>   
 NOTICE:   
-This project uses SPI which Rasbian has disabled by default. You must edut the file `/etc/modprobe.d/raspi-blacklist.conf` and comment out or remove the 2 lines (tutorial here: http://www.skpang.co.uk/blog/archives/575)   
+This project uses SPI which Rasbian has disabled by default. You must edit the file `/etc/modprobe.d/raspi-blacklist.conf` and comment out or remove the 2 lines (tutorial here: http://www.skpang.co.uk/blog/archives/575). If you are working from an SD Card from the Resonate workshop this was already done for you.   
 
 This example needs to be run as root to access the GPIO features. Once you compile the project use the command `sudo make run` to run the program
 
