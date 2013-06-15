@@ -1,14 +1,14 @@
 #include "ofMain.h"
 #include "testApp.h"
 #ifdef TARGET_OPENGLES
-#include "ofProgrammableGLRenderer.h"
+#include "ofGLProgrammableRenderer.h"
 #endif
 //========================================================================
 int main( ){
 	
 	ofSetLogLevel(OF_LOG_VERBOSE);
 #ifdef TARGET_OPENGLES
-	ofSetCurrentRenderer(ofPtr<ofBaseRenderer>(new ofProgrammableGLRenderer()));
+	ofSetCurrentRenderer(ofPtr<ofBaseRenderer>(new ofGLProgrammableRenderer()));
 #endif
 	ofSetupOpenGL(1280,720, OF_WINDOW);			// <-------- setup the GL context
 	

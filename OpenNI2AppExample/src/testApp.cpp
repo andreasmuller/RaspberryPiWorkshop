@@ -35,8 +35,8 @@ void testApp::setup(){
 	settings.height = 240;
 	settings.fps = 30;
 	settings.doDepth = true;
-	settings.doRawDepth = true;
-	settings.doColor = true;
+	settings.doRawDepth = false;
+	settings.doColor = false;
 #endif
 
 	

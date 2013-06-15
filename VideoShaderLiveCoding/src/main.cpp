@@ -9,12 +9,12 @@
 	#include "testApp.h"
 #endif
 
-#include "ofProgrammableGLRenderer.h"
+#include "ofGLProgrammableRenderer.h"
 
 //========================================================================
 int main( ){
 	ofSetLogLevel(OF_LOG_VERBOSE);
-	ofSetCurrentRenderer(ofPtr<ofBaseRenderer>(new ofProgrammableGLRenderer()));
+	ofSetCurrentRenderer(ofPtr<ofBaseRenderer>(new ofGLProgrammableRenderer()));
 	ofSetupOpenGL(1280,720, OF_WINDOW);
 
 	#ifdef USE_DEVELOP_APP

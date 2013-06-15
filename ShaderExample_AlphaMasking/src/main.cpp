@@ -1,12 +1,12 @@
 #include "ofMain.h"
 #include "testApp.h"
-#include "ofProgrammableGLRenderer.h"
+#include "ofGLProgrammableRenderer.h"
 
 
 //========================================================================
 int main( ){
 
-    ofProgrammableGLRenderer * renderer = new ofProgrammableGLRenderer();
+    ofGLProgrammableRenderer * renderer = new ofGLProgrammableRenderer();
 	ofSetCurrentRenderer(ofPtr<ofBaseRenderer>(renderer));                      // switch to GLES2 renderer.
 
 	ofSetupOpenGL(1280, 720, OF_WINDOW);// <-------- setup the GL context
