@@ -1,11 +1,11 @@
 RaspberryPiWorkshop
 ===================
 
-Currently uses the OF branch that can be found here:
-https://github.com/openFrameworks-RaspberryPi/openFrameworks
+Requires openFrameworks 0.8.0 or higher:
+http://www.openframeworks.cc/setup/raspberrypi/
 
-A great setup guide for the Pi can be found here:
-https://github.com/openFrameworks-RaspberryPi/openFrameworks/wiki/RaspberryPi
+The SD Cards/content distributed at resonate.io used a pre-release version of openFrameworks. If you need the version of this repo that is compatible with the pre-release you can find that here:
+https://github.com/andreasmuller/RaspberryPiWorkshop/releases/tag/resonate
 
 ###<u>Graphics</u> 
 
